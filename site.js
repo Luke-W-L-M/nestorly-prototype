@@ -11,12 +11,19 @@
   window.DAPPER_LOGO = LOGO;
   const here = (location.pathname.split('/').pop() || 'index.html');
   const cls = f => here===f ? ' class="here"' : '';
+  // page-specific button left of Sign in (30 Oct): Join gets "Start your profile", Find gets "Create a firm account" (not once a firm is signed in)
+  const cta = ()=>{
+    if(here==='join.html') return '<a class="topcta" href="create-profile.html">Start your profile</a>';
+    let firm=false; try{ firm=sessionStorage.getItem('dapper-firm')==='1'; }catch(e){}
+    if(here==='find.html' && !firm) return '<a class="topcta tang" href="firm-signup.html">Create a firm account</a>';
+    return '';
+  };
   const head = document.getElementById('site-head');
   if(head){
     head.className='top gut';
     head.innerHTML = '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
       '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#FBEFC6','#1F9D55')+'</a>'+
-      '<nav class="r" aria-label="Main right"><a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
+      '<nav class="r" aria-label="Main right">'+cta()+'<a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
   }
   const foot = document.getElementById('site-foot');
   if(foot){

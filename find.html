@@ -120,6 +120,10 @@ h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,6
 .tstrip.mid{margin-block:6px}
 @media (max-width:960px){.fsteps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.fsteps{grid-template-columns:1fr}}
+/* Find page buttons (30 Oct): tangerine with white text; text links stay navy */
+#sform .btn,.prof .btn,.ec .go,#gate .btn:not(.ghost){background:#FF7A1A;color:#fff}
+#sform .btn:hover,.prof .btn:hover,.ec:hover .go,#gate .btn:not(.ghost):hover{background:#E86A0C}
+#sform .btn:focus-visible,.prof .btn:focus-visible,#gate .btn:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
 /* signed out (30 Oct): preview cards only, in a grid; a card opens the sign-up prompt */
 .cat.out{grid-template-columns:1fr}
 .cat.out .list{position:static;max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:4px}

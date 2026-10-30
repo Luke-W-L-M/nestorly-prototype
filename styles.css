@@ -286,3 +286,20 @@ main > .bleed:last-child::after{display:none}
 .gatecard h2{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(26px,3vw,34px);line-height:1.2;text-transform:uppercase;text-wrap:balance}
 .gatecard p{margin:0;font-size:19px;line-height:1.5}
 .gatecard .acts{justify-content:center}
+
+/* Page-specific top bar button (30 Oct): compact, white text, black outline, small hard shadow, ~44px tall */
+.top nav.r{align-items:center}
+.top nav a.topcta{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:0 16px;border:2px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--ink);background:#2251FF;color:#fff;font-size:15px;white-space:nowrap;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.top nav a.topcta:hover{color:#fff;background:#1A40D6;transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.top nav a.topcta.tang{background:#FF7A1A}
+.top nav a.topcta.tang:hover{background:#E86A0C}
+.top nav a.topcta:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+@media (max-width:900px){
+  .top nav a.topcta{min-height:40px;padding:0 10px;font-size:12.5px;letter-spacing:.02em}
+}
+@media (max-width:420px){
+  .top nav,.top nav.r{gap:12px}
+  .top nav a{font-size:14px}
+  .top nav a.topcta{font-size:12px;padding:0 8px}
+}
+@media (prefers-reduced-motion:reduce){.top nav a.topcta:hover{transform:none}}

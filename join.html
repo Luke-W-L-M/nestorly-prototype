@@ -22,7 +22,7 @@
 .hero .inner{padding-block:72px 40px;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
 .hero h1{color:var(--white)}
 .hero p{margin:0;font-size:23px;max-width:46ch}
-.hero .btn{background:var(--white);color:var(--navy)}
+.hero .btn{background:var(--cobalt);color:var(--white)}
 /* every industry: A to Z fields drifting in two rows */
 .az{width:100%;margin-top:18px;display:flex;flex-direction:column;gap:12px;align-items:center}
 .az-lab{font-family:var(--ui);font-weight:700;font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--white)}
@@ -139,13 +139,10 @@ html{scroll-snap-type:y mandatory}
 .needlist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:16px}
 .needlist li{display:flex;align-items:center;gap:14px;font-family:var(--body);font-size:21px;line-height:1.35;color:var(--navy)}
 .needlist .ck{width:28px;height:28px;flex:none}
+.jsec > .inner.needgrid{row-gap:40px}
+.need-cta{grid-column:1/-1;justify-self:center}
 .needart{margin:0;justify-self:center;width:100%;max-width:440px}
 .needart img{display:block;width:100%;height:auto}
-/* Ready to support: one centred white card */
-#support .inner{align-items:center}
-.supcard{width:100%;max-width:640px;box-sizing:border-box;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:8px 8px 0 var(--ink);padding:44px 40px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
-.supcard .hd{font-size:clamp(28px,2.8vw,40px)}
-.supcard p{margin:0;font-size:21px;line-height:1.55;color:var(--navy);max-width:34ch}
 /* Questions on navy: cream text, thin cream dividers, emerald +/- */
 #faq .hd{color:var(--cream)}
 #faq .faq{gap:0;border-top:1px solid rgba(245,240,230,.45)}
@@ -212,7 +209,6 @@ html{scroll-snap-type:y mandatory}
   #example .fullp{height:480px}
   .jsec > .inner.needgrid{grid-template-columns:1fr;gap:28px}
   .needart{max-width:320px}
-  .supcard{padding:32px 22px}
 }
 </style>
 </head><body>
@@ -273,6 +269,7 @@ html{scroll-snap-type:y mandatory}
     </ul>
   </div>
   <figure class="needart" data-seq="v"><picture><source srcset="images/needs.webp" type="image/webp"><img src="images/needs.png" width="1044" height="1034" alt="A flat lay: a CV with a paperclip, a pen, a coffee, a wrapped gift and a hand holding a photo" loading="lazy" decoding="async"></picture></figure>
+  <a class="btn lg need-cta" href="create-profile.html" data-seq="v">Start your profile <span class="arr">→</span></a>
 </div></section>
 <div class="owl-div"></div>
 
@@ -306,15 +303,6 @@ html{scroll-snap-type:y mandatory}
     </div>
   </div>
 </div></section>
-<div class="owl-div"></div>
-<section class="snap jsec apr gut" id="support" aria-labelledby="sup-h"><div class="inner">
-  <div class="supcard" data-seq="v">
-    <h2 class="hd" id="sup-h">Ready to support a cause you care about?</h2>
-    <p>Create your profile in about 10 minutes. It's free, and you choose every request you take.</p>
-    <a class="btn lg" href="create-profile.html">Start your profile <span class="arr">→</span></a>
-  </div>
-</div></section>
-
 <section class="snap jsec gut join" id="ready" aria-labelledby="ready-h">
   <div class="inner jgrid">
     <div class="jart">

@@ -76,15 +76,16 @@ dialog.cd::backdrop{background:rgba(20,37,79,.62)}
 <script>
 const S={
   requests:[
-    {who:'The Hon. Inglebert Montgomery-Smythe',topic:'Scaling seaweed farming in the Scottish Highlands',amt:350,st:'wait',lab:'Waiting for reply',sent:'Sent today'},
-    {who:'Aino Väisänen',topic:'Woodland carbon in northern Finland',amt:500,st:'ok',lab:'Accepted',sent:'Sent 20 Oct'},
-    {who:'Priya Raman',topic:'Port investment outlook',amt:500,st:'no',lab:'Declined',sent:'Sent 12 Oct',why:'Priya is fully booked this month.'}
+    {who:'The Hon. Inglebert Montgomery-Smythe',topic:'Scaling seaweed farming in the Scottish Highlands',amt:350,st:'wait',lab:'Waiting for reply',sent:'Sent today',pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:350,charity:'Loch Broom Lifeboat Fund',at:'30 Oct 2026, 09:12'}},
+    {who:'Aino Väisänen',topic:'Woodland carbon in northern Finland',amt:500,st:'ok',lab:'Accepted',sent:'Sent 20 Oct',pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:500,charity:'Northern Woodland Trust',at:'20 Oct 2026, 11:05'}},
+    {who:'Priya Raman',topic:'Port investment outlook',amt:500,st:'no',lab:'Declined',sent:'Sent 12 Oct',why:'Priya is fully booked this month.',pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:500,charity:'Seafarers Support Network',at:'12 Oct 2026, 15:47'}}
   ],
   booked:[{who:'Aino Väisänen',when:'Mon 2 Nov, 09:00 · Video call · 1 hour',contact:'aino@example.fi'}],
   pay:[{id:'p1',who:'The Hon. Inglebert Montgomery-Smythe',what:'Video call, 21 Oct',amt:350,ch:'Loch Broom Lifeboat Fund',ref:'DO-0047',stage:2,due:'Please donate by Fri 23 Oct (48 hours)'}],
   receipts:[['8 Oct 2026','Loch Broom Lifeboat Fund','The Hon. Inglebert Montgomery-Smythe','DO-0042',500,'seaweed farming',true],['24 Sep 2026','Seafarers Support Network','Priya Raman','DO-0035',600,'port investment',false],['3 Sep 2026','Northern Woodland Trust','Aino Väisänen','DO-0029',450,'woodland carbon',true]],
   named:false, rated:0, msg:''
 };
+try{ const L=JSON.parse(sessionStorage.getItem('dapper-lastreq')||'null'); if(L) S.requests.unshift({who:L.who,topic:L.topic,amt:L.amt,st:'wait',lab:'Waiting for reply',sent:'Sent just now',pledge:L.pledge}); }catch(e){}
 const TABS=[['req','Requests'],['book','Booked'],['pay','Donations to make'],['rec','Receipts'],['acc','Account']];
 let tab='req';
 const $=id=>document.getElementById(id), gbp=n=>'£'+n.toLocaleString('en-GB');
@@ -98,7 +99,7 @@ function draw(){
   tabs(); let h=S.msg?'<p class="ok-msg">'+S.msg+'</p>':'';
   if(tab==='req'){
     h+='<h2 class="sec" style="font-size:32px">Requests</h2>';
-    S.requests.forEach(r=>{h+='<div class="item"><div class="item-h"><div><b>'+r.who+'</b><span class="meta">'+r.topic+' · '+r.sent+'</span></div><span class="pill '+r.st+'">'+r.lab+'</span></div><dl class="dl"><dt>Pledged</dt><dd>'+gbp(r.amt)+'</dd>'+(r.why?'<dt>Reason</dt><dd>'+r.why+'</dd>':'')+'</dl>'+(r.st==='no'?'<div class="acts"><a class="btn ghost sm" href="find.html">Find another expert</a></div>':'')+(r.st==='ok'?'<div class="acts"><button class="btn ghost sm" data-k2="book">See booking</button></div>':'')+'</div>';});
+    S.requests.forEach(r=>{h+='<div class="item"><div class="item-h"><div><b>'+r.who+'</b><span class="meta">'+r.topic+' · '+r.sent+'</span></div><span class="pill '+r.st+'">'+r.lab+'</span></div><dl class="dl"><dt>Pledged</dt><dd>'+gbp(r.amt)+'</dd>'+(r.why?'<dt>Reason</dt><dd>'+r.why+'</dd>':'')+'</dl>'+(r.pledge?DapperFirm.signedBlock(r.pledge):'')+(r.st==='no'?'<div class="acts"><a class="btn ghost sm" href="find.html">Find another expert</a></div>':'')+(r.st==='ok'?'<div class="acts"><button class="btn ghost sm" data-k2="book">See booking</button></div>':'')+'</div>';});
   }
   if(tab==='book'){
     h+='<h2 class="sec" style="font-size:32px">Booked</h2>';
@@ -124,7 +125,7 @@ function draw(){
       '<div class="yr"><span class="eyebrow">Optional · for LinkedIn or your annual report</span><b style="font-family:var(--ui);font-size:21px">Your 2026 certificate of impact</b><p style="margin:0;font-size:18px">One certificate showing every charity your donations reached this year. Each certificate is made once the charity confirms the donation, and names an expert only if they agree.</p><div class="acts"><button class="btn sm" type="button" data-cert="year">See your 2026 certificate</button></div></div>';
   }
   if(tab==='acc'){
-    h+='<h2 class="sec" style="font-size:32px">Account</h2><dl class="dl"><dt>Organisation</dt><dd>Harbourline Capital</dd><dt>Type</dt><dd>Investor or fund</dd><dt>Website</dt><dd>harbourline.example.com (verified)</dd><dt>Team</dt><dd>James Okafor (you) · Mei Chen</dd></dl>'+
+    h+='<h2 class="sec" style="font-size:32px">Account</h2><div style="display:flex;flex-direction:column;gap:8px"><span class="lab">Your badges, as experts see them</span>'+DapperFirm.badges(true)+'<p class="hint" style="margin:0">Every verified firm shows "Verified organisation". "Reliable donor" is added once your first donations have all been made on time.</p></div><dl class="dl"><dt>Organisation</dt><dd>Harbourline Capital</dd><dt>Type</dt><dd>Investor</dd><dt>Size</dt><dd>11–50 people</dd><dt>Website</dt><dd>harbourline.example.com (verified)</dd><dt>Team</dt><dd>James Okafor (you) · Mei Chen</dd></dl>'+
       '<label class="switch"><input type="checkbox" id="named" '+(S.named?'checked':'')+'>Name Harbourline Capital on experts\' LinkedIn certificates</label><p class="hint" style="margin:0">Off by default: certificates say "a firm" unless you opt in.</p><div class="acts"><button class="btn ghost sm" type="button" data-done="Invite sent">Invite a colleague</button></div>';
   }
   $('panel').innerHTML=h;

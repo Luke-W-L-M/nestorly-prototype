@@ -206,3 +206,21 @@
   if(document.fonts&&document.fonts.ready) document.fonts.ready.then(set);
   if('ResizeObserver' in window){ const ro=new ResizeObserver(set); rows.forEach(r=>r.querySelectorAll('.hiw-text').forEach(p=>ro.observe(p))); }
 })();
+
+// Firm trust (30 Oct): sign-in state for the prototype, plus badges and the signed pledge text.
+(function(){
+  const K='dapper-firm';
+  const TICK='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#14254F"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const STAR='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fff"/><path d="M10 4.6l1.6 3.4 3.7.4-2.8 2.5.8 3.7L10 12.7l-3.3 1.9.8-3.7-2.8-2.5 3.7-.4z" fill="#1F9D55"/></svg>';
+  window.DapperFirm={
+    signedIn(){ try{ return sessionStorage.getItem(K)==='1'; }catch(e){ return false; } },
+    signIn(){ try{ sessionStorage.setItem(K,'1'); }catch(e){} },
+    signOut(){ try{ sessionStorage.removeItem(K); }catch(e){} },
+    // every verified firm gets the first badge; "Reliable donor" after 3 out of 3 donations on time (no numbers shown)
+    badges(reliable){ return '<span class="fbadges"><span class="fbadge">'+TICK+'Verified organisation</span>'+(reliable?'<span class="fbadge rel">'+STAR+'Reliable donor</span>':'')+'</span>'; },
+    pledgeText(p){ return 'I, '+p.name+', '+p.title+', pledge on behalf of '+p.company+' to donate £'+Number(p.amount).toLocaleString('en-GB')+' to '+p.charity+' within 48 hours of the expert pressing Send.'; },
+    signedBlock(p){ return '<div class="signed"><span class="eyebrow">Signed pledge</span><q>'+this.pledgeText(p)+'</q><span class="by">Signed by '+p.name+', '+p.title+' <span>· '+p.at+'</span></span></div>'; }
+  };
+  // signing out from a firm page clears the prototype's signed-in state
+  document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closest('a'); if(a&&/sign out/i.test(a.textContent)) window.DapperFirm.signOut(); });
+})();

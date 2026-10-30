@@ -34,7 +34,7 @@ main{max-width:640px;margin:0 auto;padding-block:56px 90px;display:flex;flex-dir
 <header id="site-head"></header>
 <main class="gut">
   <h1 class="page">Sign in</h1>
-  <p class="ctx" id="ctx" hidden>To request a conversation, please sign in or create a firm account first. It takes a minute.</p>
+  <p class="ctx" id="ctx" hidden>To see full profiles and request a conversation, sign in with your firm account, or create one first. It's free.</p>
   <div class="who" role="group" aria-label="I am">
     <button type="button" id="asExpert" aria-pressed="true">I'm an expert</button>
     <button type="button" id="asFirm" aria-pressed="false">I'm a firm</button>
@@ -49,14 +49,7 @@ main{max-width:640px;margin:0 auto;padding-block:56px 90px;display:flex;flex-dir
       </div>
       <div class="or">or</div>
       <div class="f"><label for="em" id="emlab">Your email address</label><input type="email" id="em" value="inglebert@example.co.uk" autocomplete="email"><small id="emhint">Use the email on your expert profile.</small></div>
-      <div id="newfirm" hidden style="display:flex;flex-direction:column;gap:18px">
-        <div class="note"><p><b>New to Dapperowl?</b> We'll create your firm account in one step. Use your work email; no manual approval needed.</p></div>
-        <div class="f"><label for="org">Organisation name</label><input type="text" id="org" value="Harbourline Capital"></div>
-        <div class="row">
-          <div class="f"><label for="otype">Type of organisation</label><select id="otype"><option>Investor or fund</option><option>Company</option><option>Event organiser</option><option>NGO or charity</option><option>Public body</option><option>Other</option></select></div>
-          <div class="f"><label for="site">Website</label><input type="url" id="site" value="harbourline.example.com"></div>
-        </div>
-      </div>
+      <p id="newfirm" hidden style="margin:0;font-size:18px">New firm? <a class="link" href="firm-signup.html">Create a free firm account →</a> You'll need a work email on your company's domain.</p>
       <button type="submit" class="btn">Email me a sign-in link</button>
       <p style="margin:0;font-size:18px" id="joinline">New expert? <a class="link" href="join.html">Join as an expert →</a></p>
     </div>
@@ -81,12 +74,14 @@ function mode(f){
   $('newfirm').hidden=!f; $('joinline').hidden=f;
   $('em').value = f ? 'james.okafor@harbourline.example.com' : 'inglebert@example.co.uk';
   $('emlab').textContent = f ? 'Your work email' : 'Your email address';
-  $('emhint').textContent = f ? 'Already have an account? Just enter your email; the details below are only for new firms.' : 'Use the email on your expert profile.';
+  $('emhint').textContent = f ? 'Use the work email your firm account is registered with.' : 'Use the email on your expert profile.';
   $('open').href=dest();
 }
 $('ctx').hidden=!req;
 $('asExpert').onclick=()=>mode(false); $('asFirm').onclick=()=>mode(true);
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{location.href=dest();});
+const go=()=>{ if(firm) DapperFirm.signIn(); };
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{go();location.href=dest();});
+$('open').addEventListener('click',go);
 $('form').addEventListener('submit',e=>{e.preventDefault();$('sentto').textContent=$('em').value;$('step1').hidden=true;$('step2').hidden=false;$('open').href=dest();});
 $('again').onclick=()=>{$('step2').hidden=true;$('step1').hidden=false;};
 mode(firm);

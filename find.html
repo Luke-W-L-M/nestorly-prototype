@@ -120,6 +120,11 @@ h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,6
 .tstrip.mid{margin-block:6px}
 @media (max-width:960px){.fsteps{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.fsteps{grid-template-columns:1fr}}
+/* signed out (30 Oct): preview cards only, in a grid; a card opens the sign-up prompt */
+.cat.out{grid-template-columns:1fr}
+.cat.out .list{position:static;max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:4px}
+.cat.out .prof{display:none}
+.ec .go{margin-top:12px;align-self:flex-start}
 .phead .firmlead{max-width:60ch;font-size:21px;line-height:1.6;opacity:1;margin-top:40px!important;text-wrap:pretty}
 </style>
 </head><body>
@@ -144,6 +149,16 @@ h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,6
     <div class="shuffle" aria-hidden="true"><span class="hand l"></span><span class="hand r"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span></div>
     <p>Finding your specialist</p>
   </div>
+  <dialog class="enldlg" id="gate" aria-labelledby="gate-h">
+    <div class="enldlg-in">
+      <button type="button" class="enldlg-x" id="gatex" aria-label="Close"><span aria-hidden="true">×</span></button>
+      <div class="gatecard">
+        <h2 id="gate-h">Create a free firm account to see full profiles and send requests</h2>
+        <p>It takes a couple of minutes with your work email. Searching and preview cards stay open to everyone.</p>
+        <div class="acts"><a class="btn" href="firm-signup.html">Create a firm account</a><a class="btn ghost" href="signin.html#firm">Sign in</a></div>
+      </div>
+    </div>
+  </dialog>
   <section class="bleed" style="--bb:#14254F;color:var(--paper);text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px">
     <h2 class="sec">Have knowledge to share?</h2>
     <p style="margin:0;font-size:20px;max-width:46ch">Join as an expert and every conversation becomes a donation to the charity you choose.</p>
@@ -193,20 +208,30 @@ function list(){
   if(!shown.length){ $('list').innerHTML='<div class="empty">No experts match yet. Try a broader word, or clear the industry filter.</div>'; $('prof').hidden=true; return; }
   $('prof').hidden=false;
   shown.forEach(i=>{const e=E[i];const b=document.createElement('button');b.className='ec';b.type='button';b.id='e'+i;b.setAttribute('aria-current',i===sel);
-    b.innerHTML='<span class="nm">'+esc(e.n)+'</span><span class="rl">'+esc(e.top)+'</span><span class="mt">Now: '+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+'</span><span class="mt">'+esc(e.ind.join(' · '))+'</span><span class="chr">Supports: '+esc(e.ch)+'</span>';
-    b.onclick=()=>{sel=i;list();prof();if(innerWidth<960)$('prof').scrollIntoView({behavior:'smooth'});};$('list').appendChild(b);});
+    b.innerHTML='<span class="nm">'+esc(e.n)+'</span><span class="rl">'+esc(e.top)+'</span><span class="mt">Now: '+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+'</span><span class="mt">'+esc(e.ind.join(' · '))+'</span><span class="chr">Supports: '+esc(e.ch)+'</span>'+(OUT?'<span class="btn sm go" aria-hidden="true">Request a conversation</span>':'');
+    b.onclick=()=>{sel=i;keep();if(OUT) return gate(b);list();prof();if(innerWidth<960)$('prof').scrollIntoView({behavior:'smooth'});};$('list').appendChild(b);});
 }
 function prof(){
   const e=E[sel];
-  $('prof').innerHTML='<div class="ph"><div class="pic">'+person+'</div><div class="pt"><h2>'+esc(e.n)+'</h2><span class="hl">'+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+' · '+e.yrs+' years\' experience</span><a class="link" style="font-size:17px" href="https://www.linkedin.com/" target="_blank" rel="noopener">View LinkedIn profile ↗</a></div><a class="btn req" href="signin.html#request" onclick="keep()">Request a conversation</a></div>'
+  $('prof').innerHTML='<div class="ph"><div class="pic">'+person+'</div><div class="pt"><h2>'+esc(e.n)+'</h2><span class="hl">'+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+' · '+e.yrs+' years\' experience</span><a class="link" style="font-size:17px" href="https://www.linkedin.com/" target="_blank" rel="noopener">View LinkedIn profile ↗</a></div><a class="btn req" href="request.html" onclick="keep()">Request a conversation</a></div>'
   +'<section><h3>Industries and specialities</h3><div class="tags">'+e.ind.map(t=>'<span class="ind">'+esc(t)+'</span>').join('')+e.spec.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div></section>'
   +'<section><h3>About</h3><p>'+esc(e.about)+'</p></section>'
   +'<section><h3>Career</h3><ol class="tl">'+e.jobs.map(j=>'<li><div><b>'+esc(j[0])+'</b><span class="w">'+esc(j[1])+'</span><p>'+esc(j[2])+'</p></div></li>').join('')+'</ol></section>'
   +'<section class="two"><div><h3>Education</h3><p>'+esc(e.edu)+'</p></div><div><h3>Languages</h3><p>'+esc(e.lang)+'</p></div></section>'
   +'<section><h3>Chosen charity</h3><div class="charity"><b>'+esc(e.ch)+'</b><p>'+esc(e.chd)+'</p>'+(e.why?'<p><q>'+esc(e.why)+'</q></p>':'')+'</div></section>'
-  +'<section class="don"><div><h3>Suggested donation</h3><span class="amt">'+esc(e.don)+'</span><small>'+esc(e.donk)+' · 100% goes to '+esc(e.ch)+'</small></div><a class="btn" href="signin.html#request" onclick="keep()">Request a conversation</a></section>';
+  +'<section class="don"><div><h3>Suggested donation</h3><span class="amt">'+esc(e.don)+'</span><small>'+esc(e.donk)+' · 100% goes to '+esc(e.ch)+'</small></div><a class="btn" href="request.html" onclick="keep()">Request a conversation</a></section>';
 }
-function render(){ $('count').textContent=shown.length+(shown.length===1?' expert':' experts')+(ind?' in '+ind:''); list(); if(shown.length) prof(); }
+function render(){ $('count').textContent=shown.length+(shown.length===1?' expert':' experts')+(ind?' in '+ind:''); list(); if(shown.length&&!OUT) prof(); }
+// Signed-out visitors (30 Oct): search and preview cards are open to all; full profiles and requests need a verified firm account
+const OUT=!DapperFirm.signedIn();
+$('cat').classList.toggle('out',OUT);
+let gateFrom=null;
+const G=$('gate');
+function gate(from){ gateFrom=from; if(!G.showModal){ location.href='firm-signup.html'; return; } document.documentElement.style.overflow='hidden'; G.showModal(); $('gatex').focus(); }
+function ungate(){ if(!G.open) return; G.close(); document.documentElement.style.overflow=''; if(gateFrom) gateFrom.focus(); }
+$('gatex').onclick=ungate;
+G.addEventListener('cancel',e=>{e.preventDefault();ungate();});
+G.addEventListener('click',e=>{ if(e.target===G) ungate(); });
 let t=null;
 function run(){
   if(!$('q').value.trim() && !ind){ clearTimeout(t); $('loader').hidden=true; $('cat').hidden=true; $('count').textContent='Type what you need, or pick an industry, to see matching experts.'; return; }

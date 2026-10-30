@@ -53,6 +53,9 @@ main{max-width:1180px;margin:0 auto;padding-block:48px 90px;display:flex;flex-di
 .two .rsec{background:var(--white);border:2px solid var(--ink);border-radius:14px;padding:14px 16px}
 .two .dl{grid-template-columns:max-content minmax(0,1fr);font-size:17px}
 .panel2{background:var(--white);border:3px solid var(--ink);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:18px}
+.firmbox{background:#fff;border:3px solid var(--ink);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.firmbox-h{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px}
+.decl .tick.chk{border-color:#1F9D55;background:#EAF7EF;font-weight:700}
 .panel2 h3{margin:0;font-family:var(--head);font-weight:400;font-size:28px;text-transform:uppercase}
 .panel2.acc{border-color:var(--green);box-shadow:5px 5px 0 var(--green)}
 .panel2.dec{box-shadow:5px 5px 0 var(--ink)}
@@ -79,12 +82,16 @@ const S={
      goal:'Decide by December whether to invest about £2m in a new longline seaweed farm on the west coast of Scotland, and understand what a realistic plan for the first five years looks like.',
      qs:['What does it cost to set up a new longline site, and how long does licensing usually take?','Which buyers (food, cosmetics, fertiliser) are growing fastest, and what do they pay?','What are the biggest risks in the first three years, and how do farms manage them?','Would you see Ullapool or Oban as the better base, and why?'],
      firmType:'Investor or fund · about 12 people',site:'harbourline.example.com (verified)',attend:'James Okafor (Investment Director), Mei Chen (Analyst)',
+     company:'Harbourline Capital',web:'harbourline.example.com',otype:'Investor',size:'11–50',reliable:true,
+     pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:350,charity:'Loch Broom Lifeboat Fund',at:'30 Oct 2026, 09:12'},
      background:'We have read the Crown Estate Scotland seaweed reports and spoken to two buyers. We have not visited a site yet.',docs:'Two-page investment summary (PDF)',compliance:'None',conf:false,
      times:['Wed 4 Nov, 10:00','Thu 5 Nov, 14:30','Tue 10 Nov, 11:00']},
     {id:'r2',firm:'Northfield Foods',who:'Sarah Lindqvist, Head of Sourcing',received:'Received yesterday',topic:'Seaweed as an ingredient: supply and pricing',fmt:'Written advice',amt:300,
      goal:'Choose a reliable UK seaweed supplier for a new range of soups launching next spring, and set a fair price per tonne.',
      qs:['How consistent is UK seaweed supply through the year?','What price range per tonne is fair for dried kelp?','What should we check before signing a supplier?'],
      firmType:'Company · about 400 people',site:'northfieldfoods.example.com (verified)',attend:'Written answers to Sarah Lindqvist',
+     company:'Northfield Foods',web:'northfieldfoods.example.com',otype:'Company',size:'251–1,000',reliable:false,
+     pledge:{name:'Sarah Lindqvist',title:'Head of Sourcing',company:'Northfield Foods',amount:300,charity:'Loch Broom Lifeboat Fund',at:'29 Oct 2026, 16:40'},
      background:'We currently import from Ireland and want a UK source.',docs:'None',compliance:'Two short questions about conflicts of interest',conf:true,
      times:['Any day next week']}
   ],
@@ -117,19 +124,24 @@ function draw(){
       '<dl class="dl"><dt>Topic</dt><dd>'+r.topic+'</dd><dt>Format</dt><dd>'+r.fmt+'</dd></dl>'+
       '<div class="goal"><span class="eyebrow">What they hope to get out of it</span><p>'+r.goal+'</p></div>'+
       '<div class="rsec"><span class="lab">Their questions</span><ol>'+r.qs.map(q=>'<li>'+q+'</li>').join('')+'</ol></div>'+
-      '<div class="two"><div class="rsec"><span class="lab">About the firm</span><dl class="dl"><dt>Type</dt><dd>'+r.firmType+'</dd><dt>Website</dt><dd>'+r.site+'</dd><dt>Attending</dt><dd>'+r.attend+'</dd></dl></div>'+
+      '<div class="firmbox"><div class="firmbox-h"><span class="lab">About the firm</span>'+DapperFirm.badges(r.reliable)+'</div>'+
+      '<dl class="dl"><dt>Company</dt><dd>'+r.company+'</dd><dt>Website</dt><dd><a class="link" href="https://'+r.web+'" target="_blank" rel="noopener">'+r.web+' ↗</a></dd><dt>Type</dt><dd>'+r.otype+'</dd><dt>Size</dt><dd>'+r.size+' people</dd><dt>Attending</dt><dd>'+r.attend+'</dd></dl>'+
+      DapperFirm.signedBlock(r.pledge)+
+      '<p class="hint" style="margin:0">Check the firm\'s details before you accept: you choose who you meet.</p></div>'+
+      '<div class="two" style="grid-template-columns:1fr">'+
       '<div class="rsec"><span class="lab">Background and preparation</span><dl class="dl"><dt>What they know</dt><dd>'+r.background+'</dd><dt>To read</dt><dd>'+(r.docs==='None'?'Nothing':'<a class="link" href="#" data-done="Downloaded">'+r.docs+'</a>')+'</dd><dt>Compliance</dt><dd>'+r.compliance+'</dd><dt>Confidential</dt><dd>'+(r.conf?'Yes':'No')+'</dd></dl></div></div>'+
       '</div>';
       if(r.mode==='acc'){
         h+='<div class="panel2 acc"><h3>Accept this request</h3>'+
         '<div class="f"><span class="lab">1. Pick a time</span><div class="times">'+r.times.map((t,i)=>'<label class="radio"><input type="radio" name="t'+r.id+'" value="'+t+'" '+(i===0?'checked':'')+'>'+t+'</label>').join('')+'<label class="radio"><input type="radio" name="t'+r.id+'" value="other" data-other>Suggest a different time</label></div>'+
         '<div class="row other" hidden><div class="f"><label for="od'+r.id+'">Date</label><input type="date" id="od'+r.id+'" value="2026-11-12"></div><div class="f"><label for="ot'+r.id+'">Time</label><input type="time" id="ot'+r.id+'" value="10:00"></div></div></div>'+
-        '<div class="f"><span class="lab">2. Tick your declarations</span><div class="decl">'+
+        '<div class="f"><span class="lab">2. Tick your declarations and check the firm</span><div class="decl">'+
         ['I won\'t share inside information.','I won\'t share confidential information belonging to a current or former employer or client.','I don\'t work for or advise this organisation, or I\'ve told the firm that I do.','Taking part doesn\'t break any agreement I\'m bound by.','If I work in the public sector, I\'m allowed to take part.','I can decline any question, and I\'ll stop if the conversation moves into these areas.'].map(t=>'<label class="tick"><input type="checkbox" class="dc">'+t+'</label>').join('')+
+        '<label class="tick chk"><input type="checkbox" class="dc">I\'ve checked this organisation.</label>'+
         '</div></div>'+
         '<div class="f"><label for="an'+r.id+'">3. A note to '+r.firm+' <span class="opt">(optional)</span></label><textarea id="an'+r.id+'" style="min-height:90px">Happy to help. I\'ll bring some rough set-up costs from our own site.</textarea></div>'+
         '<div class="note"><p><b>What happens next</b></p><p>We send you both a calendar invite and a video link, and share your contact details with '+r.firm+'. After the call, you press Send and they donate '+gbp(r.amt)+' to '+CH+'.</p></div>'+
-        '<div class="acts"><button class="btn" data-conf="'+r.id+'" disabled>Confirm and accept</button><button class="btn ghost sm" data-cancel="'+r.id+'">Cancel</button></div><p class="hint" style="margin:0">Tick all six declarations to confirm.</p></div>';
+        '<div class="acts"><button class="btn" data-conf="'+r.id+'" disabled>Confirm and accept</button><button class="btn ghost sm" data-cancel="'+r.id+'">Cancel</button></div><p class="hint" style="margin:0">Tick all six declarations, and confirm you\'ve checked this organisation, to accept.</p></div>';
       } else if(r.mode==='dec'){
         h+='<div class="panel2 dec"><h3>Decline this request</h3>'+
         '<div class="f"><span class="lab">Reason</span><div class="times">'+['Not my area of expertise','I don\'t have time right now','Conflict of interest','Other'].map((t,i)=>'<label class="radio"><input type="radio" name="dr'+r.id+'" value="'+t+'" '+(i===1?'checked':'')+'>'+t+'</label>').join('')+'</div></div>'+

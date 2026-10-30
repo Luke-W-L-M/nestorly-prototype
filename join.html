@@ -17,7 +17,8 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>
-.hero{background:var(--cobalt);color:var(--white);overflow:hidden}
+.hero{background:var(--navy);color:var(--white);overflow:hidden}
+.hero + .pwave{display:none} /* straight edges, like the homepage */
 .hero .inner{padding-block:72px 40px;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
 .hero h1{color:var(--white)}
 .hero p{margin:0;font-size:23px;max-width:46ch}
@@ -94,9 +95,10 @@ details p{margin:12px 0 0;max-width:70ch}
 @media (max-width:860px){.three,.exgrid{grid-template-columns:1fr}.exframe{height:auto}.fullp{height:520px}}
 
 /* ===== Join page (30 Oct): full-screen sections with snap scrolling, same system as the homepage ===== */
-:root{--topbar:86px}
+:root{--topbar:86px;--cream:#F5F0E6}
 html{scroll-snap-type:y mandatory}
-html.snap-off{scroll-snap-type:none}
+#site-foot{scroll-snap-align:end}
+.apr{background:#F4B183} /* apricot, as on the homepage */
 @media (max-width:900px),(max-height:700px){html{scroll-snap-type:y proximity}}
 .snap{box-sizing:border-box;min-height:calc(100svh - var(--topbar));scroll-snap-align:start;scroll-margin-top:var(--topbar);display:flex;flex-direction:column;justify-content:center}
 .jsec{padding-block:56px}
@@ -117,7 +119,6 @@ html.snap-off{scroll-snap-type:none}
 .enl-copy.needbox li{gap:14px}
 .needwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
 /* See an example: frames sized to fit one screen */
-#example{background:#F6C344}
 #example .hd{text-align:center}
 #example .exgrid{align-items:start}
 #example .exframe{height:clamp(380px,calc(100svh - var(--topbar) - 400px),560px)}
@@ -126,9 +127,41 @@ html.snap-off{scroll-snap-type:none}
 .ptile{align-self:flex-start;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 18px;font-family:var(--ui);font-weight:700;font-size:18px;color:var(--navy)}
 .ptile b{font-family:var(--head);font-weight:400;font-size:28px;color:#18743a;margin-right:4px}
 .ptcap{margin:-4px 0 0;font-size:17px;color:var(--navy)}
-/* Ready band */
-#ready .inner{align-items:center;text-align:center;gap:22px}
-#ready .hd{color:var(--paper)}
+/* Ready band: navy, handshake art left ~60%, words right (as the homepage join band) */
+.join{background:var(--navy);color:var(--cream);overflow:hidden}
+.jsec > .inner.jgrid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:48px;align-items:center}
+.jtext{display:flex;flex-direction:column;align-items:flex-start;gap:28px;text-align:left}
+#ready .hd{color:var(--cream);font-size:clamp(30px,3.2vw,46px);max-width:16ch}
+.join p{margin:0;font-size:20px}
+.join .link2{color:var(--cream);font-weight:700;white-space:nowrap}
+.btn.lg{font-size:24px;padding:24px 44px;box-shadow:6px 6px 0 var(--ink)}
+.jart{position:relative;aspect-ratio:1200/896;width:100%;max-width:calc((100svh - var(--topbar) - 112px) * 1.34);justify-self:center}
+.jart picture,.jart .jimg{display:block;width:100%;height:auto}
+.jart .jimg{position:relative;z-index:1}
+.jdots,.jfront{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.jdots{z-index:0}.jfront{z-index:2;pointer-events:none}
+.jpath{fill:none;stroke:#F7C21A;stroke-width:8;stroke-linecap:round;stroke-dasharray:0 16.54;stroke-dashoffset:0}
+.jlabel{position:absolute;z-index:3;right:23%;top:2.5%;text-align:right;font-family:var(--body);font-weight:600;font-size:clamp(12px,1.2vw,16px);line-height:1.2;color:var(--cream);white-space:nowrap}
+.jspark{transform-box:view-box;transform-origin:564px 372px}
+@media (prefers-reduced-motion:no-preference){
+  .jpath{animation:jdots var(--dur) linear infinite}
+  .jspark{animation:jspark 1.6s ease-in-out infinite}
+}
+@keyframes jdots{from{stroke-dashoffset:calc(var(--shift) * 1px)}to{stroke-dashoffset:0}}
+@keyframes jspark{0%,100%{opacity:.82;transform:scale(.88)}50%{opacity:1;transform:scale(1.08)}}
+/* Who it's for: intro left, three illustrated cards right */
+.jsec > .inner.who{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,2.4fr);gap:56px;align-items:center}
+.who-intro{display:flex;flex-direction:column;gap:20px}
+.body{margin:0;font-family:var(--body);font-size:21px;line-height:1.6;color:var(--navy)}
+.wcards{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;align-items:stretch}
+.wcard{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);padding:20px 20px 24px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;color:var(--navy)}
+.wcard picture{display:flex;justify-content:center;height:170px;margin-bottom:6px}
+.wcard img{height:170px;width:auto;max-width:100%;object-fit:contain}
+.wcard b{font-family:var(--ui);font-size:22px;line-height:1.2}
+.wcard p{margin:0;font-size:17px;line-height:1.5}
+/* What you'll need: its own screen */
+#need .inner{align-items:center}
+#need .needbox:not(.enl-copy) ul{font-size:19px}
 /* Tax note and questions: ordinary scrolling from here */
 #more{scroll-snap-align:start;scroll-margin-top:var(--topbar);padding-block:56px 90px}
 #more > .inner{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:36px}
@@ -138,6 +171,8 @@ html.snap-off{scroll-snap-type:none}
 .seq-ready [data-seq="v"]{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
 .seq-ready .on{opacity:1!important;transform:none!important}
 @media (max-width:900px){
+  .jsec > .inner.who,.jsec > .inner.jgrid{grid-template-columns:1fr;gap:32px}
+  .wcards{grid-template-columns:1fr;gap:20px}
   .needbox:not(.enl-copy) li+li::before{display:none}
   #example .exframe{height:auto}
   #example .fullp{height:480px}
@@ -153,29 +188,20 @@ html.snap-off{scroll-snap-type:none}
     <div class="az-win"><div class="az-row b" id="azB"></div></div>
   </div>
 </div></section>
-
-<section class="snap jsec gut" id="who" aria-labelledby="who-h"><div class="inner">
-  <h2 class="hd" id="who-h" data-seq="h">Who it's for</h2>
-  <div class="three">
-      <div data-seq="v" class="card c1"><b>Still working</b><p>Senior people with deep knowledge who want their spare hours to do some good.</p></div>
-      <div data-seq="v" class="card c2"><b>Retired</b><p>Decades of experience that firms still need, and a cause you care about.</p></div>
-      <div data-seq="v" class="card c3"><b>Specialists</b><p>Farmers, engineers, clinicians, founders: anyone who knows a field inside out.</p></div>
-    </div>
-  <div class="needwrap" data-seq="v">
-    <div class="needbox" data-enlarge data-w="420" data-max="1.6" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Enlarge: what you'll need">
-    <ul>
-      <li>What you'll need · 10 minutes</li>
-      <li>Your CV or career details</li>
-      <li>A clear photo of you</li>
-      <li>The charity you'd like to support</li>
-      <li>LinkedIn (optional)</li>
-    </ul>
-    </div>
-    <span class="enlhint" aria-hidden="true">Click to enlarge</span>
+<section class="snap jsec apr gut" id="who" aria-labelledby="who-h"><div class="inner who">
+  <div class="who-intro">
+    <h2 class="hd" id="who-h" data-seq="h">Who it's for</h2>
+    <p class="body" data-seq="t">Anyone with deep knowledge in any field: still working, retired or a specialist.</p>
   </div>
+  <ul class="wcards">
+      <li class="wcard" data-seq="v"><picture><source srcset="images/who-working.webp" type="image/webp"><img src="images/who-working.png" alt="A person in a cobalt blazer walking with a laptop bag" loading="lazy" decoding="async"></picture><b>Still working</b><p>Senior people with deep knowledge who want their spare hours to do some good.</p></li>
+      <li class="wcard" data-seq="v"><picture><source srcset="images/who-retired.webp" type="image/webp"><img src="images/who-retired.png" alt="A person in a mustard cardigan watering a potted plant" loading="lazy" decoding="async"></picture><b>Retired</b><p>Decades of experience that firms still need, and a cause you care about.</p></li>
+      <li class="wcard" data-seq="v"><picture><source srcset="images/who-specialist.webp" type="image/webp"><img src="images/who-specialist.png" alt="A beekeeper in a green jacket holding a honeycomb frame" loading="lazy" decoding="async"></picture><b>Specialists</b><p>Farmers, engineers, clinicians, founders: anyone who knows a field inside out.</p></li>
+  </ul>
 </div></section>
+<div class="owl-div"></div>
 
-<section class="snap jsec navy gut" id="how" aria-labelledby="how-h">
+<section class="snap jsec apr gut" id="how" aria-labelledby="how-h">
   <div class="inner hiw">
     <h2 class="hd" id="how-h">How it works</h2>
     <ol class="hiw-cols">
@@ -196,8 +222,26 @@ html.snap-off{scroll-snap-type:none}
     </ol>
   </div>
 </section>
+<div class="owl-div"></div>
 
-<section class="snap jsec gut" id="example" aria-labelledby="ex-h"><div class="inner">
+<section class="snap jsec apr gut" id="need" aria-labelledby="need-h"><div class="inner">
+  <h2 class="hd" id="need-h" data-seq="h">What you'll need</h2>
+  <div class="needwrap" data-seq="v">
+    <div class="needbox" data-enlarge data-w="420" data-max="1.6" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Enlarge: what you'll need">
+    <ul>
+      <li>About 10 minutes</li>
+      <li>Your CV or career details</li>
+      <li>A clear photo of you</li>
+      <li>The charity you'd like to support</li>
+      <li>LinkedIn (optional)</li>
+    </ul>
+    </div>
+    <span class="enlhint" aria-hidden="true">Click to enlarge</span>
+  </div>
+</div></section>
+<div class="owl-div"></div>
+
+<section class="snap jsec apr gut" id="example" aria-labelledby="ex-h"><div class="inner">
   <h2 class="hd" id="ex-h" data-seq="h">See an example</h2>
   <div class="exgrid">
     <div class="exbox" data-seq="v">
@@ -230,14 +274,9 @@ html.snap-off{scroll-snap-type:none}
     </div>
   </div>
 </div></section>
+<div class="owl-div"></div>
 
-<section class="snap jsec navy gut" id="ready" aria-labelledby="ready-h"><div class="inner">
-  <h2 class="hd" id="ready-h" data-seq="h">Ready to put your knowledge to good use?</h2>
-  <a class="btn" href="create-profile.html" data-seq="v">Start your profile →</a>
-  <p style="margin:0" data-seq="t">Already have a profile? <a class="link" href="signin.html" style="color:var(--paper)">Sign in</a></p>
-</div></section>
-
-<section class="gut" id="more" aria-labelledby="faq-h"><div class="inner">
+<section class="jsec apr gut" id="more" aria-labelledby="faq-h"><div class="inner">
   <div class="note" style="font-size:19px" data-seq="t">
     <p><b>A short note on tax.</b> Because you choose the charity, HMRC could treat a donation as your income. Casual income under £1,000 a year is tax-free. We explain this during sign-up, and you tick to say you've read it.</p>
   </div>
@@ -256,6 +295,32 @@ html.snap-off{scroll-snap-type:none}
     </div>
   </div>
 </div></section>
+
+<section class="snap jsec gut join" id="ready" aria-labelledby="ready-h">
+  <div class="inner jgrid">
+    <div class="jart">
+      <svg class="jdots" viewBox="0 0 1200 896" aria-hidden="true">
+        <path class="jpath" style="--shift:810.46;--dur:6.0s" d="M505.0 497.0 C508.4 497.7 519.4 499.5 525.2 501.4 C531.0 503.3 534.6 506.6 539.6 508.5 C544.6 510.4 549.8 511.5 555.0 512.5 C560.2 513.5 565.7 514.3 571.0 514.5 C576.3 514.7 581.8 514.4 587.0 513.5 C592.2 512.6 597.5 511.3 602.5 509.4 C607.5 507.5 612.3 505.0 616.8 502.1 C621.3 499.2 625.6 495.7 629.6 492.0 C633.6 488.3 637.3 484.1 640.5 479.7 C643.7 475.3 646.4 470.7 649.0 465.9 C651.6 461.1 653.9 456.2 655.9 451.1 C657.9 446.0 660.1 447.2 660.8 435.4 C661.5 423.5 660.2 398.1 660.0 380.0 C659.8 361.9 660.0 338.0 659.7 326.5 C659.4 315.0 658.5 316.2 658.0 310.8 C657.5 305.4 656.8 299.8 656.4 294.2 C656.0 288.6 655.6 282.9 655.4 277.2 C655.2 271.5 655.2 265.8 655.2 260.2 C655.2 254.5 655.3 249.0 655.5 243.3 C655.7 237.6 656.1 231.9 656.6 226.2 C657.1 220.5 657.7 214.9 658.6 209.2 C659.5 203.5 660.5 197.7 661.9 192.1 C663.3 186.5 664.9 181.1 666.8 175.7 C668.6 170.3 670.5 164.7 673.0 159.5 C675.5 154.3 678.4 149.3 681.5 144.5 C684.6 139.7 687.9 134.8 691.5 130.5 C695.1 126.2 698.8 122.2 702.9 118.4 C707.0 114.7 711.6 111.1 716.2 108.0 C720.8 104.9 725.6 102.2 730.5 99.9 C735.4 97.6 740.6 95.6 745.8 94.1 C751.0 92.5 756.2 91.3 761.6 90.6 C767.0 89.9 772.6 89.7 778.0 89.7 C783.4 89.7 788.7 89.9 794.0 90.7 C799.3 91.5 804.5 92.8 809.7 94.3 C814.9 95.8 820.2 97.6 825.1 99.8 C830.0 102.0 834.6 104.6 839.1 107.3 C843.6 110.0 847.7 112.9 851.9 116.2 C856.1 119.5 860.2 123.5 864.1 127.2 C868.0 130.9 871.4 134.6 875.1 138.2 C878.8 141.8 882.5 145.4 886.5 148.7 C890.5 152.0 894.8 155.2 899.3 157.8 C903.8 160.4 908.5 162.7 913.3 164.4 C918.1 166.1 922.4 166.2 927.9 167.8 C933.4 169.4 943.0 173.0 946.0 174.0"/>
+        <path class="jpath" style="--shift:347.34;--dur:2.57s" d="M458.0 262.0 C459.8 259.2 465.5 250.4 468.5 245.3 C471.5 240.2 473.1 235.9 476.0 231.3 C478.9 226.7 482.4 222.0 485.9 217.6 C489.4 213.2 493.1 209.1 497.0 205.1 C500.9 201.1 505.2 197.1 509.5 193.4 C513.8 189.8 518.2 186.4 522.9 183.2 C527.6 180.0 532.8 176.9 537.9 174.3 C543.0 171.7 548.1 169.7 553.4 167.8 C558.7 165.9 564.3 164.0 569.9 162.8 C575.5 161.6 581.2 160.7 586.9 160.6 C592.6 160.5 598.3 161.1 603.9 162.0 C609.5 162.9 615.0 164.3 620.4 166.2 C625.8 168.1 631.0 170.5 636.0 173.2 C641.0 175.9 646.0 179.2 650.3 182.4 C654.6 185.6 658.0 188.6 661.9 192.1 C665.8 195.6 670.1 199.6 673.9 203.7 C677.7 207.8 681.3 212.2 684.7 216.6 C688.1 221.0 691.1 225.4 694.2 229.9 C697.3 234.4 700.4 238.9 703.5 243.4 C706.6 247.9 709.5 252.5 712.6 256.9 C715.7 261.3 720.4 267.8 722.0 270.0"/>
+      </svg>
+      <picture>
+        <source srcset="images/handshake.webp" type="image/webp">
+        <img class="jimg" src="images/handshake.png" width="1200" height="896" loading="lazy" decoding="async" alt="Two people shake hands. A dotted yellow path loops from their hands to a small community hall with a yellow flag and an open door: their chosen charity.">
+      </picture>
+      <svg class="jfront" viewBox="0 0 1200 896" aria-hidden="true">
+        <g class="jflag"><path d="M1010 33 C1022 29 1034 38 1046 33 C1050 32 1054 32 1058 34 L1045 47 L1058 60 C1048 63 1036 55 1024 60 C1018 62 1013 61 1010 60 Z" fill="#fff" stroke="#fff" stroke-width="10" stroke-linejoin="round"><animate attributeName="d" dur="2.5s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.33;0.66;1" keySplines=".45 0 .55 1;.45 0 .55 1;.45 0 .55 1" values="M1010 33 C1022 29 1034 38 1046 33 C1050 32 1054 32 1058 34 L1045 47 L1058 60 C1048 63 1036 55 1024 60 C1018 62 1013 61 1010 60 Z;M1010 33 C1021 37 1033 28 1046 35 C1050 37 1054 34 1058 37 L1046 49 L1058 62 C1048 59 1035 64 1024 59 C1018 56 1013 59 1010 60 Z;M1010 33 C1023 31 1032 34 1046 31 C1050 30 1054 31 1058 32 L1044 46 L1058 59 C1047 61 1037 57 1024 61 C1017 63 1013 60 1010 60 Z;M1010 33 C1022 29 1034 38 1046 33 C1050 32 1054 32 1058 34 L1045 47 L1058 60 C1048 63 1036 55 1024 60 C1018 62 1013 61 1010 60 Z"/></path><path d="M1010 33 C1022 29 1034 38 1046 33 C1050 32 1054 32 1058 34 L1045 47 L1058 60 C1048 63 1036 55 1024 60 C1018 62 1013 61 1010 60 Z" fill="#F7C21A" stroke="#141414" stroke-width="2.6" stroke-linejoin="round"><animate attributeName="d" dur="2.5s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.33;0.66;1" keySplines=".45 0 .55 1;.45 0 .55 1;.45 0 .55 1" values="M1010 33 C1022 29 1034 38 1046 33 C1050 32 1054 32 1058 34 L1045 47 L1058 60 C1048 63 1036 55 1024 60 C1018 62 1013 61 1010 60 Z;M1010 33 C1021 37 1033 28 1046 35 C1050 37 1054 34 1058 37 L1046 49 L1058 62 C1048 59 1035 64 1024 59 C1018 56 1013 59 1010 60 Z;M1010 33 C1023 31 1032 34 1046 31 C1050 30 1054 31 1058 32 L1044 46 L1058 59 C1047 61 1037 57 1024 61 C1017 63 1013 60 1010 60 Z;M1010 33 C1022 29 1034 38 1046 33 C1050 32 1054 32 1058 34 L1045 47 L1058 60 C1048 63 1036 55 1024 60 C1018 62 1013 61 1010 60 Z"/></path></g>
+        <g class="jspark"><line x1="563.8" y1="316.0" x2="564.6" y2="346.0" stroke="#F7C21A" stroke-width="6" stroke-linecap="round"/><line x1="600.6" y1="325.7" x2="583.7" y2="351.8" stroke="#F7C21A" stroke-width="6" stroke-linecap="round"/><line x1="527.8" y1="328.1" x2="544.4" y2="353.4" stroke="#F7C21A" stroke-width="6" stroke-linecap="round"/></g>
+      </svg>
+      <span class="jlabel" aria-hidden="true">Your chosen charity</span>
+    </div>
+    <div class="jtext">
+      <h2 class="hd" id="ready-h" data-seq="h">Ready to put your knowledge to good use?</h2>
+      <a class="btn lg" href="create-profile.html" data-seq="v">Start your profile <span class="arr">→</span></a>
+      <p data-seq="t">Already have a profile? <a class="link2" href="signin.html">Sign in</a></p>
+    </div>
+  </div>
+</section>
+
 <footer id="site-foot"></footer>
 <script src="site.js"></script>
 <script>
@@ -264,10 +329,11 @@ html.snap-off{scroll-snap-type:none}
   const set=()=>document.documentElement.style.setProperty('--topbar',head.offsetHeight+'px');
   set(); if('ResizeObserver' in window) new ResizeObserver(set).observe(head); addEventListener('resize',set);
 })();
-(function(){ // snapping stops from the Tax note and Questions onwards, and comes back above them
-  const more=document.getElementById('more'), head=document.getElementById('site-head'); if(!more||!head) return;
-  const check=()=>{ const t=more.getBoundingClientRect().top-head.offsetHeight; document.documentElement.classList.toggle('snap-off',t<=2); };
-  addEventListener('scroll',check,{passive:true}); check();
+(function(){ // Ready band flag ripple (SVG animation) stays still when motion is turned off
+  const svg=document.querySelector('.jfront'); if(!svg||!svg.pauseAnimations) return;
+  const mq=matchMedia('(prefers-reduced-motion: reduce)');
+  const set=()=>{ if(mq.matches){svg.pauseAnimations();svg.setCurrentTime(0);} else svg.unpauseAnimations(); };
+  set(); mq.addEventListener('change',set);
 })();
 (function(){ // fade-ins, played once per section on first arrival: heading, then text line by line, then the visual
   const motion=!matchMedia('(prefers-reduced-motion: reduce)').matches;

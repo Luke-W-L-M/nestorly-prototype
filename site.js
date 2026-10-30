@@ -15,7 +15,7 @@
   if(head){
     head.className='top gut';
     head.innerHTML = '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
-      '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#FFFFFF','#1F9D55')+'</a>'+
+      '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#FBEFC6','#1F9D55')+'</a>'+
       '<nav class="r" aria-label="Main right"><a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
   }
   const foot = document.getElementById('site-foot');

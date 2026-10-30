@@ -131,12 +131,37 @@ label.chip.off{opacity:.4;cursor:not-allowed}
   .row,.social,.levels{grid-template-columns:1fr}
 }
 @media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+
+/* Two snap points (30 Oct): the yellow header band, then the form area (progress bar, step list and form card) */
+:root{--topbar:86px}
+html{scroll-snap-type:y mandatory}
+.phead,main.formarea{scroll-snap-align:start;scroll-margin-top:var(--topbar)}
+#site-foot{scroll-snap-align:end}
+main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padding-block:20px 28px;gap:24px}
+/* long steps scroll inside the form card, so the page stays at the form snap point */
+.formarea .card{max-height:calc(100svh - var(--topbar) - 116px);overflow-y:auto;overscroll-behavior:contain;padding-bottom:0;scrollbar-width:thin;scrollbar-color:#C9C2B3 transparent}
+.formarea .card::-webkit-scrollbar{width:10px}
+.formarea .card::-webkit-scrollbar-thumb{background:#C9C2B3;border-radius:8px;border:3px solid #fff}
+.formarea .card::-webkit-scrollbar-track{background:transparent}
+.formarea .steps{top:calc(var(--topbar) + 20px)}
+.formarea .card:has(#navrow[hidden]){padding-bottom:28px}
+/* Back / Continue stay visible at the bottom of the card */
+.formarea .nav{position:sticky;bottom:0;z-index:2;margin-top:auto;background:var(--white);padding-bottom:28px}
+[data-step] > h2:focus{outline:none}
+[data-step] > h2:focus-visible{outline:3px solid var(--cobalt);outline-offset:4px}
+/* phones and short screens: gentle snapping and ordinary page scrolling */
+@media (max-width:900px),(max-height:700px){
+  html{scroll-snap-type:y proximity}
+  .formarea .card{max-height:none;overflow:visible;padding-bottom:24px}
+  .formarea .nav{position:static;padding-bottom:0}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head><body>
 
 <header id="site-head"></header>
 
-<main class="gut">
+<main class="gut formarea" id="formarea">
   <div class="intro">
     <h1>Create your profile</h1>
     <span class="saved"><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#1F9D55"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Saved as you go · about 10 minutes</span>
@@ -149,7 +174,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
     <form class="card" id="form" novalidate>
 
       <div data-step="1">
-        <h2>Create your account</h2>
+        <h2 tabindex="-1">Create your account</h2>
         <p class="lead">No password to remember. We'll email you a link to sign in.</p>
         <div class="social">
           <button type="button" class="btn" data-adv>Continue with Google</button>
@@ -160,7 +185,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="2" hidden>
-        <h2>About you</h2>
+        <h2 tabindex="-1">About you</h2>
         <p class="lead">This is what firms see first.</p>
         <div class="photo">
           <div class="avatar" aria-hidden="true"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M8 58c0-14 10-22 22-22s22 8 22 22z" fill="#141414"/></svg></div>
@@ -176,7 +201,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="3" hidden>
-        <h2>Your career</h2>
+        <h2 tabindex="-1">Your career</h2>
         <p class="lead">Upload your CV and we'll draft your career timeline. You check and edit it.</p>
         <div class="drop">
           <svg class="big" viewBox="0 0 54 54" aria-hidden="true"><path d="M10 4h24l12 12v34H10z" fill="#141414"/><path d="M34 4v12h12" fill="#F5F0E6"/><path d="M27 42V24M19 31l8-8 8 8" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -195,7 +220,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="4" hidden>
-        <h2>Your expertise</h2>
+        <h2 tabindex="-1">Your expertise</h2>
         <p class="lead">Pick up to 2 broad industries. You can add specialities now or later.</p>
         <div class="f"><span class="lab">Industries <span class="opt">(up to 2)</span></span><div class="chips" id="inds"></div></div>
         <div class="f"><label for="spec">Specialities <span class="opt">(optional)</span></label><input type="text" id="spec" value="Seaweed farming, marine licensing, aquaculture, coastal communities"><small>Separate with commas.</small></div>
@@ -203,7 +228,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="5" hidden>
-        <h2>Your charity</h2>
+        <h2 tabindex="-1">Your charity</h2>
         <p class="lead">Every donation goes straight to this charity. You can change it at any time.</p>
         <div class="f"><label for="csearch">Search for a registered UK charity</label><input type="search" id="csearch" value="Loch Broom Lifeboat"></div>
         <div class="charity">
@@ -229,7 +254,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="6" hidden>
-        <h2>Contact and availability</h2>
+        <h2 tabindex="-1">Contact and availability</h2>
         <p class="lead">Your contact details stay private. Firms send requests through Dapperowl, and details are only swapped once you accept.</p>
         <div class="row">
           <div class="f"><label for="cemail">Email for requests</label><input type="email" id="cemail" value="inglebert@example.co.uk"></div>
@@ -242,7 +267,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="7" hidden>
-        <h2>Declarations and tax note</h2>
+        <h2 tabindex="-1">Declarations and tax note</h2>
         <p class="lead">Please read and tick each one.</p>
         <div class="note">
           <p><b>A note on tax.</b> HMRC could treat a donation as your own income, because you choose the charity. Casual income under £1,000 a year is covered by the trading allowance and is tax-free.</p>
@@ -255,7 +280,7 @@ label.chip.off{opacity:.4;cursor:not-allowed}
       </div>
 
       <div data-step="8" hidden>
-        <h2>Preview and publish</h2>
+        <h2 tabindex="-1">Preview and publish</h2>
         <p class="lead">This is how firms will see you. You can change anything later.</p>
         <div class="preview">
           <div class="who">
@@ -297,8 +322,9 @@ const titles=['Create account','About you','Career','Expertise','Charity','Conta
 const inds=['Finance & Investment','Energy & Natural Resources','Shipping, Transport & Logistics','Food, Agriculture & Fisheries','Health & Life Sciences','Technology & Telecoms','Manufacturing & Construction','Property & Infrastructure','Consumer, Retail & Hospitality','Media, Entertainment & Games','Environment & Sustainability','Government, Policy & Defence','Law & Professional Services','Education, Charities & Social Impact'];
 const fmts=['Phone or video call','Written advice','Site visit','Talk or presentation','Mentoring'];
 let cur=1;
+const SAVE='dapper-profile-step';
 const steps=document.getElementById('steps'), form=document.getElementById('form');
-titles.forEach((t,i)=>{const li=document.createElement('li');li.innerHTML='<button type="button" id="go'+(i+1)+'"><span class="n">'+(i+1)+'</span><span class="t"></span></button>';li.querySelector('.t').textContent=t;li.querySelector('button').onclick=()=>show(i+1);steps.appendChild(li);});
+titles.forEach((t,i)=>{const li=document.createElement('li');li.innerHTML='<button type="button" id="go'+(i+1)+'"><span class="n">'+(i+1)+'</span><span class="t"></span></button>';li.querySelector('.t').textContent=t;li.querySelector('button').onclick=()=>show(i+1,true);steps.appendChild(li);});
 function chips(el,list,checked,name,max){
   list.forEach((t,i)=>{const l=document.createElement('label');l.className='chip';l.innerHTML='<input type="checkbox" id="'+name+i+'"><span></span>';l.querySelector('span').textContent=t;const c=l.querySelector('input');c.checked=checked.includes(t);c.onchange=()=>limit();el.appendChild(l);});
   function limit(){ if(!max) return; const boxes=[...el.querySelectorAll('input')]; const n=boxes.filter(b=>b.checked).length; boxes.forEach(b=>{b.disabled=!b.checked&&n>=max;b.parentElement.classList.toggle('off',b.disabled);}); }
@@ -306,7 +332,7 @@ function chips(el,list,checked,name,max){
 }
 chips(document.getElementById('inds'),inds,['Food, Agriculture & Fisheries','Environment & Sustainability'],'ind',2);
 chips(document.getElementById('fmts'),fmts,['Phone or video call','Written advice','Site visit'],'fmt',0);
-function show(n){
+function show(n,user){
   cur=n;
   form.querySelectorAll('[data-step]').forEach(s=>s.hidden=+s.dataset.step!==n);
   steps.querySelectorAll('button').forEach((b,i)=>{b.classList.toggle('cur',i+1===n);b.classList.toggle('done',i+1<n||n===9);b.querySelector('.n').textContent=(i+1<n||n===9)?'✓':(i+1);});
@@ -315,10 +341,32 @@ function show(n){
   document.getElementById('back').style.visibility=(n===1||n===9)?'hidden':'visible';
   document.getElementById('navrow').hidden=n===9;
   document.getElementById('next').textContent=n===8?'Publish my profile':'Continue →';
+  try{ if(n>1&&n<9) localStorage.setItem(SAVE,String(n)); else if(n===9) localStorage.removeItem(SAVE); }catch(e){}
+  if(!user) return;
+  // swap in place: the page keeps its position; only the form card's own scroll goes back to the top
+  form.scrollTop=0;
+  const h=form.querySelector('[data-step="'+n+'"] h2'); if(h) h.focus({preventScroll:true});
+  // on phones the card doesn't scroll inside, so if its top has moved above the screen, bring the form (never the page top) back into view
+  const top=form.getBoundingClientRect().top, bar=parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--topbar'))||86;
+  if(top<bar) window.scrollBy({top:top-bar-16,behavior:'instant'});
 }
-document.getElementById('back').onclick=()=>show(Math.max(1,cur-1));
-form.addEventListener('submit',e=>{e.preventDefault(); show(Math.min(9,cur+1)); window.scrollTo({top:0,behavior:'smooth'});});
-show(1);
+document.getElementById('back').onclick=()=>show(Math.max(1,cur-1),true);
+form.addEventListener('submit',e=>{e.preventDefault(); show(Math.min(9,cur+1),true);});
+// returning to an unfinished profile (saved as you go) reopens at the saved step
+let saved=0; try{ saved=+(localStorage.getItem(SAVE)||0); }catch(e){}
+show(saved>1&&saved<9?saved:1);
+(function(){ // top bar height drives the snap offsets and the form area's height
+  const head=document.getElementById('site-head'); if(!head) return;
+  const set=()=>document.documentElement.style.setProperty('--topbar',head.offsetHeight+'px');
+  set(); if('ResizeObserver' in window) new ResizeObserver(set).observe(head); addEventListener('resize',set);
+})();
+// opens at the header as usual; with #form, or when returning to an unfinished profile, opens straight at the form
+if(location.hash==='#form'||(saved>1&&saved<9)){
+  const go=()=>{ const area=document.getElementById('formarea'), bar=document.getElementById('site-head').offsetHeight;
+    window.scrollTo({top:area.getBoundingClientRect().top+scrollY-bar,behavior:'instant'}); };
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  requestAnimationFrame(go); addEventListener('load',go);
+}
 
 document.querySelectorAll('[data-adv]').forEach(b=>b.onclick=()=>document.getElementById('next').click());
 const picker=document.createElement('input');picker.type='file';picker.hidden=true;document.body.appendChild(picker);let pickFor=null;

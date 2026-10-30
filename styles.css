@@ -291,8 +291,8 @@ main > .bleed:last-child::after{display:none}
 .top nav.r{align-items:center}
 .top nav a.topcta{display:inline-flex;align-items:center;min-height:44px;box-sizing:border-box;padding:0 16px;border:2px solid var(--ink);border-radius:10px;box-shadow:3px 3px 0 var(--ink);background:#2251FF;color:#fff;font-size:15px;white-space:nowrap;transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
 .top nav a.topcta:hover{color:#fff;background:#1A40D6;transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
-.top nav a.topcta.tang{background:#FF7A1A}
-.top nav a.topcta.tang:hover{background:#E86A0C}
+.top nav a.topcta.tang{background:#FF7A1A;color:#14254F}
+.top nav a.topcta.tang:hover{background:#E86A0C;color:#14254F}
 .top nav a.topcta:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
 @media (max-width:900px){
   .top nav a.topcta{min-height:40px;padding:0 10px;font-size:12.5px;letter-spacing:.02em}

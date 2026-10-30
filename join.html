@@ -166,6 +166,15 @@ html{scroll-snap-type:y mandatory}
 #more{scroll-snap-align:start;scroll-margin-top:var(--topbar);padding-block:56px 90px}
 #more > .inner{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:36px}
 #more .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(30px,3.2vw,46px);line-height:1.15;text-transform:uppercase;color:var(--navy)}
+/* Questions left (~60%), thinking figure right (~40%), staying in view while the list scrolls; it comes first in the code so it fades in straight after the heading */
+.faqgrid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);grid-template-areas:"list art";gap:48px;align-items:start}
+.faqgrid > .faq{grid-area:list}
+.faqart{grid-area:art;margin:0;position:sticky;top:calc(var(--topbar) + 32px);justify-self:center;width:100%;max-width:380px}
+.faqart img{display:block;width:100%;height:auto}
+@media (max-width:900px){
+  .faqgrid{grid-template-columns:1fr;grid-template-areas:"art" "list";gap:24px}
+  .faqart{position:static;max-width:220px}
+}
 /* play-once fade-ins: heading, then text line by line, then the visual with a small rise */
 .seq-ready [data-seq="h"],.seq-ready [data-seq="t"] .w{opacity:0;transition:opacity .35s ease}
 .seq-ready [data-seq="v"]{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
@@ -280,8 +289,9 @@ html{scroll-snap-type:y mandatory}
   <div class="note" style="font-size:19px" data-seq="t">
     <p><b>A short note on tax.</b> Because you choose the charity, HMRC could treat a donation as your income. Casual income under £1,000 a year is tax-free. We explain this during sign-up, and you tick to say you've read it.</p>
   </div>
-  <div class="faq">
-    <h2 class="hd" id="faq-h" data-seq="h">Questions</h2>
+  <h2 class="hd" id="faq-h" data-seq="h">Questions</h2>
+  <div class="faqgrid">
+    <figure class="faqart" data-seq="v"><picture><source srcset="images/faq.webp" type="image/webp"><img src="images/faq.png" width="771" height="972" alt="A person in an emerald armchair holding a mug, with a question mark in a speech bubble" loading="lazy" decoding="async"></picture></figure>
     <div class="faq" data-seq="v">
     <details><summary>Does it cost anything to join?</summary><p>No. Joining is free, and firms pay nothing to Dapperowl. The only money that moves is the firm's donation to your charity.</p></details>
     <details><summary>How much time does it take?</summary><p>As much or as little as you like. Set your hours per month, decline any request, or pause your profile.</p></details>

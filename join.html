@@ -36,14 +36,6 @@
 @keyframes azr{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 @media (prefers-reduced-motion:reduce){.az-row{animation:none!important;flex-wrap:wrap;width:auto;justify-content:center}.az-row span[aria-hidden]{display:none}.az-win{width:auto;-webkit-mask-image:none;mask-image:none}}
 
-main{max-width:1180px;margin:0 auto;padding-block:56px 90px;display:flex;flex-direction:column;gap:56px}
-.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px;list-style:none;margin:0;padding:0}
-.steps li{background:var(--white);border:3px solid var(--ink);border-radius:20px;box-shadow:5px 5px 0 var(--ink);padding:24px;display:flex;flex-direction:column;gap:10px}
-.steps .n{width:52px;height:52px;border-radius:50%;background:var(--ink);color:var(--white);display:grid;place-items:center;font-family:var(--head);font-size:26px}
-.steps b{font-family:var(--ui);font-size:20px;line-height:1.25}
-.steps p{margin:0;font-size:17px}
-@media (max-width:960px){.steps{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.steps{grid-template-columns:1fr}}
 .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 .three .card{display:flex;flex-direction:column;gap:10px;padding:28px}
 .three .card.c1{background:var(--sun);color:var(--navy)}
@@ -51,22 +43,6 @@ main{max-width:1180px;margin:0 auto;padding-block:56px 90px;display:flex;flex-di
 .three .card.c3{background:var(--burgundy);color:var(--paper)}
 .three b{font-family:var(--ui);font-size:22px}
 .three p{margin:0;font-size:18px}
-
-/* thin burgundy strip: what you'll need */
-.need-strip{position:relative;margin-inline:calc(50% - 50vw);background:var(--burgundy);color:var(--paper);padding:14px max(24px,calc(50vw - 50% + 24px));margin-bottom:0}
-.need-strip::before,.need-strip::after{content:"";position:absolute;left:0;right:0;height:11px;background:var(--burgundy);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
-.need-strip::before{top:-10px;-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 22' preserveAspectRatio='none'%3E%3Cpath d='M0 22 L0 11 C240 24 480 0 720 9 S1200 20 1440 4 L1440 22 Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 22' preserveAspectRatio='none'%3E%3Cpath d='M0 22 L0 11 C240 24 480 0 720 9 S1200 20 1440 4 L1440 22 Z'/%3E%3C/svg%3E")}
-.need-strip::after{bottom:-10px;z-index:2;-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 22' preserveAspectRatio='none'%3E%3Cpath d='M0 0 L0 12 C300 0 560 22 820 9 S1260 0 1440 15 L1440 0 Z'/%3E%3C/svg%3E");mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 22' preserveAspectRatio='none'%3E%3Cpath d='M0 0 L0 12 C300 0 560 22 820 9 S1260 0 1440 15 L1440 0 Z'/%3E%3C/svg%3E")}
-.need-strip ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 22px;font-family:var(--ui);font-weight:600;font-size:clamp(15px,1.25vw,18px);text-align:center}
-@media (min-width:1100px){.need-strip ul{flex-wrap:nowrap;white-space:nowrap}}
-.need-strip li{display:flex;align-items:center;gap:22px}
-.need-strip li:first-child{color:var(--sun)}
-.need-strip li+li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sun);display:inline-block;margin-right:0}
-.need-strip{margin-bottom:-56px}
-.need-strip{z-index:3} /* sit above the yellow band so its wavy bottom edge shows */
-.need-strip + .bleed{margin-top:0}
-.need-strip + .bleed::before{display:none}
-.need-strip + .bleed{padding-top:84px}
 
 /* example: two equal boxes */
 .exgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:36px;align-items:stretch}
@@ -117,47 +93,76 @@ summary{font-family:var(--ui);font-weight:700;font-size:20px;cursor:pointer}
 details p{margin:12px 0 0;max-width:70ch}
 @media (max-width:860px){.three,.exgrid{grid-template-columns:1fr}.exframe{height:auto}.fullp{height:520px}}
 
-/* 26 Oct: burgundy strip joins the blue header directly; How it works in its own navy band */
-.howband .steps li{background:var(--white);color:var(--navy)}
-.howband .steps li{box-shadow:5px 5px 0 #000}
-.howband #jointrk{box-shadow:6px 6px 0 #000!important}
-.howband:has(+ .need-strip){margin-bottom:0}
-.howband:has(+ .need-strip)::after{display:none}
-.howband + .need-strip{margin-top:-56px}
-.howband + .need-strip::before{background:var(--burgundy)}
+/* ===== Join page (30 Oct): full-screen sections with snap scrolling, same system as the homepage ===== */
+:root{--topbar:86px}
+html{scroll-snap-type:y mandatory}
+html.snap-off{scroll-snap-type:none}
+@media (max-width:900px),(max-height:700px){html{scroll-snap-type:y proximity}}
+.snap{box-sizing:border-box;min-height:calc(100svh - var(--topbar));scroll-snap-align:start;scroll-margin-top:var(--topbar);display:flex;flex-direction:column;justify-content:center}
+.jsec{padding-block:56px}
+.jsec > .inner{width:100%;max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:30px}
+.jsec .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1.15;text-transform:uppercase;color:var(--navy)}
+.navy{background:var(--navy);color:var(--paper)}
+.hero.snap .inner{padding-block:40px}
+/* What you'll need: the burgundy strip, now a panel under Who it's for */
+.needbox{align-self:center;background:var(--burgundy);color:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:16px 26px}
+.needbox ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 22px;font-family:var(--ui);font-weight:600;font-size:clamp(15px,1.25vw,18px);text-align:center}
+@media (min-width:1100px){.needbox:not(.enl-copy) ul{flex-wrap:nowrap;white-space:nowrap;gap:6px 16px;font-size:16.5px}.needbox:not(.enl-copy) li{gap:16px}}
+.needbox li{display:flex;align-items:center;gap:22px}
+.needbox li:first-child{color:var(--sun)}
+.needbox li+li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sun);display:inline-block}
+.enl-copy.needbox{padding:26px 30px}
+.enl-copy.needbox ul{flex-direction:column;align-items:flex-start;text-align:left;gap:12px;font-size:20px}
+.enl-copy.needbox li+li::before{width:9px;height:9px;margin-left:4px;gap:0}
+.enl-copy.needbox li{gap:14px}
+.needwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+/* See an example: frames sized to fit one screen */
+#example{background:#F6C344}
+#example .hd{text-align:center}
+#example .exgrid{align-items:start}
+#example .exframe{height:clamp(380px,calc(100svh - var(--topbar) - 400px),560px)}
+.exbox .enlhint{font-size:15px}
+/* private running total, only the expert sees it */
+.ptile{align-self:flex-start;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 18px;font-family:var(--ui);font-weight:700;font-size:18px;color:var(--navy)}
+.ptile b{font-family:var(--head);font-weight:400;font-size:28px;color:#18743a;margin-right:4px}
+.ptcap{margin:-4px 0 0;font-size:17px;color:var(--navy)}
+/* Ready band */
+#ready .inner{align-items:center;text-align:center;gap:22px}
+#ready .hd{color:var(--paper)}
+/* Tax note and questions: ordinary scrolling from here */
+#more{scroll-snap-align:start;scroll-margin-top:var(--topbar);padding-block:56px 90px}
+#more > .inner{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:36px}
+#more .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(30px,3.2vw,46px);line-height:1.15;text-transform:uppercase;color:var(--navy)}
+/* play-once fade-ins: heading, then text line by line, then the visual with a small rise */
+.seq-ready [data-seq="h"],.seq-ready [data-seq="t"] .w{opacity:0;transition:opacity .35s ease}
+.seq-ready [data-seq="v"]{opacity:0;transform:translateY(18px);transition:opacity .5s ease,transform .5s ease}
+.seq-ready .on{opacity:1!important;transform:none!important}
+@media (max-width:900px){
+  .needbox:not(.enl-copy) li+li::before{display:none}
+  #example .exframe{height:auto}
+  #example .fullp{height:480px}
+}
 </style>
 </head><body>
 <header id="site-head"></header>
-<section class="hero gut"><div class="inner">
-  <h1 class="page">Your experience,<br>their cause</h1>
-  <a class="btn" href="create-profile.html">Start your profile →</a>
-  <div class="az" aria-label="Experts in every industry, from A to Z">
+<section class="snap hero gut" id="top" aria-label="Join as an expert"><div class="inner">
+  <h1 class="page" data-seq="h">Your experience,<br>their cause</h1>
+  <a class="btn" href="create-profile.html" data-seq="v">Start your profile →</a>
+  <div class="az" data-seq="v" aria-label="Experts in every industry, from A to Z">
     <div class="az-win"><div class="az-row a" id="azA"></div></div>
     <div class="az-win"><div class="az-row b" id="azB"></div></div>
   </div>
 </div></section>
-<main class="gut">
-  <section style="display:flex;flex-direction:column;gap:24px">
-    <h2 class="sec">Who it's for</h2>
-    <div class="three">
-      <div class="card c1"><b>Still working</b><p>Senior people with deep knowledge who want their spare hours to do some good.</p></div>
-      <div class="card c2"><b>Retired</b><p>Decades of experience that firms still need, and a cause you care about.</p></div>
-      <div class="card c3"><b>Specialists</b><p>Farmers, engineers, clinicians, founders: anyone who knows a field inside out.</p></div>
+
+<section class="snap jsec gut" id="who" aria-labelledby="who-h"><div class="inner">
+  <h2 class="hd" id="who-h" data-seq="h">Who it's for</h2>
+  <div class="three">
+      <div data-seq="v" class="card c1"><b>Still working</b><p>Senior people with deep knowledge who want their spare hours to do some good.</p></div>
+      <div data-seq="v" class="card c2"><b>Retired</b><p>Decades of experience that firms still need, and a cause you care about.</p></div>
+      <div data-seq="v" class="card c3"><b>Specialists</b><p>Farmers, engineers, clinicians, founders: anyone who knows a field inside out.</p></div>
     </div>
-  </section>
-
-  <section class="bleed howband" style="--bb:#14254F;display:flex;flex-direction:column;gap:28px;color:var(--paper)">
-    <h2 class="sec">How it works</h2>
-    <ol class="steps">
-      <li><span class="n">1</span><b>Create your profile</b><p>About 10 minutes. Upload your CV and we draft your career for you to check.</p></li>
-      <li><span class="n">2</span><b>Firms ask for your knowledge</b><p>You get an email for each request. Accept or decline; your contact details stay private until you accept.</p></li>
-      <li><span class="n">3</span><b>Share what you know</b><p>A call, written advice, a site visit, a talk or mentoring. On your terms.</p></li>
-      <li><span class="n">4</span><b>Press Send</b><p>The firm donates directly to your charity, and you watch it arrive.</p></li>
-    </ol>
-    <div id="jointrk" style="box-shadow:6px 6px 0 var(--ink)"></div>
-  </section>
-
-  <div class="need-strip" role="note">
+  <div class="needwrap" data-seq="v">
+    <div class="needbox" data-enlarge data-w="420" data-max="1.6" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Enlarge: what you'll need">
     <ul>
       <li>What you'll need · 10 minutes</li>
       <li>Your CV or career details</li>
@@ -165,13 +170,39 @@ details p{margin:12px 0 0;max-width:70ch}
       <li>The charity you'd like to support</li>
       <li>LinkedIn (optional)</li>
     </ul>
+    </div>
+    <span class="enlhint" aria-hidden="true">Click to enlarge</span>
   </div>
-  <section class="bleed" style="--bb:#F6C344;display:flex;flex-direction:column;gap:28px;color:var(--navy)">
-    <h2 class="sec" style="text-align:center">See an example</h2>
-    <div class="exgrid">
-      <div class="exbox">
-        <span class="extag">How firms see you in search</span>
-        <article class="exframe scard">
+</div></section>
+
+<section class="snap jsec navy gut" id="how" aria-labelledby="how-h">
+  <div class="inner hiw">
+    <h2 class="hd" id="how-h">How it works</h2>
+    <ol class="hiw-cols">
+      <li class="hiw-col">
+        <div class="hiw-box"><span class="wi"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10h36v22H20l-9 8v-8H6z" fill="#141414"/><path d="M14 18h20M14 24h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><b>They ask</b></div>
+        <p class="hiw-text">An organisation finds you by your field and sends a request: what they'd like to know, some time slots which suit them, and a proposed donation sum they'll make to your charity.</p>
+      </li>
+      <li class="hiw-col">
+        <span class="hiw-sep" aria-hidden="true"></span>
+        <div class="hiw-box"><span class="wi"><svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="16" cy="16" r="7" fill="#141414"/><circle cx="33" cy="16" r="7" fill="#141414"/><path d="M4 40c0-8 5-13 12-13s12 5 12 13zM21 40c0-8 5-13 12-13s12 5 12 13z" fill="#141414"/></svg></span><b>You share</b></div>
+        <p class="hiw-text"><span class="hiw-line" aria-hidden="true"></span>If it feels right, accept and pick a time. Meet online or in person and share what you know. You can decline any request or question.</p>
+      </li>
+      <li class="hiw-col">
+        <span class="hiw-sep" aria-hidden="true"></span>
+        <div class="hiw-box"><span class="wi"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 4L6 14v4h36v-4z" fill="#141414"/><path d="M10 21h5v14h-5zM21.5 21h5v14h-5zM33 21h5v14h-5z" fill="#141414"/><path d="M6 38h36v5H6z" fill="#141414"/></svg></span><b>Your charity receives</b></div>
+        <p class="hiw-text"><span class="hiw-line" aria-hidden="true"></span>Afterwards, press Send. The firm donates straight to your chosen charity, and you can watch it arrive.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="snap jsec gut" id="example" aria-labelledby="ex-h"><div class="inner">
+  <h2 class="hd" id="ex-h" data-seq="h">See an example</h2>
+  <div class="exgrid">
+    <div class="exbox" data-seq="v">
+      <span class="extag">How firms see you in search</span>
+      <article class="exframe scard" data-enlarge role="button" tabindex="0" aria-haspopup="dialog" aria-label="Enlarge: how firms see you in search">
           <div class="srow"><span class="sav"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M6 60c0-15 11-23 24-23s24 8 24 23z" fill="#141414"/></svg></span><div><span class="snm">The Hon. Inglebert Montgomery-Smythe</span><span class="srl">Founder, Broom Bay Seaweed</span></div></div>
           <span class="smt">Based in Ullapool, Scotland · 27 years' experience</span>
           <span class="smt">Food, Agriculture &amp; Fisheries · Environment &amp; Sustainability</span>
@@ -179,10 +210,11 @@ details p{margin:12px 0 0;max-width:70ch}
           <span class="sch">Supports: Loch Broom Lifeboat Fund</span>
           <span class="sbtn btn sm" aria-hidden="true">Request a conversation</span>
         </article>
-      </div>
-      <div class="exbox">
-        <span class="extag">The full profile</span>
-        <article class="exframe fullp" tabindex="0" aria-label="Full example profile, scrollable">
+      <span class="enlhint" aria-hidden="true">Click to enlarge</span>
+    </div>
+    <div class="exbox" data-seq="v">
+      <span class="extag">The full profile</span>
+      <article class="exframe fullp" data-enlarge="scroll" tabindex="0" aria-haspopup="dialog" aria-label="Full example profile, scrollable. Press Enter to enlarge">
           <div class="ph"><span class="pic"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M6 60c0-15 11-23 24-23s24 8 24 23z" fill="#141414"/></svg></span><div><h3>The Hon. Inglebert Montgomery-Smythe</h3><span class="r">Founder, Broom Bay Seaweed</span><span class="m">Based in Ullapool, Scotland · 27 years' experience</span></div></div>
           <section><h4>Industries and specialities</h4><div class="tags"><span class="i">Food, Agriculture &amp; Fisheries</span><span class="i">Environment &amp; Sustainability</span><span>Seaweed farming</span><span>Marine licensing</span><span>Aquaculture</span><span>Coastal communities</span></div></section>
           <section><h4>About</h4><p>I spent ten years as a site manager at Summer Isles Salmon, where I learned how marine licensing, water quality and coastal communities really work. Before that, five years as a deckhand and then mate on fisheries survey vessels taught me to read the sea and the weather. In 2012 I founded Broom Bay Seaweed, growing sugar kelp and dulse on longlines in Loch Broom; it now supplies food, cosmetics and fertiliser makers across the UK. Together, that gives me a rare view of seaweed from the water, the regulator's desk and the buyer's side.</p></section>
@@ -192,22 +224,26 @@ details p{margin:12px 0 0;max-width:70ch}
           <section><h4>Chosen charity</h4><div class="ch"><b>Loch Broom Lifeboat Fund</b><p>Funds the volunteer lifeboat crew serving Loch Broom and the Summer Isles.</p><p><i>"The crew came out for our boat in a winter gale in 2004. I've supported them ever since."</i></p></div></section>
           <section><h4>Suggested donation</h4><span class="amt">£250–£400</span><p>Per hour for calls · 100% goes to Loch Broom Lifeboat Fund</p></section>
         </article>
-        <span class="scrollhint">↕ Scroll inside the box to see the whole profile</span>
-      </div>
+      <span class="enlhint" aria-hidden="true">↕ Scroll inside the box, or click to enlarge</span>
+      <span class="ptile" data-seq="v"><b>£4,500</b> raised so far · Only you can see this</span>
+      <p class="ptcap" data-seq="t">Your total grows with every donation, and it's private to you.</p>
     </div>
-  </section>
+  </div>
+</div></section>
 
-  <section class="end bleed" style="--bb:#14254F;color:var(--paper)">
-    <h2 class="sec">Ready to put your knowledge to good use?</h2>
-    <a class="btn" href="create-profile.html">Start your profile →</a>
-    <p style="margin:0">Already have a profile? <a class="link" href="signin.html" style="color:var(--paper)">Sign in</a></p>
-  </section>
+<section class="snap jsec navy gut" id="ready" aria-labelledby="ready-h"><div class="inner">
+  <h2 class="hd" id="ready-h" data-seq="h">Ready to put your knowledge to good use?</h2>
+  <a class="btn" href="create-profile.html" data-seq="v">Start your profile →</a>
+  <p style="margin:0" data-seq="t">Already have a profile? <a class="link" href="signin.html" style="color:var(--paper)">Sign in</a></p>
+</div></section>
 
-  <section class="note" style="font-size:19px">
+<section class="gut" id="more" aria-labelledby="faq-h"><div class="inner">
+  <div class="note" style="font-size:19px" data-seq="t">
     <p><b>A short note on tax.</b> Because you choose the charity, HMRC could treat a donation as your income. Casual income under £1,000 a year is tax-free. We explain this during sign-up, and you tick to say you've read it.</p>
-  </section>
-  <section class="faq">
-    <h2 class="sec">Questions</h2>
+  </div>
+  <div class="faq">
+    <h2 class="hd" id="faq-h" data-seq="h">Questions</h2>
+    <div class="faq" data-seq="v">
     <details><summary>Does it cost anything to join?</summary><p>No. Joining is free, and firms pay nothing to Dapperowl. The only money that moves is the firm's donation to your charity.</p></details>
     <details><summary>How much time does it take?</summary><p>As much or as little as you like. Set your hours per month, decline any request, or pause your profile.</p></details>
     <details><summary>Who can contact me?</summary><p>Only signed-in firms, through the "Request a conversation" button. Your email and phone stay private until you accept.</p></details>
@@ -217,11 +253,73 @@ details p{margin:12px 0 0;max-width:70ch}
     <details><summary>What if someone doesn't show up?</summary><p>If you can't attend, nothing is owed. If a session is cut short, the firm can donate part of the amount with a reason. Firms that never pay are banned.</p></details>
     <details><summary>Can I change my charity?</summary><p>Yes, any time. Past donations stay credited to your old charity.</p></details>
     <details><summary>Who runs Dapperowl?</summary><p>A community interest company. We never take a cut of any donation.</p></details>
-  </section>
-</main>
+    </div>
+  </div>
+</div></section>
 <footer id="site-foot"></footer>
 <script src="site.js"></script>
-<script>DapperTracker.mount(document.getElementById('jointrk'),DapperTracker.EXPERT);</script>
+<script>
+(function(){ // top bar height drives full-screen sections and snap offsets
+  const head=document.getElementById('site-head'); if(!head) return;
+  const set=()=>document.documentElement.style.setProperty('--topbar',head.offsetHeight+'px');
+  set(); if('ResizeObserver' in window) new ResizeObserver(set).observe(head); addEventListener('resize',set);
+})();
+(function(){ // snapping stops from the Tax note and Questions onwards, and comes back above them
+  const more=document.getElementById('more'), head=document.getElementById('site-head'); if(!more||!head) return;
+  const check=()=>{ const t=more.getBoundingClientRect().top-head.offsetHeight; document.documentElement.classList.toggle('snap-off',t<=2); };
+  addEventListener('scroll',check,{passive:true}); check();
+})();
+(function(){ // fade-ins, played once per section on first arrival: heading, then text line by line, then the visual
+  const motion=!matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait=ms=>new Promise(r=>setTimeout(r,ms));
+  const wrap=el=>{ // every word in its own span (inside links and bold too), so text can be grouped into rendered lines
+    const tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT); const nodes=[]; while(tw.nextNode()) nodes.push(tw.currentNode);
+    nodes.forEach(n=>{ if(!n.textContent.trim()) return; const f=document.createDocumentFragment();
+      n.textContent.split(/(\s+)/).forEach(part=>{ if(!part) return; if(/^\s+$/.test(part)) f.appendChild(document.createTextNode(part)); else { const w=document.createElement('span'); w.className='w'; w.textContent=part; f.appendChild(w); } });
+      n.parentNode.replaceChild(f,n); });
+  };
+  const linesOf=el=>{ const g=[]; let top=null; el.querySelectorAll('.w').forEach(w=>{ const t=w.getBoundingClientRect().top; if(top===null||Math.abs(t-top)>4){ g.push([]); top=t; } g[g.length-1].push(w); }); return g; };
+  const once=(sec,play,cls)=>{ // start when 40% of the section (or of the screen, for tall ones) is in view
+    let played=false;
+    const go=()=>{ if(played) return; played=true; removeEventListener('scroll',check); if(io) io.disconnect(); play().then(()=>sec.classList.remove(cls)); };
+    const check=()=>{ const r=sec.getBoundingClientRect(); const seen=Math.min(r.bottom,innerHeight)-Math.max(r.top,0); if(seen>Math.min(r.height,innerHeight)*.4) go(); };
+    const io='IntersectionObserver' in window ? new IntersectionObserver(check,{threshold:[0,.1,.2,.3,.4,.6,.8,1]}) : null;
+    if(io) io.observe(sec); addEventListener('scroll',check,{passive:true}); check();
+  };
+  if(!motion) return; // reduced motion: everything is shown straight away
+  document.querySelectorAll('.snap,#more').forEach(sec=>{
+    if(sec.id==='how') return;
+    const items=[...sec.querySelectorAll('[data-seq]')]; if(!items.length) return;
+    items.filter(el=>el.dataset.seq==='t').forEach(wrap);
+    sec.classList.add('seq-ready');
+    once(sec,async()=>{
+      for(const el of items){
+        const k=el.dataset.seq;
+        if(k==='h'){ el.classList.add('on'); await wait(450); }
+        else if(k==='t'){ for(const line of linesOf(el)){ line.forEach(w=>w.classList.add('on')); await wait(350); } }
+        else { el.classList.add('on'); await wait(300); }
+      }
+      await wait(500);
+    },'seq-ready');
+  });
+  // How it works: same sequence and timing as the homepage - box, then its text line by line; dividers before columns 2 and 3
+  const how=document.getElementById('how'); if(!how) return;
+  const heading=how.querySelector('.hd'); heading.dataset.seq='h';
+  how.querySelectorAll('.hiw-text').forEach(wrap);
+  how.classList.add('hiw-ready','seq-ready');
+  once(how,async()=>{
+    heading.classList.add('on'); await wait(450);
+    for(const col of how.querySelectorAll('.hiw-col')){
+      const div=[...col.querySelectorAll('.hiw-line,.hiw-sep')].find(d=>getComputedStyle(d).display!=='none');
+      if(div){ div.classList.add('on'); await wait(300); }
+      col.querySelector('.hiw-box').classList.add('on'); await wait(400);
+      for(const line of linesOf(col.querySelector('.hiw-text'))){ line.forEach(w=>w.classList.add('on')); await wait(350); }
+      await wait(100);
+    }
+    how.classList.remove('hiw-ready');
+  },'seq-ready');
+})();
+</script>
 <script>
 (function(){
   const A=['Accountancy','Aquaculture','Beekeeping','Broadcasting','Construction','Cybersecurity','Dentistry','Distilling','Energy','Engineering','Fashion','Fisheries','Forestry','Gaming','Haulage','Hospitals','Insurance','Journalism','Kitchens','Law','Logistics','Manufacturing','Mining','Nursing','Oil and gas','Publishing'];

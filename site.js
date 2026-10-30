@@ -15,7 +15,7 @@
   if(head){
     head.className='top gut';
     head.innerHTML = '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
-      '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#141414','#1F9D55')+'</a>'+
+      '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#FFFFFF','#1F9D55')+'</a>'+
       '<nav class="r" aria-label="Main right"><a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
   }
   const foot = document.getElementById('site-foot');
@@ -140,4 +140,60 @@
     b.innerHTML='\u2713 '+b.dataset.done; b.classList.add('isdone');
     clearTimeout(b._t); b._t=setTimeout(()=>{b.innerHTML=b.dataset.orig;b.classList.remove('isdone');},3200);
   });
+})();
+
+// Owl dividers (30 Oct): fills each empty .owl-div with a navy line broken by the emerald owl (body and feet).
+(function(){
+  const OWL='<svg viewBox="20 16 60 104" aria-hidden="true"><path d="M50 18 A28 28 0 0 1 78 46 L78 88 Q78 94 72 94 L36 94 Q22 94 22 80 L22 46 A28 28 0 0 1 50 18 Z" fill="#1F9D55"/>'+
+    '<path d="M-10 -5 L0 5 L10 -5" transform="translate(50 44)" fill="none" stroke="#F4B183" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>'+
+    '<path d="M44 98 L57 98 L43 118 L30 118 Z M62 98 L75 98 L61 118 L48 118 Z" fill="#1F9D55"/></svg>';
+  document.querySelectorAll('.owl-div').forEach(d=>{ d.setAttribute('aria-hidden','true'); d.innerHTML='<span>'+OWL+'</span>'; });
+})();
+
+// Click-to-enlarge pop-up (30 Oct) for any [data-enlarge] element, like the homepage certificate.
+// data-enlarge="scroll" shows a tall copy that scrolls; otherwise the copy is scaled to ~90% of the screen.
+(function(){
+  const els=[...document.querySelectorAll('[data-enlarge]')]; if(!els.length) return;
+  const dlg=document.createElement('dialog'); if(!dlg.showModal) return;
+  dlg.className='enldlg'; dlg.setAttribute('aria-label','Enlarged view');
+  dlg.innerHTML='<div class="enldlg-in"><button type="button" class="enldlg-x" aria-label="Close"><span aria-hidden="true">×</span></button><div class="enldlg-box"></div></div>';
+  document.body.appendChild(dlg);
+  const box=dlg.querySelector('.enldlg-box'), x=dlg.querySelector('.enldlg-x'), root=document.documentElement;
+  const reduce=()=>matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let from=null;
+  const fit=()=>{
+    const c=box.firstElementChild; if(!c) return;
+    box.style.width=''; box.style.height=''; c.style.transform='none';
+    if(from.dataset.enlarge==='scroll'){ c.style.width='min(760px,88vw)'; c.style.height='auto'; c.style.maxHeight='86svh'; return; }
+    c.style.width=(from.dataset.w||from.offsetWidth)+'px'; c.style.height='auto';
+    const w=c.offsetWidth, h=c.offsetHeight, k=Math.min(innerHeight*0.88/h, innerWidth*0.9/w, +from.dataset.max||Infinity);
+    c.style.transformOrigin='top left'; c.style.transform='scale('+k+')';
+    box.style.width=(w*k)+'px'; box.style.height=(h*k)+'px';
+  };
+  const open=el=>{
+    from=el; box.innerHTML='';
+    const c=el.cloneNode(true);
+    ['data-enlarge','data-seq','role','aria-haspopup','aria-label','id','style'].forEach(a=>c.removeAttribute(a));
+    c.classList.remove('on'); c.classList.add('enl-copy');
+    if(el.dataset.enlarge==='scroll') c.setAttribute('tabindex','0'); else c.removeAttribute('tabindex');
+    box.appendChild(c);
+    dlg.setAttribute('aria-label',(el.getAttribute('aria-label')||'Enlarged view').replace(/^Enlarge:?\s*/i,'')+', enlarged');
+    root.style.overflow='hidden'; root.style.scrollSnapType='none';
+    dlg.classList.add('fading'); dlg.showModal(); fit();
+    requestAnimationFrame(()=>dlg.classList.remove('fading')); x.focus();
+  };
+  const close=()=>{
+    if(!dlg.open) return;
+    const done=()=>{ dlg.close(); dlg.classList.remove('fading'); root.style.overflow=''; root.style.scrollSnapType=''; if(from) from.focus(); };
+    if(reduce()) return done();
+    dlg.classList.add('fading'); setTimeout(done,200);
+  };
+  els.forEach(el=>{
+    el.addEventListener('click',()=>open(el));
+    el.addEventListener('keydown',e=>{ if(e.key==='Enter'||(e.key===' '&&el.getAttribute('role')==='button')){ e.preventDefault(); open(el); } });
+  });
+  x.addEventListener('click',close);
+  dlg.addEventListener('cancel',e=>{ e.preventDefault(); close(); });
+  dlg.addEventListener('click',e=>{ if(e.target===dlg) close(); });
+  addEventListener('resize',()=>{ if(dlg.open) fit(); });
 })();

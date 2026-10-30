@@ -270,30 +270,6 @@ html{scroll-snap-type:y mandatory}
   #tracker-demo .ot-stop,#tracker-demo .ot-btn{font-size:17px}
 }
 
-/* 2 How it works (30 Oct): centred heading, three columns, each box then its text; plays once on arrival */
-.hiw{display:flex;flex-direction:column;align-items:center;gap:52px}
-.hiw > .hd{text-align:center}
-.hiw-cols{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:72px;align-items:start}
-.hiw-col{display:flex;flex-direction:column;gap:26px;min-width:0}
-.hiw-box{display:flex;align-items:center;gap:18px;background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);padding:16px 20px}
-.hiw-box .wi{width:56px;height:56px;flex:none;border-radius:50%;background:var(--sun);border:3px solid var(--ink);display:grid;place-items:center}
-.hiw-box .wi svg{width:33px;height:33px}
-.hiw-box b{font-family:var(--ui);font-size:24px;line-height:1.2;color:var(--navy)}
-.hiw-text{position:relative;margin:0;font-family:var(--body);font-size:21px;line-height:1.6;color:var(--navy)}
-/* divider: centred in the gap to the left, only as tall as this column's text */
-.hiw-line{position:absolute;top:0;bottom:0;left:-37px;width:2px;background:var(--navy)}
-.hiw-sep{display:none}
-/* sequence states (only when motion is allowed; the script adds .hiw-ready) */
-.hiw-ready .hiw-box{opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease}
-.hiw-ready .hiw-text .w,.hiw-ready .hiw-line,.hiw-ready .hiw-sep{opacity:0;transition:opacity .35s ease}
-.hiw-ready .on{opacity:1!important;transform:none!important}
-@media (max-width:900px){
-  .hiw{gap:36px}
-  .hiw-cols{grid-template-columns:1fr;row-gap:28px}
-  .hiw-line{display:none}
-  .hiw-sep{display:block;width:64px;height:2px;background:var(--navy);margin:0 auto 6px}
-}
-
 /* 3 Watch your donation (30 Oct): intro + vertical timeline left, SEND and guarantees right; plays once */
 .wy{display:grid;grid-template-columns:minmax(0,55fr) minmax(0,45fr);gap:64px;align-items:center}
 .wy-left{display:flex;flex-direction:column;gap:22px;min-width:0}
@@ -364,7 +340,7 @@ html{scroll-snap-type:y mandatory}
     </ol>
   </div>
 </section>
-
+<div class="owl-div"></div>
 <section class="snap sec gut" id="tracker" aria-labelledby="trk-h">
   <div class="inner wy">
     <div class="wy-left">
@@ -415,7 +391,7 @@ html{scroll-snap-type:y mandatory}
     </div>
   </div>
 </section>
-
+<div class="owl-div"></div>
 <section class="snap sec gut" id="certificate" aria-labelledby="cert-h">
   <div class="inner sgrid">
     <div class="stext">

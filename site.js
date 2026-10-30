@@ -197,3 +197,12 @@
   dlg.addEventListener('click',e=>{ if(e.target===dlg) close(); });
   addEventListener('resize',()=>{ if(dlg.open) fit(); });
 })();
+
+// How it works (30 Oct): both column dividers are as long as the tallest step text in the row.
+(function(){
+  const rows=[...document.querySelectorAll('.hiw-cols')]; if(!rows.length) return;
+  const set=()=>rows.forEach(row=>{ const h=Math.max(...[...row.querySelectorAll('.hiw-text')].map(p=>p.offsetHeight)); row.style.setProperty('--hiw-h',h+'px'); });
+  set(); addEventListener('resize',set); addEventListener('load',set);
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(set);
+  if('ResizeObserver' in window){ const ro=new ResizeObserver(set); rows.forEach(r=>r.querySelectorAll('.hiw-text').forEach(p=>ro.observe(p))); }
+})();

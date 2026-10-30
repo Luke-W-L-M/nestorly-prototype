@@ -106,27 +106,56 @@ html{scroll-snap-type:y mandatory}
 .jsec .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1.15;text-transform:uppercase;color:var(--navy)}
 .navy{background:var(--navy);color:var(--paper)}
 .hero.snap .inner{padding-block:40px}
-/* What you'll need: the burgundy strip, now a panel under Who it's for */
-.needbox{align-self:center;background:var(--burgundy);color:var(--paper);border:3px solid var(--ink);border-radius:18px;box-shadow:6px 6px 0 var(--ink);padding:16px 26px}
-.needbox ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:6px 22px;font-family:var(--ui);font-weight:600;font-size:clamp(15px,1.25vw,18px);text-align:center}
-@media (min-width:1100px){.needbox:not(.enl-copy) ul{flex-wrap:nowrap;white-space:nowrap;gap:6px 16px;font-size:16.5px}.needbox:not(.enl-copy) li{gap:16px}}
-.needbox li{display:flex;align-items:center;gap:22px}
-.needbox li:first-child{color:var(--sun)}
-.needbox li+li::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--sun);display:inline-block}
-.enl-copy.needbox{padding:26px 30px}
-.enl-copy.needbox ul{flex-direction:column;align-items:flex-start;text-align:left;gap:12px;font-size:20px}
-.enl-copy.needbox li+li::before{width:9px;height:9px;margin-left:4px;gap:0}
-.enl-copy.needbox li{gap:14px}
-.needwrap{display:flex;flex-direction:column;align-items:center;gap:10px}
 /* See an example: frames sized to fit one screen */
 #example .hd{text-align:center}
 #example .exgrid{align-items:start}
-#example .exframe{height:clamp(380px,calc(100svh - var(--topbar) - 400px),560px)}
-.exbox .enlhint{font-size:15px}
-/* private running total, only the expert sees it */
-.ptile{align-self:flex-start;background:#fff;border:3px solid var(--ink);border-radius:14px;padding:10px 18px;font-family:var(--ui);font-weight:700;font-size:18px;color:var(--navy)}
-.ptile b{font-family:var(--head);font-weight:400;font-size:28px;color:#18743a;margin-right:4px}
-.ptcap{margin:-4px 0 0;font-size:17px;color:var(--navy)}
+/* See an example (30 Oct): more room - two equal boxes across the full content width, each up to ~70% of the screen */
+#example{padding-block:36px}
+#example > .inner{max-width:1120px;gap:20px}
+#example .exgrid{gap:40px}
+#example .exframe{height:min(70svh,calc(100svh - var(--topbar) - 200px));min-height:420px}
+#example .scard{padding:32px;gap:14px;justify-content:flex-start}
+#example .srow{flex-direction:column;align-items:flex-start;gap:16px}
+#example .snm,#example .fullp h3{text-wrap:balance}
+#example .snm{font-size:30px;line-height:1.12}
+#example .srl{margin-top:6px}
+#example .sch{margin-top:8px;padding-top:14px}
+#example .fullp{padding:30px 32px}
+/* optional public total at the end of the full profile */
+.praised .pr-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 18px}
+.pr-amt{font-family:var(--ui);font-weight:700;font-size:18px}
+.pr-amt b{font-family:var(--head);font-weight:400;font-size:30px;color:#18743a;margin-right:4px}
+.tgl{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:4px 0;font:600 16px/1.2 var(--ui);color:var(--navy);cursor:pointer}
+.tgl-track{position:relative;width:46px;height:26px;border-radius:999px;background:#C9C4BA;border:2px solid var(--ink);transition:background .2s ease;flex:none}
+.tgl-dot{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--ink);box-sizing:border-box;transition:transform .2s ease}
+.tgl[aria-checked="true"] .tgl-track{background:#1F9D55}
+.tgl[aria-checked="true"] .tgl-dot{transform:translateX(20px)}
+.tgl:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px;border-radius:6px}
+.pr-note{margin-top:8px!important;font-size:15px!important;color:var(--muted)}
+/* What you'll need (30 Oct): checklist left, flat-lay drawing right */
+.jsec > .inner.needgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;align-items:center}
+.need-text{display:flex;flex-direction:column;gap:14px}
+.needsub{margin:0;font-family:var(--ui);font-weight:700;font-size:22px;color:var(--navy)}
+.needlist{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:16px}
+.needlist li{display:flex;align-items:center;gap:14px;font-family:var(--body);font-size:21px;line-height:1.35;color:var(--navy)}
+.needlist .ck{width:28px;height:28px;flex:none}
+.needart{margin:0;justify-self:center;width:100%;max-width:440px}
+.needart img{display:block;width:100%;height:auto}
+/* Ready to support: one centred white card */
+#support .inner{align-items:center}
+.supcard{width:100%;max-width:640px;box-sizing:border-box;background:#fff;border:3px solid var(--ink);border-radius:24px;box-shadow:8px 8px 0 var(--ink);padding:44px 40px;display:flex;flex-direction:column;align-items:center;gap:20px;text-align:center}
+.supcard .hd{font-size:clamp(28px,2.8vw,40px)}
+.supcard p{margin:0;font-size:21px;line-height:1.55;color:var(--navy);max-width:34ch}
+/* Questions on navy: cream text, thin cream dividers, emerald +/- */
+#faq .hd{color:var(--cream)}
+#faq .faq{gap:0;border-top:1px solid rgba(245,240,230,.45)}
+#faq details{background:none;border:0;border-bottom:1px solid rgba(245,240,230,.45);border-radius:0;padding:18px 4px;color:var(--cream)}
+#faq summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:18px;color:var(--cream)}
+#faq summary::-webkit-details-marker{display:none}
+#faq summary::after{content:"+";flex:none;width:30px;height:30px;border-radius:50%;background:#1F9D55;color:#fff;display:grid;place-items:center;font:700 22px/1 var(--ui)}
+#faq details[open] summary::after{content:"\2212"}
+#faq summary:focus-visible{outline:3px solid var(--sun);outline-offset:4px;border-radius:6px}
+#faq details p{color:var(--cream)}
 /* Ready band: navy, handshake art left ~60%, words right (as the homepage join band) */
 .join{background:var(--navy);color:var(--cream);overflow:hidden}
 .jsec > .inner.jgrid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:48px;align-items:center}
@@ -159,13 +188,10 @@ html{scroll-snap-type:y mandatory}
 .wcard img{height:170px;width:auto;max-width:100%;object-fit:contain}
 .wcard b{font-family:var(--ui);font-size:22px;line-height:1.2}
 .wcard p{margin:0;font-size:17px;line-height:1.5}
-/* What you'll need: its own screen */
-#need .inner{align-items:center}
-#need .needbox:not(.enl-copy) ul{font-size:19px}
-/* Tax note and questions: ordinary scrolling from here */
-#more{scroll-snap-align:start;scroll-margin-top:var(--topbar);padding-block:56px 90px}
-#more > .inner{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:36px}
-#more .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(30px,3.2vw,46px);line-height:1.15;text-transform:uppercase;color:var(--navy)}
+/* Questions: navy, scrolls normally inside if taller than the screen */
+#faq{scroll-snap-align:start;scroll-margin-top:var(--topbar);padding-block:56px 90px}
+#faq > .inner{max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:36px}
+#faq .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(30px,3.2vw,46px);line-height:1.15;text-transform:uppercase;color:var(--cream)}
 /* Questions left (~60%), thinking figure right (~40%), staying in view while the list scrolls; it comes first in the code so it fades in straight after the heading */
 .faqgrid{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);grid-template-areas:"list art";gap:48px;align-items:start}
 .faqgrid > .faq{grid-area:list}
@@ -182,15 +208,17 @@ html{scroll-snap-type:y mandatory}
 @media (max-width:900px){
   .jsec > .inner.who,.jsec > .inner.jgrid{grid-template-columns:1fr;gap:32px}
   .wcards{grid-template-columns:1fr;gap:20px}
-  .needbox:not(.enl-copy) li+li::before{display:none}
   #example .exframe{height:auto}
   #example .fullp{height:480px}
+  .jsec > .inner.needgrid{grid-template-columns:1fr;gap:28px}
+  .needart{max-width:320px}
+  .supcard{padding:32px 22px}
 }
 </style>
 </head><body>
 <header id="site-head"></header>
 <section class="snap hero gut" id="top" aria-label="Join as an expert"><div class="inner">
-  <h1 class="page" data-seq="h">Your experience,<br>their cause</h1>
+  <h1 class="page" data-seq="h">Put what you know to work for good</h1>
   <a class="btn" href="create-profile.html" data-seq="v">Start your profile →</a>
   <div class="az" data-seq="v" aria-label="Experts in every industry, from A to Z">
     <div class="az-win"><div class="az-row a" id="azA"></div></div>
@@ -233,20 +261,18 @@ html{scroll-snap-type:y mandatory}
 </section>
 <div class="owl-div"></div>
 
-<section class="snap jsec apr gut" id="need" aria-labelledby="need-h"><div class="inner">
-  <h2 class="hd" id="need-h" data-seq="h">What you'll need</h2>
-  <div class="needwrap" data-seq="v">
-    <div class="needbox" data-enlarge data-w="420" data-max="1.6" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Enlarge: what you'll need">
-    <ul>
-      <li>About 10 minutes</li>
-      <li>Your CV or career details</li>
-      <li>A clear photo of you</li>
-      <li>The charity you'd like to support</li>
-      <li>LinkedIn (optional)</li>
+<section class="snap jsec apr gut" id="need" aria-labelledby="need-h"><div class="inner needgrid">
+  <div class="need-text">
+    <h2 class="hd" id="need-h" data-seq="h">What you'll need</h2>
+    <p class="needsub" data-seq="t">About 10 minutes</p>
+    <ul class="needlist">
+      <li data-seq="t"><svg class="ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="#18743a" stroke="#141414" stroke-width="2.5"/><path d="M8.5 14.5l3.8 3.8 7.4-8" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Your CV or career details</span></li>
+      <li data-seq="t"><svg class="ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="#18743a" stroke="#141414" stroke-width="2.5"/><path d="M8.5 14.5l3.8 3.8 7.4-8" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>A clear photo of you</span></li>
+      <li data-seq="t"><svg class="ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="#18743a" stroke="#141414" stroke-width="2.5"/><path d="M8.5 14.5l3.8 3.8 7.4-8" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>The charity you'd like to support</span></li>
+      <li data-seq="t"><svg class="ck" viewBox="0 0 28 28" aria-hidden="true"><circle cx="14" cy="14" r="12.5" fill="#18743a" stroke="#141414" stroke-width="2.5"/><path d="M8.5 14.5l3.8 3.8 7.4-8" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>LinkedIn (optional)</span></li>
     </ul>
-    </div>
-    <span class="enlhint" aria-hidden="true">Click to enlarge</span>
   </div>
+  <figure class="needart" data-seq="v"><picture><source srcset="images/needs.webp" type="image/webp"><img src="images/needs.png" width="1044" height="1034" alt="A flat lay: a CV with a paperclip, a pen, a coffee, a wrapped gift and a hand holding a photo" loading="lazy" decoding="async"></picture></figure>
 </div></section>
 <div class="owl-div"></div>
 
@@ -263,7 +289,6 @@ html{scroll-snap-type:y mandatory}
           <span class="sch">Supports: Loch Broom Lifeboat Fund</span>
           <span class="sbtn btn sm" aria-hidden="true">Request a conversation</span>
         </article>
-      <span class="enlhint" aria-hidden="true">Click to enlarge</span>
     </div>
     <div class="exbox" data-seq="v">
       <span class="extag">The full profile</span>
@@ -276,33 +301,17 @@ html{scroll-snap-type:y mandatory}
           <section><h4>Languages</h4><p>English, Scottish Gaelic</p></section>
           <section><h4>Chosen charity</h4><div class="ch"><b>Loch Broom Lifeboat Fund</b><p>Funds the volunteer lifeboat crew serving Loch Broom and the Summer Isles.</p><p><i>"The crew came out for our boat in a winter gale in 2004. I've supported them ever since."</i></p></div></section>
           <section><h4>Suggested donation</h4><span class="amt">£250–£400</span><p>Per hour for calls · 100% goes to Loch Broom Lifeboat Fund</p></section>
+          <section class="praised"><h4>Total raised (optional)</h4><div class="pr-row"><span class="pr-amt"><b>£4,500</b> raised so far</span><button type="button" class="tgl" role="switch" aria-checked="false"><span class="tgl-track" aria-hidden="true"><span class="tgl-dot"></span></span>Show on my profile</button></div><p class="pr-note">Optional. Off by default; only you see your total unless you turn this on.</p></section>
         </article>
-      <span class="enlhint" aria-hidden="true">↕ Scroll inside the box, or click to enlarge</span>
-      <span class="ptile" data-seq="v"><b>£4,500</b> raised so far · Only you can see this</span>
-      <p class="ptcap" data-seq="t">Your total grows with every donation, and it's private to you.</p>
     </div>
   </div>
 </div></section>
 <div class="owl-div"></div>
-
-<section class="jsec apr gut" id="more" aria-labelledby="faq-h"><div class="inner">
-  <div class="note" style="font-size:19px" data-seq="t">
-    <p><b>A short note on tax.</b> Because you choose the charity, HMRC could treat a donation as your income. Casual income under £1,000 a year is tax-free. We explain this during sign-up, and you tick to say you've read it.</p>
-  </div>
-  <h2 class="hd" id="faq-h" data-seq="h">Questions</h2>
-  <div class="faqgrid">
-    <figure class="faqart" data-seq="v"><picture><source srcset="images/faq.webp" type="image/webp"><img src="images/faq.png" width="771" height="972" alt="A person in an emerald armchair holding a mug, with a question mark in a speech bubble" loading="lazy" decoding="async"></picture></figure>
-    <div class="faq" data-seq="v">
-    <details><summary>Does it cost anything to join?</summary><p>No. Joining is free, and firms pay nothing to Dapperowl. The only money that moves is the firm's donation to your charity.</p></details>
-    <details><summary>How much time does it take?</summary><p>As much or as little as you like. Set your hours per month, decline any request, or pause your profile.</p></details>
-    <details><summary>Who can contact me?</summary><p>Only signed-in firms, through the "Request a conversation" button. Your email and phone stay private until you accept.</p></details>
-    <details><summary>What kind of expertise counts?</summary><p>Any. If you know a field inside out, from accountancy to zoology, firms may want to hear from you.</p></details>
-    <details><summary>Will I pay tax on the donation?</summary><p>Possibly, because you choose the charity. Casual income under £1,000 a year is tax-free under the trading allowance. We explain this during sign-up and point you to free help.</p></details>
-    <details><summary>What about compliance?</summary><p>You tick six declarations before each conversation, and every firm agrees six rules with each request. Firms can add their own compliance questions.</p></details>
-    <details><summary>What if someone doesn't show up?</summary><p>If you can't attend, nothing is owed. If a session is cut short, the firm can donate part of the amount with a reason. Firms that never pay are banned.</p></details>
-    <details><summary>Can I change my charity?</summary><p>Yes, any time. Past donations stay credited to your old charity.</p></details>
-    <details><summary>Who runs Dapperowl?</summary><p>A community interest company. We never take a cut of any donation.</p></details>
-    </div>
+<section class="snap jsec apr gut" id="support" aria-labelledby="sup-h"><div class="inner">
+  <div class="supcard" data-seq="v">
+    <h2 class="hd" id="sup-h">Ready to support a cause you care about?</h2>
+    <p>Create your profile in about 10 minutes. It's free, and you choose every request you take.</p>
+    <a class="btn lg" href="create-profile.html">Start your profile <span class="arr">→</span></a>
   </div>
 </div></section>
 
@@ -331,6 +340,25 @@ html{scroll-snap-type:y mandatory}
   </div>
 </section>
 
+<section class="jsec navy gut" id="faq" aria-labelledby="faq-h"><div class="inner">
+  <h2 class="hd" id="faq-h" data-seq="h">Questions</h2>
+  <div class="faqgrid">
+    <figure class="faqart" data-seq="v"><picture><source srcset="images/faq.webp" type="image/webp"><img src="images/faq.png" width="771" height="972" alt="A person in an emerald armchair holding a mug, with a question mark in a speech bubble" loading="lazy" decoding="async"></picture></figure>
+    <div class="faq" data-seq="v">
+    <details><summary>Do I pay tax on this?</summary><p>Because you choose the charity, HMRC could treat a donation as your income. Casual income under £1,000 a year is tax-free. We explain this during sign-up, and you tick to say you've read it.</p></details>
+    <details><summary>Does it cost anything to join?</summary><p>No. Joining is free, and firms pay nothing to Dapperowl. The only money that moves is the firm's donation to your charity.</p></details>
+    <details><summary>How much time does it take?</summary><p>As much or as little as you like. Set your hours per month, decline any request, or pause your profile.</p></details>
+    <details><summary>Who can contact me?</summary><p>Only signed-in firms, through the "Request a conversation" button. Your email and phone stay private until you accept.</p></details>
+    <details><summary>What kind of expertise counts?</summary><p>Any. If you know a field inside out, from accountancy to zoology, firms may want to hear from you.</p></details>
+    <details><summary>Will I pay tax on the donation?</summary><p>Possibly, because you choose the charity. Casual income under £1,000 a year is tax-free under the trading allowance. We explain this during sign-up and point you to free help.</p></details>
+    <details><summary>What about compliance?</summary><p>You tick six declarations before each conversation, and every firm agrees six rules with each request. Firms can add their own compliance questions.</p></details>
+    <details><summary>What if someone doesn't show up?</summary><p>If you can't attend, nothing is owed. If a session is cut short, the firm can donate part of the amount with a reason. Firms that never pay are banned.</p></details>
+    <details><summary>Can I change my charity?</summary><p>Yes, any time. Past donations stay credited to your old charity.</p></details>
+    <details><summary>Who runs Dapperowl?</summary><p>A community interest company. We never take a cut of any donation.</p></details>
+    </div>
+  </div>
+</div></section>
+
 <footer id="site-foot"></footer>
 <script src="site.js"></script>
 <script>
@@ -338,6 +366,11 @@ html{scroll-snap-type:y mandatory}
   const head=document.getElementById('site-head'); if(!head) return;
   const set=()=>document.documentElement.style.setProperty('--topbar',head.offsetHeight+'px');
   set(); if('ResizeObserver' in window) new ResizeObserver(set).observe(head); addEventListener('resize',set);
+})();
+(function(){ // "Show on my profile" switch in the example profile (also in its pop-up copy); never opens the pop-up itself
+  const sw=e=>e.target.closest&&e.target.closest('.tgl');
+  document.addEventListener('click',e=>{ const t=sw(e); if(!t) return; e.stopPropagation(); t.setAttribute('aria-checked',t.getAttribute('aria-checked')==='true'?'false':'true'); },true);
+  document.addEventListener('keydown',e=>{ if(sw(e)&&(e.key==='Enter'||e.key===' ')) e.stopPropagation(); },true);
 })();
 (function(){ // Ready band flag ripple (SVG animation) stays still when motion is turned off
   const svg=document.querySelector('.jfront'); if(!svg||!svg.pauseAnimations) return;
@@ -363,7 +396,7 @@ html{scroll-snap-type:y mandatory}
     if(io) io.observe(sec); addEventListener('scroll',check,{passive:true}); check();
   };
   if(!motion) return; // reduced motion: everything is shown straight away
-  document.querySelectorAll('.snap,#more').forEach(sec=>{
+  document.querySelectorAll('.snap,#faq').forEach(sec=>{
     if(sec.id==='how') return;
     const items=[...sec.querySelectorAll('[data-seq]')]; if(!items.length) return;
     items.filter(el=>el.dataset.seq==='t').forEach(wrap);

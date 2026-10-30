@@ -234,7 +234,7 @@ main > .bleed:last-child::after{display:none}
 .hiw-box b{font-family:var(--ui);font-size:24px;line-height:1.2;color:var(--navy)}
 .hiw-text{position:relative;margin:0;font-family:var(--body);font-size:21px;line-height:1.6;color:var(--navy)}
 /* divider: centred in the gap to the left, only as tall as this column's text */
-.hiw-line{position:absolute;top:0;bottom:0;left:-37px;width:2px;background:var(--navy)}
+.hiw-line{position:absolute;top:0;height:var(--hiw-h,100%);left:-37px;width:2px;background:var(--navy)} /* --hiw-h: tallest step text in the row, set by site.js, so both dividers match */
 .hiw-sep{display:none}
 /* sequence states (only when motion is allowed; the script adds .hiw-ready) */
 .hiw-ready .hiw-box{opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease}

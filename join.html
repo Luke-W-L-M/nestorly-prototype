@@ -237,6 +237,7 @@ html{scroll-snap-type:y mandatory}
 <section class="snap jsec apr gut" id="how" aria-labelledby="how-h">
   <div class="inner hiw">
     <h2 class="hd" id="how-h">How it works</h2>
+    <p class="hiw-intro">Dapperowl is a not-for-profit platform that connects organisations with experts from every field. Instead of paying the expert, the organisation donates to a charity of the expert's choice. 100% of the sum goes to the cause.</p>
     <ol class="hiw-cols">
       <li class="hiw-col">
         <div class="hiw-box"><span class="wi"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10h36v22H20l-9 8v-8H6z" fill="#141414"/><path d="M14 18h20M14 24h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><b>They ask</b></div>
@@ -402,10 +403,13 @@ html{scroll-snap-type:y mandatory}
   // How it works: same sequence and timing as the homepage - box, then its text line by line; dividers before columns 2 and 3
   const how=document.getElementById('how'); if(!how) return;
   const heading=how.querySelector('.hd'); heading.dataset.seq='h';
-  how.querySelectorAll('.hiw-text').forEach(wrap);
+  how.querySelectorAll('.hiw-intro,.hiw-text').forEach(wrap);
   how.classList.add('hiw-ready','seq-ready');
   once(how,async()=>{
     heading.classList.add('on'); await wait(450);
+    // the intro next, line by line, then the three columns
+    const intro=how.querySelector('.hiw-intro');
+    if(intro){ for(const line of linesOf(intro)){ line.forEach(w=>w.classList.add('on')); await wait(350); } await wait(150); }
     for(const col of how.querySelectorAll('.hiw-col')){
       const div=[...col.querySelectorAll('.hiw-line,.hiw-sep')].find(d=>getComputedStyle(d).display!=='none');
       if(div){ div.classList.add('on'); await wait(300); }

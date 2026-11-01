@@ -322,6 +322,7 @@ html{scroll-snap-type:y mandatory}
 <section class="snap sec gut" id="what" aria-labelledby="what-h">
   <div class="inner hiw">
     <h2 class="hd" id="what-h">How it works</h2>
+    <p class="hiw-intro">Dapperowl is a not-for-profit platform that connects organisations with experts from every field. Instead of paying the expert, the organisation donates to a charity of the expert's choice. 100% of the sum goes to the cause.</p>
     <ol class="hiw-cols">
       <li class="hiw-col">
         <div class="hiw-box"><span class="wi"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M6 10h36v22H20l-9 8v-8H6z" fill="#141414"/><path d="M14 18h20M14 24h14" stroke="#fff" stroke-width="3" stroke-linecap="round"/></svg></span><b>They ask</b></div>
@@ -540,7 +541,7 @@ html{scroll-snap-type:y mandatory}
 (function(){ // How it works: plays once on arrival - box, then its text line by line; dividers before columns 2 and 3
   const sec=document.getElementById('what'); if(!sec) return;
   if(matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
-  const texts=[...sec.querySelectorAll('.hiw-text')];
+  const texts=[...sec.querySelectorAll('.hiw-intro,.hiw-text')];
   // wrap every word so the text can be grouped into its rendered lines
   texts.forEach(p=>{
     [...p.childNodes].forEach(n=>{
@@ -565,6 +566,9 @@ html{scroll-snap-type:y mandatory}
   const play=async()=>{
     if(played) return; played=true;
     const cols=[...sec.querySelectorAll('.hiw-col')];
+    // the intro first, line by line, then the three columns
+    const intro=sec.querySelector('.hiw-intro');
+    if(intro){ for(const line of linesOf(intro)){ line.forEach(w=>w.classList.add('on')); await wait(350); } await wait(150); }
     for(const col of cols){
       const div=[...col.querySelectorAll('.hiw-line,.hiw-sep')].find(d=>getComputedStyle(d).display!=='none');
       if(div){ div.classList.add('on'); await wait(300); }

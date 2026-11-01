@@ -224,7 +224,10 @@ main > .bleed:last-child::after{display:none}
 
 /* ===== Shared (30 Oct): moved from the homepage so the Join page can use it ===== */
 /* 2 How it works (30 Oct): centred heading, three columns, each box then its text; plays once on arrival */
-.hiw{display:flex;flex-direction:column;align-items:center;gap:52px}
+.hiw{display:flex;flex-direction:column;align-items:center;gap:40px}
+/* intro between the heading and the three steps (1 Nov): centred and balanced; ~72 characters a line so the 213-character text sits on 3 lines (60 would need 4) */
+.hiw-intro{margin:-16px 0 4px;max-width:74ch;text-align:center;text-wrap:balance;font-family:var(--body);font-size:23px;line-height:1.55;color:var(--navy)}
+.hiw-ready .hiw-intro .w{opacity:0;transition:opacity .35s ease}
 .hiw > h2.hd{text-align:center}
 .hiw-cols{list-style:none;margin:0;padding:0;width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:72px;align-items:start}
 .hiw-col{display:flex;flex-direction:column;gap:26px;min-width:0}
@@ -241,7 +244,8 @@ main > .bleed:last-child::after{display:none}
 .hiw-ready .hiw-text .w,.hiw-ready .hiw-line,.hiw-ready .hiw-sep{opacity:0;transition:opacity .35s ease}
 .hiw-ready .on{opacity:1!important;transform:none!important}
 @media (max-width:900px){
-  .hiw{gap:36px}
+  .hiw{gap:30px}
+  .hiw-intro{font-size:20px;margin:-8px 0 0}
   .hiw-cols{grid-template-columns:1fr;row-gap:28px}
   .hiw-line{display:none}
   .hiw-sep{display:block;width:64px;height:2px;background:var(--navy);margin:0 auto 6px}

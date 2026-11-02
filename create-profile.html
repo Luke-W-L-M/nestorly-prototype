@@ -118,6 +118,13 @@ label.chip.off{opacity:.4;cursor:not-allowed}
 .done-msg svg{width:90px;height:90px}
 .example{font-family:var(--ui);font-size:14px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
 [data-step]{display:flex;flex-direction:column;gap:28px}
+.live{display:flex;flex-direction:column;align-items:flex-start;gap:18px}
+.live svg.big{width:72px;height:72px}
+.share{width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:10px;border:3px solid var(--ink);border-radius:16px;padding:18px 20px;background:var(--paper)}
+.share textarea{min-height:0;background:#fff;font-size:18px}
+.copied{font-family:var(--ui);font-weight:700;font-size:16px;color:var(--navy)}
+.acts{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.f .err{color:#A3202F;font-weight:700;font-size:16px}
 [hidden]{display:none!important}
 
 @media (max-width:900px){
@@ -181,7 +188,7 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
           <button type="button" class="btn" data-adv>Continue with LinkedIn</button>
         </div>
         <div class="or">or</div>
-        <div class="f"><label for="email">Your email address</label><input type="email" id="email" value="inglebert@example.co.uk" autocomplete="email"><small>We'll send a sign-in link to this address.</small></div>
+        <div class="f"><label for="email">Your email address</label><input type="email" id="email" value="margaret.ellison@example.co.uk" autocomplete="email" aria-describedby="email-e"><small>We'll send a sign-in link to this address.</small><span class="err" id="email-e" hidden></span></div>
       </div>
 
       <div data-step="2" hidden>
@@ -191,13 +198,13 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
           <div class="avatar" aria-hidden="true"><svg width="60" height="60" viewBox="0 0 60 60"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M8 58c0-14 10-22 22-22s22 8 22 22z" fill="#141414"/></svg></div>
           <div class="f"><span class="lab">Your photo</span><button type="button" class="small" data-pick>Upload a photo</button><small>A clear, friendly head-and-shoulders photo works best.</small></div>
         </div>
-        <div class="f"><label for="name">Full name</label><input type="text" id="name" value="The Hon. Inglebert Montgomery-Smythe" autocomplete="name"></div>
-        <div class="f"><label for="headline">Headline</label><input type="text" id="headline" value="Founder, Broom Bay Seaweed"><small>Your current or most notable role, in a few words.</small></div>
+        <div class="f"><label for="name">Full name</label><input type="text" id="name" value="Margaret Ellison" autocomplete="name"></div>
+        <div class="f"><label for="headline">Headline</label><input type="text" id="headline" value="Former Harbour Master, Port of Aberdeen"><small>Your current or most notable role, in a few words.</small></div>
         <div class="row">
-          <div class="f"><label for="town">Based in</label><input type="text" id="town" value="Ullapool, Scotland"><small>Town and country where you live.</small></div>
-          <div class="f"><label for="years">Years of experience</label><input type="number" id="years" value="27" min="0"></div>
+          <div class="f"><label for="town">Based in</label><input type="text" id="town" value="Stonehaven, Scotland"><small>Town and country where you live.</small></div>
+          <div class="f"><label for="years">Years of experience</label><input type="number" id="years" value="34" min="0"></div>
         </div>
-        <div class="f"><label for="linkedin">LinkedIn link <span class="opt">(optional)</span></label><input type="url" id="linkedin" value="linkedin.com/in/inglebert-ms"></div>
+        <div class="f"><label for="linkedin">LinkedIn link <span class="opt">(optional)</span></label><input type="url" id="linkedin" value="linkedin.com/in/margaret-ellison"></div>
       </div>
 
       <div data-step="3" hidden>
@@ -205,17 +212,17 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
         <p class="lead">Upload your CV and we'll draft your career timeline. You check and edit it.</p>
         <div class="drop">
           <svg class="big" viewBox="0 0 54 54" aria-hidden="true"><path d="M10 4h24l12 12v34H10z" fill="#141414"/><path d="M34 4v12h12" fill="#F5F0E6"/><path d="M27 42V24M19 31l8-8 8 8" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div><b>Inglebert-Montgomery-Smythe-CV.pdf</b><br><small>Uploaded · PDF or Word, up to 10 MB</small></div>
+          <div><b>Margaret-Ellison-CV.pdf</b><br><small>Uploaded · PDF or Word, up to 10 MB</small></div>
           <button type="button" class="small" data-pick>Replace</button>
         </div>
         <div class="ai"><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#1F9D55"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>We drafted 3 roles from your CV. Please check each one.</div>
-        <div class="job"><b>Founder, Broom Bay Seaweed</b><span class="when">2012 – now · 14 years</span><button type="button" class="small" data-edit>Edit</button><p>Grows sugar kelp and dulse on longlines in Loch Broom; supplies food, cosmetics and fertiliser makers across the UK.</p></div>
-        <div class="job"><b>Site manager, Summer Isles Salmon</b><span class="when">2002 – 2012 · 10 years</span><button type="button" class="small" data-edit>Edit</button><p>Ran daily operations; marine licensing, water quality and work with coastal communities.</p></div>
-        <div class="job"><b>Deckhand, then mate, fisheries survey vessels</b><span class="when">1997 – 2002 · 5 years</span><button type="button" class="small" data-edit>Edit</button><p>Survey work at sea; reading the sea and the weather.</p></div>
+        <div class="job"><b>Harbour Master, Port of Aberdeen</b><span class="when">2009 – 2024 · 15 years</span><button type="button" class="small" data-edit>Edit</button><p>Safe running of a busy North Sea port: pilotage, berthing, dredging and emergency planning.</p></div>
+        <div class="job"><b>Deputy Harbour Master, Peterhead Port</b><span class="when">1999 – 2009 · 10 years</span><button type="button" class="small" data-edit>Edit</button><p>Fishing and offshore-supply traffic; harbour safety and working with the fishing fleet.</p></div>
+        <div class="job"><b>Master, North Sea supply vessels</b><span class="when">1990 – 1999 · 9 years</span><button type="button" class="small" data-edit>Edit</button><p>Commanded supply ships serving offshore platforms in all weathers.</p></div>
         <button type="button" class="small" style="align-self:flex-start" data-addrole>+ Add a role</button>
         <div class="row">
-          <div class="f"><label for="edu">Education</label><input type="text" id="edu" value="BSc Marine Biology, University of Aberdeen"></div>
-          <div class="f"><label for="lang">Languages</label><input type="text" id="lang" value="English, Scottish Gaelic"></div>
+          <div class="f"><label for="edu">Education</label><input type="text" id="edu" value="Master Mariner (Class 1), Robert Gordon University"></div>
+          <div class="f"><label for="lang">Languages</label><input type="text" id="lang" value="English, Norwegian"></div>
         </div>
       </div>
 
@@ -223,19 +230,19 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
         <h2 tabindex="-1">Your expertise</h2>
         <p class="lead">Pick up to 2 broad industries. You can add specialities now or later.</p>
         <div class="f"><span class="lab">Industries <span class="opt">(up to 2)</span></span><div class="chips" id="inds"></div></div>
-        <div class="f"><label for="spec">Specialities <span class="opt">(optional)</span></label><input type="text" id="spec" value="Seaweed farming, marine licensing, aquaculture, coastal communities"><small>Separate with commas.</small></div>
-        <div class="f"><label for="about">About you</label><textarea id="about">I spent ten years as a site manager at Summer Isles Salmon, where I learned how marine licensing, water quality and coastal communities really work. Before that, five years as a deckhand and then mate on fisheries survey vessels taught me to read the sea and the weather. In 2012 I founded Broom Bay Seaweed, growing sugar kelp and dulse on longlines in Loch Broom; it now supplies food, cosmetics and fertiliser makers across the UK. Together, that gives me a rare view of seaweed from the water, the regulator's desk and the buyer's side.</textarea><small>Cover each main job, what you learned there, and how it adds up to your speciality.</small></div>
+        <div class="f"><label for="spec">Specialities <span class="opt">(optional)</span></label><input type="text" id="spec" value="Port operations, harbour safety, pilotage, offshore supply"><small>Separate with commas.</small></div>
+        <div class="f"><label for="about">About you</label><textarea id="about">I spent fifteen years as Harbour Master at the Port of Aberdeen, responsible for every ship movement in one of the North Sea's busiest ports. Before that I was Deputy Harbour Master at Peterhead, working closely with the fishing fleet, and I started as a master on offshore supply vessels. Together, that gives me a practical view of ports from the bridge, the harbour office and the boardroom: safety, pilotage, new berths and what makes a port investment work.</textarea><small>Cover each main job, what you learned there, and how it adds up to your speciality.</small></div>
       </div>
 
       <div data-step="5" hidden>
         <h2 tabindex="-1">Your charity</h2>
         <p class="lead">Every donation goes straight to this charity. You can change it at any time.</p>
-        <div class="f"><label for="csearch">Search for a registered UK charity</label><input type="search" id="csearch" value="Loch Broom Lifeboat"></div>
+        <div class="f"><label for="csearch">Search for a registered UK charity</label><input type="search" id="csearch" value="North East Sea Cadets"></div>
         <div class="charity">
           <svg class="ok" viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="15" fill="#1F9D55" stroke="#141414" stroke-width="2.5"/><path d="M10 17.5l4.5 4.5L24 12.5" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <div><b>Loch Broom Lifeboat Fund</b><span class="example">Example charity</span><br>Checked against the Scottish Charity Regulator (OSCR) register. Funds the volunteer lifeboat crew serving Loch Broom and the Summer Isles.</div>
+          <div><b id="chname">North East Sea Cadets Trust</b><span class="example">Example charity</span><br><span id="chdesc">Checked against the Scottish Charity Regulator (OSCR) register. Gives young people in Aberdeenshire their first time at sea.</span></div>
         </div>
-        <div class="f"><label for="why">Why it's personal to you <span class="opt">(optional)</span></label><textarea id="why" style="min-height:110px">The crew came out for our boat in a winter gale in 2004. I've supported them ever since.</textarea></div>
+        <div class="f"><label for="why">Why it's personal to you <span class="opt">(optional)</span></label><textarea id="why" style="min-height:110px">I first went to sea with the cadets at 13. It shaped my whole career.</textarea></div>
         <div class="f">
           <span class="lab">Suggested donation <span class="opt">(optional)</span></span>
           <small>Firms see this at the bottom of your profile. Don't undersell your charity: pick the level closest to you as a guide.</small>
@@ -257,8 +264,8 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
         <h2 tabindex="-1">Contact and availability</h2>
         <p class="lead">Your contact details stay private. Firms send requests through Dapperowl, and details are only swapped once you accept.</p>
         <div class="row">
-          <div class="f"><label for="cemail">Email for requests</label><input type="email" id="cemail" value="inglebert@example.co.uk"></div>
-          <div class="f"><label for="phone">Phone <span class="opt">(optional, never shown)</span></label><input type="tel" id="phone" value="07700 900123"></div>
+          <div class="f"><label for="cemail">Email for requests</label><input type="email" id="cemail" value="margaret.ellison@example.co.uk"></div>
+          <div class="f"><label for="phone">Phone <span class="opt">(optional, never shown)</span></label><input type="tel" id="phone" value="07700 900456"></div>
         </div>
         <div class="f"><span class="lab">How you're happy to help</span><div class="chips" id="fmts"></div></div>
         <div class="f"><label for="avail">How much time could you give?</label>
@@ -284,26 +291,36 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
         <p class="lead">This is how firms will see you. You can change anything later.</p>
         <div class="preview">
           <div class="who">
-            <h3>The Hon. Inglebert Montgomery-Smythe</h3>
-            <div class="pic" aria-label="Profile photo"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M8 58c0-14 10-22 22-22s22 8 22 22z" fill="#141414"/></svg></div>
-            <span class="meta">Based in Ullapool, Scotland</span>
+            <h3 id="pv-name"></h3>
+            <div class="pic" aria-label="Profile photo" id="pv-pic"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M8 58c0-14 10-22 22-22s22 8 22 22z" fill="#141414"/></svg></div>
+            <span class="meta" id="pv-town"></span>
           </div>
           <dl class="info">
-            <div><dt>Current position</dt><dd>Founder, Broom Bay Seaweed · 27 years' experience</dd></div>
-            <div><dt>Sectors</dt><dd>Food, Agriculture &amp; Fisheries · Environment &amp; Sustainability</dd></div>
-            <div><dt>About</dt><dd>Ten years running Summer Isles Salmon's site taught me marine licensing, water quality and coastal communities. Since 2012 I've grown sugar kelp and dulse at Broom Bay Seaweed, supplying food, cosmetics and fertiliser makers across the UK.</dd></div>
-            <div class="ch"><dt>Charity</dt><dd>Loch Broom Lifeboat Fund</dd></div>
+            <div><dt>Current position</dt><dd id="pv-pos"></dd></div>
+            <div><dt>Sectors</dt><dd id="pv-ind"></dd></div>
+            <div><dt>About</dt><dd id="pv-about"></dd></div>
+            <div class="ch"><dt>Charity</dt><dd id="pv-ch"></dd></div>
           </dl>
         </div>
-        <p class="note" style="margin:0">After you publish, we check your identity and LinkedIn. Your profile goes live within 48 hours, and we'll email you when it does.</p>
+        <p class="note" style="margin:0">Your profile goes live as soon as you publish, and firms can find you straight away. We also check your identity and LinkedIn over the next 48 hours.</p>
       </div>
 
       <div data-step="9" hidden>
-        <div class="done-msg">
-          <svg viewBox="0 0 90 90" aria-hidden="true"><circle cx="45" cy="45" r="41" fill="#1F9D55" stroke="#141414" stroke-width="4"/><path d="M26 46l13 13 26-28" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          <h2>Thank you, Inglebert</h2>
-          <p class="lead" style="margin:0">Your profile is with us for a quick check. It goes live within 48 hours, and we'll email you when it does.</p>
-          <a class="btn" href="expert-dashboard.html">Go to your dashboard →</a>
+        <div class="live">
+          <svg class="big" viewBox="0 0 90 90" aria-hidden="true"><circle cx="45" cy="45" r="41" fill="#1F9D55" stroke="#141414" stroke-width="4"/><path d="M26 46l13 13 26-28" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h2 tabindex="-1">You're live! Help firms find you</h2>
+          <p class="lead" style="margin:0">Firms can now find you in Find an expert. Two quick ways to be found sooner:</p>
+          <div class="share">
+            <span class="lab">1. Tell your network on LinkedIn</span>
+            <textarea id="li-post" rows="3" aria-label="Ready-made LinkedIn post"></textarea>
+            <div class="acts"><button type="button" class="btn sm" id="li-copy">Copy</button><a class="btn ghost sm" id="li-open" href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">Open LinkedIn ↗</a><span class="copied" id="li-ok" role="status"></span></div>
+          </div>
+          <div class="share">
+            <span class="lab">2. Ask your charity to spread the word</span>
+            <textarea id="ch-note" rows="6" aria-label="Ready-made note to your charity"></textarea>
+            <div class="acts"><button type="button" class="btn sm" id="ch-copy">Copy</button><span class="copied" id="ch-ok" role="status"></span></div>
+          </div>
+          <a class="btn" href="expert-dashboard.html">Go to my dashboard →</a>
         </div>
       </div>
 
@@ -331,7 +348,7 @@ function chips(el,list,checked,name,max){
   function limit(){ if(!max) return; const boxes=[...el.querySelectorAll('input')]; const n=boxes.filter(b=>b.checked).length; boxes.forEach(b=>{b.disabled=!b.checked&&n>=max;b.parentElement.classList.toggle('off',b.disabled);}); }
   limit();
 }
-chips(document.getElementById('inds'),inds,['Food, Agriculture & Fisheries','Environment & Sustainability'],'ind',2);
+chips(document.getElementById('inds'),inds,['Shipping, Transport & Logistics','Energy & Natural Resources'],'ind',2);
 chips(document.getElementById('fmts'),fmts,['Phone or video call','Written advice','Site visit'],'fmt',0);
 function show(n,user){
   cur=n;
@@ -352,10 +369,54 @@ function show(n,user){
   if(top<bar) window.scrollBy({top:top-bar-16,behavior:'instant'});
 }
 document.getElementById('back').onclick=()=>show(Math.max(1,cur-1),true);
-form.addEventListener('submit',e=>{e.preventDefault(); show(Math.min(9,cur+1),true);});
+// Publishing (2 Nov): creates the expert account and profile in the shared store, signs in, then "You're live!"
+const V=id=>document.getElementById(id).value.trim();
+function draft(){
+  const lvl=document.querySelector('input[name=lvl]:checked'), lv=lvl?lvl.closest('.level'):null, sug=document.querySelector('input[name=sug]:checked');
+  const range=lv?lv.querySelector('.amt').textContent:'Open';
+  const don=sug&&sug.id==='sug3'?'Open':(sug&&sug.id==='sug1'?range.split(/[–+]/)[0].replace(/\s/g,''):range);
+  return {n:V('name'),top:V('headline'),cur:V('headline'),loc:V('town'),yrs:+V('years')||0,linkedin:V('linkedin'),
+    ind:[...document.querySelectorAll('#inds input:checked')].map(c=>c.nextElementSibling.textContent),
+    spec:V('spec').split(',').map(x=>x.trim()).filter(Boolean),about:V('about'),
+    jobs:[...document.querySelectorAll('.job')].map(j=>[j.querySelector('b').textContent.trim(),j.querySelector('.when').textContent.trim(),j.querySelector('p').textContent.trim()]),
+    edu:V('edu'),lang:V('lang'),ch:document.getElementById('chname').textContent.trim(),chd:document.getElementById('chdesc').textContent.replace(/^Checked against[^.]*\.\s*/,'').trim(),why:V('why'),
+    don,donk:don==='Open'?'the firm decides':(sug&&sug.id==='sug1'?'suggested per hour':'per hour for calls'),
+    fmts:[...document.querySelectorAll('#fmts input:checked')].map(c=>c.nextElementSibling.textContent),avail:V('avail'),
+    email:V('email').toLowerCase(),cemail:V('cemail'),phone:V('phone')};
+}
+function fillPreview(){ const d=draft(), t=(id,v)=>document.getElementById(id).textContent=v;
+  t('pv-name',d.n); t('pv-town','Based in '+d.loc); t('pv-pos',d.cur+' · '+d.yrs+" years' experience"); t('pv-ind',d.ind.join(' · ')||'None chosen yet'); t('pv-about',d.about); t('pv-ch',d.ch); }
+function publish(){
+  const d=draft();
+  const u=DS.update(st=>{ const id='e'+(++st.seq);
+    st.experts.push(Object.assign({},d,{id,status:'live',showTotal:false,notify:{requests:true,messages:true,questions:true},shared:{linkedin:false,charity:false},created:new Date().toISOString()}));
+    const user={id:'u-'+id,role:'expert',email:d.email,name:d.n,ref:id}; st.users.push(user); return user; });
+  DS.signIn(u.id);
+  const what=d.spec.length?d.spec.slice(0,2).join(' or ').toLowerCase():(d.ind[0]||'my field').toLowerCase();
+  document.getElementById('li-post').value="I've joined Dapperowl. If your organisation needs "+what+", ask me, and the donation goes to "+d.ch+".";
+  document.getElementById('li-open').href='https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent(document.getElementById('li-post').value);
+  document.getElementById('ch-note').value='Hello '+d.ch+' team,\n\nI\'ve joined Dapperowl, where organisations ask experts for their knowledge and, instead of paying the expert, donate to the expert\'s chosen charity. I\'ve chosen you, so every conversation I have becomes a donation to your work.\n\nIf you\'d like to share this with your supporters, firms can find me by searching "'+d.n+'" on Dapperowl.\n\nWith best wishes,\n'+d.n;
+  return u;
+}
+function copyText(ta,ok,flag){ ta.select(); const done=()=>{ document.getElementById(ok).textContent='Copied'; const me=DS.me(); if(me) DS.update(st=>{ const ex=st.experts.find(x=>x.id===me.ref); if(ex){ ex.shared=ex.shared||{}; ex.shared[flag]=true; } }); };
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,()=>{ try{document.execCommand('copy');}catch(e){} done(); }); else { try{document.execCommand('copy');}catch(e){} done(); } }
+document.getElementById('li-copy').onclick=()=>copyText(document.getElementById('li-post'),'li-ok','linkedin');
+document.getElementById('ch-copy').onclick=()=>copyText(document.getElementById('ch-note'),'ch-ok','charity');
+document.getElementById('li-open').addEventListener('click',()=>{ const me=DS.me(); if(me) DS.update(st=>{ const ex=st.experts.find(x=>x.id===me.ref); if(ex){ ex.shared=ex.shared||{}; ex.shared.linkedin=true; } }); });
+form.addEventListener('submit',e=>{e.preventDefault();
+  if(cur===1){ const em=V('email'), er=document.getElementById('email-e');
+    const msg=!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)?'Please enter your email address.':(DS.userByEmail(em)?'There\'s already an account for this email. Sign in instead.':'');
+    er.innerHTML=msg.replace('Sign in instead.','<a class="link" href="signin.html">Sign in instead.</a>'); er.hidden=!msg; document.getElementById('email').setAttribute('aria-invalid',msg?'true':'false');
+    if(msg){ document.getElementById('email').focus(); return; } }
+  if(cur===8) publish();
+  show(Math.min(9,cur+1),true);
+  if(cur===8) fillPreview();
+});
 // returning to an unfinished profile (saved as you go) reopens at the saved step
 let saved=0; try{ saved=+(localStorage.getItem(SAVE)||0); }catch(e){}
 show(saved>1&&saved<9?saved:1);
+if(cur===8) fillPreview();
+steps.addEventListener('click',()=>{ if(cur===8) fillPreview(); });
 (function(){ // top bar height drives the snap offsets and the form area's height
   const head=document.getElementById('site-head'); if(!head) return;
   const set=()=>document.documentElement.style.setProperty('--topbar',head.offsetHeight+'px');

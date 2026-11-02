@@ -272,7 +272,7 @@ function list(){
   if(!shown.length){ $('list').innerHTML='<div class="empty">No experts match yet. Try a broader word, or clear the industry filter.</div>'; $('prof').hidden=true; return; }
   $('prof').hidden=false;
   shown.forEach(i=>{const e=E[i];const b=document.createElement('button');b.className='ec';b.type='button';b.id='e'+i;b.setAttribute('aria-current',i===sel);
-    b.innerHTML='<span class="nm">'+esc(e.n)+'</span><span class="rl">'+esc(e.top)+'</span><span class="mt">Now: '+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+'</span><span class="mt">'+esc(e.ind.join(' · '))+'</span><span class="chr">Supports: '+esc(e.ch)+'</span>'+(OUT?'<span class="btn sm go" aria-hidden="true">Request a conversation</span>':'');
+    b.innerHTML='<span class="nm">'+esc(e.n)+'</span><span class="rl">'+esc(e.top)+'</span>'+(e.cur&&e.cur!==e.top?'<span class="mt">Now: '+esc(e.cur)+'</span>':'')+'<span class="mt">Based in '+esc(e.loc)+'</span><span class="mt">'+esc(e.ind.join(' · '))+'</span><span class="chr">Supports: '+esc(e.ch)+'</span>'+(OUT?'<span class="btn sm go" aria-hidden="true">Request a conversation</span>':'');
     b.onclick=()=>{sel=i;keep();if(OUT) return gate(b);list();prof();if(innerWidth<960)$('prof').scrollIntoView({behavior:'smooth'});};$('list').appendChild(b);});
 }
 function prof(){
@@ -287,7 +287,7 @@ function prof(){
 }
 function render(){ $('count').textContent=shown.length+(shown.length===1?' expert':' experts')+(ind?' in '+ind:''); list(); if(shown.length&&!OUT) prof(); }
 // Signed-out visitors (30 Oct): search and preview cards are open to all; full profiles and requests need a verified firm account
-const OUT=!DapperFirm.signedIn();
+let OUT=!DapperFirm.signedIn();
 $('cat').classList.toggle('out',OUT);
 let gateFrom=null;
 const G=$('gate');
@@ -314,6 +314,16 @@ function run(){
 $('sform').addEventListener('submit',e=>{e.preventDefault();run();});
 document.querySelectorAll('[data-totop]').forEach(b=>b.onclick=()=>{ window.scrollTo({top:0,behavior:reduce?'instant':'smooth'}); $('q').focus({preventScroll:true}); });
 state('empty');
+// an expert previewing their own profile (?preview=e1): shown exactly as firms see it, even when paused
+const pv=new URLSearchParams(location.search).get('preview'), pme=DS.me();
+if(pv && pme && pme.role==='expert' && pme.ref===pv){
+  let i=E.findIndex(e=>e.id===pv); if(i<0){ E.push(DS.expert(pv)); i=E.length-1; }
+  OUT=false; $('cat').classList.remove('out'); sel=i; shown=[i]; state('cat'); render();
+  $('count').innerHTML='Preview: this is how firms see your profile. <a class="link" href="expert-dashboard.html#profile">Back to my dashboard</a>';
+  $('prof').querySelectorAll('a.btn').forEach(a=>{ a.removeAttribute('href'); a.setAttribute('aria-disabled','true'); a.title='Firms see this button'; a.style.cursor='default'; });
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  requestAnimationFrame(()=>toResults(true)); addEventListener('load',()=>toResults(true));
+}
 // back from the firm sign-up (#expert-N): open that expert's full profile straight away
 const back=/^#expert-(\d+)$/.exec(location.hash);
 if(back && E[+back[1]] && !OUT){

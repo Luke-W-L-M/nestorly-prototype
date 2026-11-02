@@ -123,6 +123,12 @@ label.chip.off{opacity:.4;cursor:not-allowed}
 .rcpt{padding:0;border:0;background:none;max-width:none;max-height:none;overflow:visible}
 .rcpt::backdrop{background:rgba(20,37,79,.8)}
 @media (max-width:760px){.todo{grid-template-columns:1fr}.trow{flex-wrap:wrap}.msg{max-width:92%}.jobrow{grid-template-columns:1fr}.msgform{flex-direction:column;align-items:stretch}}
+.counter{border-top:2px solid #E2DACA;padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.counter summary{cursor:pointer;font-family:var(--ui);font-weight:700;font-size:17px;color:var(--navy)}
+.counter[open]{gap:14px}
+.counter .row{margin-top:12px}
+.counter .btn{margin-top:12px;align-self:flex-start}
+.counter input{font:inherit;font-size:19px;color:var(--navy);background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:10px 12px;width:100%;box-sizing:border-box}
 </style>
 </head><body>
 <header id="site-head"></header>

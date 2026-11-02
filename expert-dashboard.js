@@ -63,7 +63,7 @@ function todo(){
   o+='<div class="todo">';
   o+=card('New requests to answer',newR)+(newR.length?newR.map(r=>row(esc(F(r.firmId).name),esc(r.topic)+' · '+gbp(r.amount),'<a class="btn sm" href="#request-'+r.id+'">Answer</a>')).join(''):'<p class="hint" style="margin:0">None right now.</p>')+'</div>';
   o+=card('Unread messages',msgs)+(msgs.length?msgs.map(r=>row(esc(F(r.firmId).name),unread(r)+' new · '+esc(r.topic),'<a class="btn ghost sm" href="#request-'+r.id+'">Read</a>')).join(''):'<p class="hint" style="margin:0">No unread messages.</p>')+'</div>';
-  o+=card('Upcoming meetings',up)+(up.length?up.map(r=>row(esc(DS.when(r.meeting.at)),esc(F(r.firmId).name)+' · '+esc(r.topic),'<a class="btn ghost sm" href="#request-'+r.id+'">Details</a>')).join(''):'<p class="hint" style="margin:0">Nothing booked.</p>')+'</div>';
+  o+=card('Upcoming meetings',up)+(up.length?up.map(r=>row(esc(DS.when(r.meeting.at)),esc(F(r.firmId).name)+' · '+esc(r.topic),'<span class="acts"><a class="btn sm" href="call.html?r='+r.id+'">Join call</a><a class="btn ghost sm" href="#request-'+r.id+'">Details</a></span>')).join(''):'<p class="hint" style="margin:0">Nothing booked.</p>')+'</div>';
   o+=card('Donations waiting for you to press Send',send)+(send.length?send.map(r=>row(gbp(r.amount)+' to '+esc(r.pledge.charity),esc(F(r.firmId).name)+' · '+esc(r.topic),'<button class="btn green sm" data-send="'+r.id+'">Send</button>')).join(''):'<p class="hint" style="margin:0">Nothing to send.</p>')+'</div>';
   o+=card('Open questions in your field',qs,'wide')+(qs.length?qs.map(q=>row(esc(q.title),esc(F(q.firmId).name)+' · '+esc(q.field),'<a class="btn ghost sm" href="#questions">See question</a>')).join(''):'<p class="hint" style="margin:0">No new questions in your industries.</p>')+'</div>';
   if(!(sh.linkedin&&sh.charity)){
@@ -116,9 +116,10 @@ function detail(id){
     else if(mode&&mode.id===r.id&&mode.kind==='dec') o+=declinePanel(r,f);
     else o+='<div class="acts"><button class="btn sm" data-acc="'+r.id+'">Accept…</button><button class="btn ghost sm" data-dec="'+r.id+'">Decline…</button></div>';
   }
-  if(r.state==='suggested') o+='<div class="panel2"><h3>Waiting for '+esc(f.name)+'</h3><p style="margin:0">You suggested <b>'+esc(DS.when(r.suggested))+'</b>. We\'ll book the meeting as soon as they agree.</p></div>';
+  if(r.state==='suggested'&&r.suggestedBy==='firm') o+='<div class="panel2 acc"><h3>'+esc(f.name)+' suggested a new time</h3><p style="margin:0"><b>'+esc(DS.when(r.suggested))+'</b></p><div class="acts"><button class="btn" data-takesug="'+r.id+'">Accept this time</button></div>'+counter(r)+'</div>';
+  else if(r.state==='suggested') o+='<div class="panel2"><h3>Waiting for '+esc(f.name)+'</h3><p style="margin:0">You suggested <b>'+esc(DS.when(r.suggested))+'</b>. We\'ll book the meeting as soon as they agree.</p>'+counter(r)+'</div>';
   if(r.state==='declined') o+='<div class="panel2 dec"><h3>Declined</h3><dl class="dl"><dt>Reason</dt><dd>'+esc(r.declined.reason)+' (private)</dd><dt>Your message</dt><dd>'+esc(r.declined.note||'None')+'</dd></dl></div>';
-  if(r.state==='booked') o+='<div class="panel2 acc"><h3>Meeting booked</h3><dl class="dl"><dt>When</dt><dd>'+esc(DS.when(r.meeting.at))+' · '+esc(r.length)+'</dd><dt>How</dt><dd>'+esc(r.fmt)+'</dd></dl><div class="acts"><button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button>'+(isUpcoming(r)?'':'<button class="btn sm" data-markdone="'+r.id+'">Mark as done</button>')+'</div></div>';
+  if(r.state==='booked') o+='<div class="panel2 acc"><h3>Meeting booked</h3><dl class="dl"><dt>When</dt><dd>'+esc(DS.when(r.meeting.at))+' · '+esc(r.length)+'</dd><dt>How</dt><dd>'+esc(r.fmt)+'</dd></dl>'+attend(r)+'<div class="acts"><a class="btn sm" href="call.html?r='+r.id+'">Join video call</a><button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button>'+(canFinish(r)?'<button class="btn green sm" data-markdone="'+r.id+'">Mark as done</button>':'')+'</div><p class="hint" style="margin:0">The call opens 10 minutes before the start. In the prototype you can join at any time.</p></div>';
   if(r.state==='done') o+='<div class="panel2"><h3>Donation</h3>'+DapperTracker.html(TRK,r.donation.stage)+'<p style="margin:0">'+donNote(r)+'</p>'+(r.donation.stage===1?'<div class="acts"><button class="btn green" data-send="'+r.id+'">Send to '+esc(r.pledge.charity)+'</button></div>':'')+'</div>';
 
   // private message thread
@@ -145,6 +146,10 @@ function declinePanel(r,f){
     '<label class="tick"><input type="checkbox" checked>I\'m happy to be asked again later</label>'+
     '<div class="acts"><button class="btn" data-dsend="'+r.id+'">Send decline</button><button class="btn ghost sm" data-cancel>Cancel</button></div></div>';
 }
+function counter(r){ return '<details class="counter"><summary>'+(r.suggestedBy==='firm'?'Suggest another time':'Suggest a different time instead')+'</summary><div class="row"><div class="f"><label for="cd">Date</label><input type="date" id="cd"></div><div class="f"><label for="ct">Time</label><input type="time" id="ct" value="10:00"></div></div><button class="btn sm" data-counter="'+r.id+'">Send this time</button></details>'; }
+const canFinish=r=>r.state==='booked'&&r.meeting&&((r.meeting.left&&r.meeting.left.expert)||new Date(r.meeting.at).getTime()<Date.now()-HOUR);
+function attend(r){ const j=(r.meeting&&r.meeting.join)||{}; if(!j.expert&&!j.firm) return '';
+  return '<p style="margin:0;font-size:17px"><b>Attendance:</b> '+(j.expert?'you joined at '+esc(DS.when(j.expert)):'you haven\'t joined')+' · '+(j.firm?esc(F(r.firmId).name)+' joined at '+esc(DS.when(j.firm)):esc(F(r.firmId).name)+' hasn\'t joined')+'</p>'; }
 function donNote(r){ const f=F(r.firmId), d=r.donation, ch=esc(r.pledge.charity);
   return ['', 'The meeting is done. Press Send to ask '+esc(f.name)+' to donate '+gbp(r.amount)+' to '+ch+'.',
     'Sent on '+esc(DS.day(d.sent))+'. '+esc(f.name)+' has 48 hours to donate on the charity\'s page and upload the receipt.',
@@ -155,7 +160,7 @@ function donNote(r){ const f=F(r.firmId), d=r.donation, ch=esc(r.pledge.charity)
 function meetings(){
   const rs=mine(), up=rs.filter(isUpcoming).sort((a,b)=>new Date(a.meeting.at)-new Date(b.meeting.at)), past=rs.filter(isPast).sort((a,b)=>new Date(b.meeting.at)-new Date(a.meeting.at));
   const line=(r,isUp)=>'<div class="item"><div class="item-h"><div><b>'+esc(DS.when(r.meeting.at))+'</b><span class="meta">'+esc(F(r.firmId).name)+' · '+esc(r.topic)+'</span></div><span class="pill '+(isUp?'ok':(r.state==='done'?'ok':'wait'))+'">'+(isUp?'Upcoming':(r.state==='done'?'Done':'Not marked done'))+'</span></div>'+
-    '<div class="acts"><a class="btn sm" href="#request-'+r.id+'">Open request</a>'+(isUp?'<button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button>':(r.state==='booked'?'<button class="btn ghost sm" data-markdone="'+r.id+'">Mark as done</button>':''))+'</div></div>';
+    '<div class="acts"><a class="btn sm" href="#request-'+r.id+'">Open request</a>'+(isUp?'<a class="btn sm" href="call.html?r='+r.id+'">Join video call</a><button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button>':'')+(canFinish(r)?'<button class="btn green sm" data-markdone="'+r.id+'">Mark as done</button>':'')+'</div></div>';
   return '<h2 class="sec2">Meetings</h2><h3 class="lab" style="margin:0">Upcoming</h3>'+(up.length?up.map(r=>line(r,true)).join(''):'<p class="empty">Nothing booked yet.</p>')+
     '<h3 class="lab" style="margin:8px 0 0">Past</h3>'+(past.length?past.map(r=>line(r,false)).join(''):'<p class="empty">No past meetings yet.</p>');
 }
@@ -235,6 +240,7 @@ function profile(){
     '<fieldset><legend>Contact and availability</legend><div class="row"><div class="f"><label for="p-em">Email for requests</label><input type="email" id="p-em" value="'+v(ex.cemail||ex.email)+'"></div><div class="f"><label for="p-ph">Phone <span class="opt">(optional, never shown)</span></label><input type="tel" id="p-ph" value="'+v(ex.phone)+'"></div></div>'+
     '<div class="f"><span class="lab">How you\'re happy to help</span><div class="chips" id="p-fmts">'+FMTS.map(t=>'<label class="chip"><input type="checkbox" value="'+v(t)+'" '+((ex.fmts||[]).includes(t)?'checked':'')+'>'+v(t)+'</label>').join('')+'</div></div>'+
     '<div class="f"><label for="p-av">How much time could you give?</label><select id="p-av">'+AVAIL.map(o=>'<option'+(o===ex.avail?' selected':'')+'>'+o+'</option>').join('')+'</select></div></fieldset>'+
+    '<fieldset><legend>Certificates</legend><label class="tick" style="font-size:18px;padding:10px 14px"><input type="checkbox" id="p-named" '+(ex.nameOnFirmCerts?'checked':'')+'>Let firms name me on their certificates of impact</label><p class="hint" style="margin:0">Off: firms\' certificates say "an industry expert".</p></fieldset>'+
     '<fieldset><legend>Notifications</legend><p class="hint" style="margin:0">We always show these in the bell. Choose which ones we also email you.</p>'+
     [['requests','New requests and replies'],['messages','New messages'],['questions','Open questions in my industries']].map(([k,l])=>'<label class="tick" style="font-size:18px;padding:10px 14px"><input type="checkbox" data-nt="'+k+'" '+(nt[k]!==false?'checked':'')+'>'+l+'</label>').join('')+'</fieldset>'+
     '<div class="acts"><button class="btn" type="submit">Save changes</button><button class="btn ghost sm" type="button" data-signout>Sign out</button></div></form>';
@@ -243,6 +249,7 @@ function profile(){
 /* ---------- actions ---------- */
 function wire(rt){
   const P=$('panel'), on=(sel,fn)=>P.querySelectorAll(sel).forEach(el=>el.addEventListener('click',e=>fn(el,e)));
+  const cdi=$('cd'); if(cdi&&!cdi.value) cdi.value=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
   on('[data-back]',()=>{ flash=''; go('#requests'); });
   on('.seg button',b=>{ rfilter=b.dataset.f; draw(); });
   on('[data-acc]',b=>{ mode={id:b.dataset.acc,kind:'acc'}; flash=''; draw(); });
@@ -257,7 +264,7 @@ function wire(rt){
     acc.onclick=()=>{ const id=acc.dataset.conf, r=R(id), f=F(r.firmId), t=pn.querySelector('input[name=tm]:checked'), other=t.value==='other', note=$('an').value.trim();
       const when=other?new Date($('od').value+'T'+($('ot').value||'10:00')).toISOString():t.value;
       DS.update(s=>{ const x=s.requests.find(y=>y.id===id);
-        if(other){ x.state='suggested'; x.suggested=when; } else { x.state='booked'; x.meeting={at:when,join:{}}; }
+        if(other){ x.state='suggested'; x.suggested=when; x.suggestedBy='expert'; } else { x.state='booked'; x.meeting={at:when,join:{}}; }
         x.accepted=new Date().toISOString();
         if(note) x.messages.push({from:'expert',text:note,at:new Date().toISOString(),read:false}); });
       DS.alertFirm(r.firmId,other?'reply':'reply',other?first+' suggested a new time for "'+r.topic+'": '+DS.when(when):first+' accepted "'+r.topic+'" for '+DS.when(when),'firm-dashboard.html#request-'+id);
@@ -268,6 +275,14 @@ function wire(rt){
     DS.update(s=>{ const x=s.requests.find(y=>y.id===id); x.state='declined'; x.declined={reason,note}; });
     DS.alertFirm(r.firmId,'reply',first+' can\'t help with "'+r.topic+'" this time','firm-dashboard.html#request-'+id);
     mode=null; flash='Declined. We\'ve sent '+esc(F(r.firmId).name)+' a polite note'+(note?' with your message':'')+' and some similar experts.'; draw(); });
+  on('[data-takesug]',b=>{ const r=R(b.dataset.takesug);
+    DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='booked'; x.meeting={at:x.suggested,join:{}}; });
+    DS.alertFirm(r.firmId,'reply',first+' accepted your time for "'+r.topic+'": '+DS.when(r.suggested),'firm-dashboard.html#request-'+r.id);
+    flash='Booked for '+esc(DS.when(r.suggested))+'. We\'ve shared your contact details with '+esc(F(r.firmId).name)+'.'; draw(); });
+  on('[data-counter]',b=>{ const r=R(b.dataset.counter), d=$('cd').value; if(!d){ $('cd').focus(); return; } const when=new Date(d+'T'+($('ct').value||'10:00')).toISOString();
+    DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='suggested'; x.suggested=when; x.suggestedBy='expert'; x.firmSeen=false; });
+    DS.alertFirm(r.firmId,'reply',first+' suggested a new time for "'+r.topic+'": '+DS.when(when),'firm-dashboard.html#request-'+r.id);
+    flash='Sent. We\'ll book it as soon as '+esc(F(r.firmId).name)+' agrees.'; draw(); });
   on('[data-ics]',b=>{ const r=R(b.dataset.ics); DS.ics({uid:r.id,start:r.meeting.at,mins:/half a day/i.test(r.length)?240:60,title:'Dapperowl: '+r.topic+' with '+F(r.firmId).name,desc:'Your Dapperowl meeting. Join from your dashboard: expert-dashboard.html#request-'+r.id}); });
   on('[data-markdone]',b=>{ const r=R(b.dataset.markdone);
     DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='done'; x.donation=x.donation||{stage:1}; });
@@ -316,11 +331,12 @@ function wire(rt){
           jobs:[...pf.querySelectorAll('.jobrow')].map(j=>[j.children[0].value.trim(),j.children[1].value.trim(),j.children[2].value.trim()]).filter(j=>j[0]),
           edu:val('p-edu'),lang:val('p-lang'),ch:val('p-ch'),chd:val('p-chd'),why:val('p-why'),don:val('p-don')||'Open',donk:$('p-donk').value,cemail:val('p-em'),phone:val('p-ph'),
           fmts:[...pf.querySelectorAll('#p-fmts input:checked')].map(c=>c.value),avail:$('p-av').value,
-          notify:Object.fromEntries([...pf.querySelectorAll('[data-nt]')].map(c=>[c.dataset.nt,c.checked]))});
+          nameOnFirmCerts:$('p-named').checked,notify:Object.fromEntries([...pf.querySelectorAll('[data-nt]')].map(c=>[c.dataset.nt,c.checked]))});
         const u=s.users.find(x=>x.id===me.id); if(u) u.name=ex.n.replace(/^The Hon\. /,''); });
       flash='Saved. Firms see your changes straight away.'; draw(); $('panel').scrollIntoView({block:'start'}); });
   }
 }
 function alertBox(t){ const p=$('panel'); let el=p.querySelector('.ok-msg.err'); if(!el){ el=document.createElement('p'); el.className='ok-msg err'; el.style.background='#F6D9DC'; el.setAttribute('role','alert'); p.prepend(el); } el.textContent=t; p.scrollIntoView({block:'start'}); }
 draw();
+addEventListener('dapper-change',()=>{ const a=document.activeElement; if(a&&/^(TEXTAREA|INPUT|SELECT)$/.test(a.tagName)) return; draw(); });
 })();

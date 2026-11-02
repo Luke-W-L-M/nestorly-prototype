@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Dapperowl: Specialise for charity">
+<meta property="og:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
+<meta property="og:url" content="https://luke-w-l-m.github.io/dapperowl-prototype/call.html">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta property="og:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dapperowl: Specialise for charity">
+<meta name="twitter:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
+<meta name="twitter:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta name="twitter:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
+<title>Video call · Dapperowl</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+/* Dapperowl video call (2 Nov, prototype): both names, the topic, a running timer, mic and camera toggles, Leave. Records when each side joins and leaves. */
+.call{background:var(--navy);color:var(--paper);min-height:calc(100svh - 86px);display:flex;flex-direction:column;padding-block:28px 32px;box-sizing:border-box}
+.hero.call + .pwave{display:none}
+.call .inner{width:100%;max-width:1180px;margin-inline:auto;flex:1;display:flex;flex-direction:column;gap:20px}
+.callhead{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;text-align:left}
+.callhead h1.lbl{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(26px,3vw,38px);line-height:1.15;text-transform:uppercase;color:var(--paper);text-align:left}
+.callhead .eyebrow{color:#C9D3F2}
+.timer{font-family:var(--ui);font-weight:700;font-size:28px;font-variant-numeric:tabular-nums;border:3px solid #F5F0E6;border-radius:12px;padding:6px 16px;display:inline-flex;gap:10px;align-items:center}
+.timer i{width:12px;height:12px;border-radius:50%;background:#E5484D}
+.call .inner > *{width:100%;box-sizing:border-box}
+.tiles{flex:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;min-height:360px}
+.tile{position:relative;border:3px solid var(--ink);border-radius:20px;overflow:hidden;background:#0D1A3A;display:grid;place-items:center;box-shadow:6px 6px 0 #0A1430}
+.tile.cam{background:radial-gradient(circle at 50% 40%,#3B5BA9,#14254F 70%)}
+.tile .av{width:120px;height:120px;border-radius:50%;background:#F5F0E6;color:#14254F;display:grid;place-items:center;font:700 40px var(--ui);border:3px solid var(--ink)}
+.tile.cam .av{width:150px;height:150px;background:#1F9D55;color:#14254F}
+.tile .tag{position:absolute;left:14px;bottom:14px;right:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.tile .tag b{font-family:var(--ui);font-size:17px;background:rgba(10,20,48,.75);padding:4px 10px;border-radius:8px}
+.tile .tag span{font-size:15px;background:rgba(10,20,48,.75);padding:4px 10px;border-radius:8px}
+.tile .muted{position:absolute;top:14px;right:14px;background:#9B1236;border-radius:50%;width:36px;height:36px;display:grid;place-items:center}
+.tile .muted svg{width:20px;height:20px}
+.tile.wait{border-style:dashed;border-color:#C9D3F2}
+.tile.wait .av{opacity:.35}
+.letjoin{all:unset;cursor:pointer;position:absolute;top:14px;left:14px;font-family:var(--ui);font-weight:700;font-size:14px;color:#F5F0E6;border:2px dashed #C9D3F2;border-radius:10px;padding:6px 10px}
+.letjoin:focus-visible{outline:3px solid #F5F0E6;outline-offset:2px}
+.controls{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+.ctl{all:unset;box-sizing:border-box;cursor:pointer;width:64px;height:64px;border-radius:50%;border:3px solid var(--ink);background:#F5F0E6;display:grid;place-items:center;box-shadow:4px 4px 0 #0A1430}
+.ctl svg{width:28px;height:28px}
+.ctl[aria-pressed="false"]{background:#9B1236}
+.ctl[aria-pressed="false"] svg *{stroke:#fff;fill:none}
+.ctl:focus-visible,.leave:focus-visible{outline:3px solid #F5F0E6;outline-offset:3px}
+.leave{all:unset;box-sizing:border-box;cursor:pointer;height:64px;padding:0 28px;border-radius:999px;border:3px solid var(--ink);background:#E5484D;color:#fff;font:700 18px var(--ui);letter-spacing:.04em;text-transform:uppercase;box-shadow:4px 4px 0 #0A1430}
+.ctl-lab{display:flex;flex-direction:column;align-items:center;gap:6px;font-family:var(--ui);font-size:13px;font-weight:700;color:#C9D3F2}
+.note-p{margin:0;text-align:center;color:#C9D3F2;font-size:15px}
+.left{max-width:640px;margin:40px auto;background:#fff;color:var(--navy);border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);padding:32px;display:flex;flex-direction:column;gap:14px;text-align:center;align-items:center}
+.left h2{margin:0;font-family:var(--head);font-weight:400;font-size:34px;text-transform:uppercase}
+@media (max-width:700px){.tiles{grid-template-columns:1fr;min-height:0}.tile{min-height:250px;place-items:start center;padding-top:28px}.tile .av,.tile.cam .av{width:84px;height:84px;font-size:28px}.tile.wait{padding-top:60px}.timer{font-size:22px}}
+</style>
+</head><body>
+<header id="site-head"></header>
+<section class="hero call gut" aria-label="Video call"><div class="inner" id="room"></div></section>
+<footer id="site-foot"></footer>
+<script src="store.js"></script>
+<script src="site.js"></script>
+<script>
+(function(){
+const $=id=>document.getElementById(id), esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const me=DS.me(), id=new URLSearchParams(location.search).get('r');
+if(!me){ location.replace('signin.html?next='+encodeURIComponent('call.html?r='+id)); return; }
+const r0=DS.get().requests.find(x=>x.id===id);
+const mine=r0&&((me.role==='expert'&&r0.expertId===me.ref)||(me.role==='firm'&&r0.firmId===me.ref));
+const back=me.role==='expert'?'expert-dashboard.html#request-'+id:'firm-dashboard.html#request-'+id;
+if(!mine||!r0.meeting){ $('room').innerHTML='<div class="left"><h2>Call not found</h2><p style="margin:0">This call isn\'t one of yours, or the meeting hasn\'t been booked yet.</p><a class="btn" href="'+DS.home(me)+'">Back to my dashboard</a></div>'; return; }
+const side=me.role, other=side==='expert'?'firm':'expert';
+const x=DS.expert(r0.expertId), f=DS.firm(r0.firmId);
+const names={expert:x.n,firm:r0.pledge.name+', '+f.name};
+const ini=n=>n.replace(/^The Hon\. /,'').split(/[\s,]+/).filter(Boolean).slice(0,2).map(w=>w[0]).join('').toUpperCase();
+// joining records attendance for this side (first join only)
+DS.update(s=>{ const m=s.requests.find(y=>y.id===id).meeting; m.join=m.join||{}; if(!m.join[side]) m.join[side]=new Date().toISOString(); });
+const start=Date.now(); let mic=true, cam=true;
+const MIC='<svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="#14254F" stroke="#14254F" stroke-width="2"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="#14254F" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const CAM='<svg viewBox="0 0 24 24"><rect x="2" y="6" width="14" height="12" rx="2" fill="#14254F" stroke="#14254F" stroke-width="2"/><path d="M16 10l6-3v10l-6-3z" fill="#14254F" stroke="#14254F" stroke-width="2" stroke-linejoin="round"/></svg>';
+const MUTE='<svg viewBox="0 0 24 24"><path d="M4 4l16 16M9 9v2a3 3 0 0 0 5 2M15 10V6a3 3 0 0 0-6 0" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>';
+function tile(who){ const m=DS.get().requests.find(y=>y.id===id).meeting, joined=m.join&&m.join[who], isMe=who===side, here=isMe||(joined&&!(m.left&&m.left[who]&&new Date(m.left[who])>new Date(joined)));
+  const camOn=isMe?cam:here;
+  return '<div class="tile'+(camOn&&here?' cam':'')+(here?'':' wait')+'"><div class="av" aria-hidden="true">'+esc(ini(names[who]))+'</div>'+
+    (isMe&&!mic?'<span class="muted" title="Microphone off">'+MUTE+'</span>':'')+
+    (!here&&!isMe?'<button type="button" class="letjoin" id="letjoin">Prototype: let them join</button>':'')+
+    '<div class="tag"><b>'+esc(names[who])+(isMe?' (you)':'')+'</b><span>'+(here?(joined?'Joined '+esc(new Date(joined).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})):'Joined'):'Waiting to join…')+'</span></div></div>'; }
+function draw(){
+  $('room').innerHTML='<div class="callhead"><div><span class="eyebrow">Dapperowl call · '+esc(DS.when(r0.meeting.at))+'</span><h1 class="lbl">'+esc(r0.topic)+'</h1></div><span class="timer" role="timer" aria-label="Time in call"><i aria-hidden="true"></i><span id="t">00:00</span></span></div>'+
+    '<div class="tiles">'+tile(side)+tile(other)+'</div>'+
+    '<div class="controls"><span class="ctl-lab"><button type="button" class="ctl" id="mic" aria-pressed="'+mic+'" aria-label="Microphone">'+MIC+'</button>'+(mic?'Mic on':'Mic off')+'</span>'+
+    '<span class="ctl-lab"><button type="button" class="ctl" id="cam" aria-pressed="'+cam+'" aria-label="Camera">'+CAM+'</button>'+(cam?'Camera on':'Camera off')+'</span>'+
+    '<span class="ctl-lab"><button type="button" class="leave" id="leave">Leave</button>&nbsp;</span></div>'+
+    '<p class="note-p">Prototype only: no real audio or video. We record when each of you joins, for attendance.</p>';
+  $('mic').onclick=()=>{ mic=!mic; draw(); $('mic').focus(); };
+  $('cam').onclick=()=>{ cam=!cam; draw(); $('cam').focus(); };
+  const lj=$('letjoin'); if(lj) lj.onclick=()=>{ DS.update(s=>{ const m=s.requests.find(y=>y.id===id).meeting; m.join[other]=new Date().toISOString(); }); draw(); };
+  $('leave').onclick=leave; tickT();
+}
+function tickT(){ const t=$('t'); if(!t) return; const sec=Math.floor((Date.now()-start)/1000); t.textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0'); }
+setInterval(tickT,1000);
+addEventListener('dapper-change',draw);
+function leave(){
+  DS.update(s=>{ const m=s.requests.find(y=>y.id===id).meeting; m.left=m.left||{}; m.left[side]=new Date().toISOString(); });
+  if(side==='expert') DS.alertFirm(r0.firmId,'meeting',x.n.replace(/^The Hon\. /,'')+' left the call for "'+r0.topic+'"','firm-dashboard.html#request-'+id);
+  $('room').innerHTML='<div class="left"><h2>You\'ve left the call</h2><p style="margin:0">'+(side==='expert'?'When the conversation is finished, mark it as done, then press Send to release the donation to '+esc(r0.pledge.charity)+'.':'Thank you. When '+esc(x.n)+' presses Send, you\'ll be asked to donate '+'£'+Number(r0.amount).toLocaleString('en-GB')+' to '+esc(r0.pledge.charity)+'.')+'</p><div class="acts" style="justify-content:center"><a class="btn" href="'+back+'">Back to the request</a><a class="btn ghost sm" href="call.html?r='+id+'">Rejoin</a></div></div>';
+}
+draw();
+})();
+</script>
+</body></html>

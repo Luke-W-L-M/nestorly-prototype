@@ -58,7 +58,7 @@ function todo(){
   let o='<h2 class="sec2">To do</h2><div class="todo">';
   o+=card('Expert replies',rep.length)+(rep.length?rep.map(r=>row(esc(X(r.expertId).n),esc(STATE[r.state][0])+' · '+esc(r.topic),'<a class="btn sm" href="#request-'+r.id+'">'+(r.state==='suggested'?'Answer':'See reply')+'</a>')).join(''):none('No new replies.'))+'</div>';
   o+=card('Unread messages',msgs.length)+(msgs.length?msgs.map(r=>row(esc(X(r.expertId).n),unread(r)+' new · '+esc(r.topic),'<a class="btn ghost sm" href="#request-'+r.id+'">Read</a>')).join(''):none('No unread messages.'))+'</div>';
-  o+=card('Upcoming meetings',up.length)+(up.length?up.map(r=>row(esc(DS.when(r.meeting.at)),esc(X(r.expertId).n)+' · '+esc(r.topic),'<a class="btn ghost sm" href="#request-'+r.id+'">Details</a>')).join(''):none('Nothing booked.'))+'</div>';
+  o+=card('Upcoming meetings',up.length)+(up.length?up.map(r=>row(esc(DS.when(r.meeting.at)),esc(X(r.expertId).n)+' · '+esc(r.topic),'<span class="acts"><a class="btn sm" href="call.html?r='+r.id+'">Join call</a><a class="btn ghost sm" href="#request-'+r.id+'">Details</a></span>')).join(''):none('Nothing booked.'))+'</div>';
   o+=card('Donations to make',pay.length)+(pay.length?pay.map(r=>row(gbp(r.amount)+' to '+esc(r.pledge.charity),esc(X(r.expertId).n)+' pressed Send on '+esc(DS.day(r.donation.sent)),'<a class="btn sm" href="#donations">Donate</a>')).join(''):none('Nothing to pay right now.'))+'</div>';
   o+=card('Hands raised on your questions',hands.reduce((t,q)=>t+newHands(q),0),'wide')+(hands.length?hands.map(q=>row(esc(q.title),newHands(q)+' new expert'+(newHands(q)>1?'s':''),'<a class="btn ghost sm" href="#questions">See who</a>')).join(''):none('No new hands raised. <a class="link" href="#questions">Post an open question</a> to let experts come to you.'))+'</div>';
   return o+'</div>';
@@ -85,9 +85,10 @@ function detail(id){
     '<div class="item-h"><div><span class="eyebrow">Your request to '+esc(x.n)+'</span><h2 class="sec2" style="margin-top:4px">'+esc(r.topic)+'</h2></div><span class="pill '+st[1]+'">'+st[0]+'</span></div>'+
     '<div class="xcard"><span class="av">'+PERSON+'</span><div><b>'+esc(x.n)+'</b><span>'+esc(x.cur)+' · supports '+esc(x.ch)+'</span>'+(booked?'<br><span>Contact: <a class="link" href="mailto:'+esc(x.cemail||x.email)+'">'+esc(x.cemail||x.email)+'</a>'+(x.phone?' · '+esc(x.phone):'')+'</span>':'<br><span>Contact details are shared once they accept.</span>')+'</div><div class="acts"><a class="btn ghost sm" href="find.html#expert-'+esc(x.id)+'">Open profile</a></div></div>';
   if(r.state==='sent') o+='<div class="panel2"><h3>Waiting for '+esc(xFirst(x))+'</h3><p style="margin:0">You suggested: '+r.times.map(t=>'<b>'+esc(DS.when(t))+'</b>').join(', ')+'. We\'ll let you know as soon as they reply.</p></div>';
-  if(r.state==='suggested') o+='<div class="panel2 acc"><h3>'+esc(xFirst(x))+' suggested a new time</h3><p style="margin:0"><b>'+esc(DS.when(r.suggested))+'</b> instead of your times.</p><div class="acts"><button class="btn" data-agree="'+r.id+'">Accept this time</button></div><p class="hint" style="margin:0">Can\'t make it? Send '+esc(xFirst(x))+' a message below.</p></div>';
+  if(r.state==='suggested'&&r.suggestedBy==='firm') o+='<div class="panel2"><h3>Waiting for '+esc(xFirst(x))+'</h3><p style="margin:0">You suggested <b>'+esc(DS.when(r.suggested))+'</b>. We\'ll book it as soon as they agree.</p>'+counter(r)+'</div>';
+  else if(r.state==='suggested') o+='<div class="panel2 acc"><h3>'+esc(xFirst(x))+' suggested a new time</h3><p style="margin:0"><b>'+esc(DS.when(r.suggested))+'</b> instead of your times.</p><div class="acts"><button class="btn" data-agree="'+r.id+'">Accept this time</button></div>'+counter(r)+'</div>';
   if(r.state==='declined') o+='<div class="panel2"><h3>'+esc(xFirst(x))+' can\'t help this time</h3>'+(r.declined&&r.declined.note?'<p style="margin:0">"'+esc(r.declined.note)+'"</p>':'')+'<div class="acts"><a class="btn sm" href="find.html">Find a similar expert</a></div></div>';
-  if(r.state==='booked') o+='<div class="panel2 acc"><h3>Meeting booked</h3><dl class="dl"><dt>When</dt><dd>'+esc(DS.when(r.meeting.at))+' · '+esc(r.length)+'</dd><dt>How</dt><dd>'+esc(r.fmt)+'</dd></dl><div class="acts"><button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button></div></div>';
+  if(r.state==='booked') o+='<div class="panel2 acc"><h3>Meeting booked</h3><dl class="dl"><dt>When</dt><dd>'+esc(DS.when(r.meeting.at))+' · '+esc(r.length)+'</dd><dt>How</dt><dd>'+esc(r.fmt)+'</dd></dl>'+attend(r)+'<div class="acts"><a class="btn sm" href="call.html?r='+r.id+'">Join video call</a><button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button></div><p class="hint" style="margin:0">The call opens 10 minutes before the start. In the prototype you can join at any time.</p></div>';
   if(r.state==='done') o+='<div class="panel2"><h3>Donation</h3>'+DapperTracker.html(TRK,r.donation.stage)+'<p style="margin:0">'+donNote(r)+'</p>'+(r.donation.stage===2?'<div class="acts"><a class="btn" href="#donations">Go to Donations &amp; receipts</a></div>':'')+'</div>';
   o+='<div class="goal"><span class="eyebrow">What you hope to get out of it</span><p>'+esc(r.goal)+'</p></div>'+
     (r.questions.length?'<div class="rsec"><span class="lab">Your questions</span><ol>'+r.questions.map(q=>'<li>'+esc(q)+'</li>').join('')+'</ol></div>':'')+
@@ -97,6 +98,9 @@ function detail(id){
     '</div><form class="msgform" data-msg="'+r.id+'"><label class="sr" for="mt">Message to '+esc(x.n)+'</label><textarea id="mt" placeholder="Write a message to '+esc(xFirst(x))+'"></textarea><button class="btn sm" type="submit">Send message</button></form></div>';
   return o;
 }
+function counter(r){ return '<details class="counter"><summary>Suggest '+(r.suggestedBy==='firm'?'a different':'another')+' time</summary><div class="row"><div class="f"><label for="cd">Date</label><input type="date" id="cd"></div><div class="f"><label for="ct">Time</label><input type="time" id="ct" value="10:00"></div></div><button class="btn sm" data-counter="'+r.id+'">Send this time</button></details>'; }
+function attend(r){ const j=(r.meeting&&r.meeting.join)||{}; if(!j.expert&&!j.firm) return '';
+  return '<p style="margin:0;font-size:17px"><b>Attendance:</b> '+(j.firm?'you joined at '+esc(DS.when(j.firm)):'you haven\'t joined')+' · '+(j.expert?esc(X(r.expertId).n)+' joined at '+esc(DS.when(j.expert)):esc(X(r.expertId).n)+' hasn\'t joined')+'</p>'; }
 function donNote(r){ const x=X(r.expertId), d=r.donation, ch=esc(r.pledge.charity);
   return ['', 'Waiting for '+esc(xFirst(x))+' to press Send after the meeting.',
     esc(xFirst(x))+' pressed Send on '+esc(DS.day(d.sent))+'. Please donate '+gbp(r.amount)+' on '+ch+'\'s page within 48 hours, then upload the receipt.',
@@ -107,7 +111,7 @@ function donNote(r){ const x=X(r.expertId), d=r.donation, ch=esc(r.pledge.charit
 function meetings(){
   const rs=mine(), up=rs.filter(isUpcoming).sort((a,b)=>new Date(a.meeting.at)-new Date(b.meeting.at)), past=rs.filter(isPast).sort((a,b)=>new Date(b.meeting.at)-new Date(a.meeting.at));
   const line=(r,isUp)=>'<div class="item"><div class="item-h"><div><b>'+esc(DS.when(r.meeting.at))+'</b><span class="meta">'+esc(X(r.expertId).n)+' · '+esc(r.topic)+'</span></div><span class="pill '+(isUp||r.state==='done'?'ok':'wait')+'">'+(isUp?'Upcoming':(r.state==='done'?'Done':'Waiting for the expert'))+'</span></div>'+
-    '<div class="acts"><a class="btn sm" href="#request-'+r.id+'">Open request</a>'+(isUp?'<button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button>':'')+'</div></div>';
+    '<div class="acts"><a class="btn sm" href="#request-'+r.id+'">Open request</a>'+(isUp?'<a class="btn sm" href="call.html?r='+r.id+'">Join video call</a><button class="btn ghost sm" data-ics="'+r.id+'">Add to calendar</button>':'')+'</div></div>';
   return '<h2 class="sec2">Meetings</h2><h3 class="lab" style="margin:0">Upcoming</h3>'+(up.length?up.map(r=>line(r,true)).join(''):'<p class="empty">Nothing booked yet.</p>')+
     '<h3 class="lab" style="margin:8px 0 0">Past</h3>'+(past.length?past.map(r=>line(r,false)).join(''):'<p class="empty">No past meetings yet.</p>');
 }
@@ -150,13 +154,30 @@ function donations(){
   rs.forEach(r=>{ const x=X(r.expertId);
     o+='<div class="item"><div class="item-h"><div><b>'+gbp(r.amount)+' to '+esc(r.pledge.charity)+'</b><span class="meta">'+esc(x.n)+' · '+esc(r.topic)+' · '+esc(DS.day(r.meeting.at))+'</span></div><span class="pill '+(r.donation.stage===4?'ok':r.donation.stage===2?'no':'wait')+'">'+['','Waiting for Send','To pay','Waiting for charity','Received'][r.donation.stage]+'</span></div>'+
       DapperTracker.html(TRK,r.donation.stage)+'<p style="margin:0;font-size:18px">'+donNote(r)+'</p>'+
-      '<dl class="dl"><dt>Reference</dt><dd><span class="ref" style="font-size:18px;padding:4px 10px">DPO-'+esc(r.id.toUpperCase())+'</span></dd></dl></div>'; });
+      '<dl class="dl"><dt>Reference</dt><dd><span class="ref" style="font-size:18px;padding:4px 10px">DPO-'+esc(r.id.toUpperCase())+'</span></dd></dl>'+(r.donation.stage===2?payBox(r):'')+'</div>'; });
+  const certs=rs.filter(r=>r.donation.stage===4);
+  o+='<h3 class="lab" style="margin:8px 0 0">Your certificates of impact</h3>'+(certs.length?'<p class="hint" style="margin:0">Optional. Share them only if you\'d like to.</p><div class="certs">'+certs.map(r=>'<div>'+fcert(r)+'<div class="acts" style="margin-top:14px"><a class="btn sm" target="_blank" rel="noopener" href="https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent(postText(r))+'">Share on LinkedIn ↗</a><button class="btn ghost sm" data-fdl="'+r.id+'">Download</button></div></div>').join('')+'</div>':'<p class="empty">A certificate appears here when a charity confirms one of your donations.</p>');
   o+='<h3 class="lab" style="margin:8px 0 0">Receipts</h3>';
   o+=paid.length?'<div class="tw"><table><thead><tr><th>Date paid</th><th>Charity</th><th>Expert</th><th>Topic</th><th>Amount</th><th>Status</th><th>Receipt</th></tr></thead><tbody>'+
     paid.map(r=>'<tr><td>'+esc(DS.day(r.donation.paid))+'</td><td>'+esc(r.pledge.charity)+'</td><td>'+esc(X(r.expertId).n)+'</td><td>'+esc(r.topic)+'</td><td class="num">'+gbp(r.amount)+'</td><td>'+(r.donation.stage===4?'Received':'Waiting for charity')+'</td><td>'+esc(r.donation.receipt||'receipt.pdf')+'</td></tr>').join('')+
     '</tbody></table></div><div class="acts"><button class="btn sm" data-csv>Export receipts (CSV)</button></div>':'<p class="empty">No receipts yet.</p>';
   return o;
 }
+
+function payBox(r){ return '<div class="paybox"><p style="margin:0"><b>1.</b> Donate '+gbp(r.amount)+' on '+esc(r.pledge.charity)+'\'s own page. Use reference <b>DPO-'+esc(r.id.toUpperCase())+'</b>.</p>'+
+  '<div class="acts"><a class="btn" href="charity.html?r='+r.id+'" target="_blank" rel="noopener">Donate to '+esc(r.pledge.charity)+' ↗</a></div>'+
+  '<p style="margin:0"><b>2.</b> Upload the receipt the charity sends you.</p><div class="upload"><label for="rf-'+r.id+'" class="lab" style="font-size:17px">Receipt (PDF or image)</label><input type="file" id="rf-'+r.id+'" accept=".pdf,image/*"><button type="button" class="link sample" data-sample="'+r.id+'">Prototype only: use a sample receipt</button><span class="hint" id="rn-'+r.id+'"></span></div>'+
+  '<div class="acts"><button class="btn" data-receipt="'+r.id+'">Submit receipt</button><button class="btn ghost sm" data-flag="'+r.id+'">Flag a problem</button></div><p class="hint" id="re-'+r.id+'" role="alert" style="margin:0;color:#A3202F;font-weight:700" hidden></p></div>'; }
+const expertLabel=r=>{ const x=X(r.expertId); return x.nameOnFirmCerts?x.n:'an industry expert'; };
+const postText=r=>'Thank you to '+r.pledge.charity+' for the work you do, and to '+expertLabel(r)+' for sharing their knowledge with us. Our conversation on '+r.topic+' became a '+gbp(r.amount)+' donation, through Dapperowl.';
+function fcert(r){ return '<div class="ccert"><div class="cq"><div class="cert c1"><div class="frame"></div><div class="in">'+DAPPER_LOGO('#fff','#14254F')+'<span class="k">Certificate of impact</span><span class="chn">'+esc(r.pledge.charity)+'</span><span class="rule"></span><span class="amt">'+gbp(r.amount)+'</span><span class="to">from <b>'+esc(FM().name)+'</b>, given in return for a conversation on <b>'+esc(r.topic)+'</b> with <b>'+esc(expertLabel(r))+'</b></span></div><span class="date">'+esc(new Date(r.donation.received).toLocaleDateString('en-GB',{month:'long',year:'numeric'}))+'</span></div></div></div>'; }
+function fcertSVG(r){ const x=t=>esc(t), lines=('from '+FM().name+', given in return for a conversation on '+r.topic+' with '+expertLabel(r)).match(/.{1,46}(\s|$)/g)||[];
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000"><rect width="800" height="1000" fill="#fff"/><rect x="36" y="36" width="728" height="928" fill="none" stroke="#14254F" stroke-width="4"/><rect x="54" y="54" width="692" height="892" fill="none" stroke="#14254F" stroke-width="2"/>'+
+    '<text x="400" y="200" text-anchor="middle" font-family="Outfit,Arial" font-weight="700" font-size="40" fill="#1F9D55" letter-spacing="4">DAPPEROWL</text><text x="400" y="260" text-anchor="middle" font-family="Outfit,Arial" font-size="24" fill="#2251FF" letter-spacing="8">CERTIFICATE OF IMPACT</text>'+
+    '<text x="400" y="400" text-anchor="middle" font-family="DM Serif Display,Georgia" font-size="54" fill="#14254F">'+x(r.pledge.charity)+'</text><rect x="340" y="440" width="120" height="3" fill="#14254F"/>'+
+    '<text x="400" y="580" text-anchor="middle" font-family="DM Serif Display,Georgia" font-size="110" fill="#18743a">'+x(gbp(r.amount))+'</text>'+
+    lines.map((l,i)=>'<text x="400" y="'+(670+i*38)+'" text-anchor="middle" font-family="Source Sans 3,Arial" font-size="26" fill="#14254F">'+x(l.trim())+'</text>').join('')+
+    '<text x="690" y="110" text-anchor="end" font-family="Outfit,Arial" font-size="20" fill="#4A5675">'+x(new Date(r.donation.received).toLocaleDateString('en-GB',{month:'long',year:'numeric'}))+'</text></svg>'; }
 
 /* ---------- Organisation & settings ---------- */
 function account(){
@@ -184,6 +205,24 @@ function wire(){
     DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='booked'; x.meeting={at:x.suggested,join:{}}; });
     DS.alertExpert(r.expertId,'reply',FM().name+' accepted your time for "'+r.topic+'": '+DS.when(r.suggested),'expert-dashboard.html#request-'+r.id);
     flash='Booked for '+esc(DS.when(r.suggested))+'. We\'ve shared contact details on both sides.'; draw(); });
+  const cdi=$('cd'); if(cdi&&!cdi.value) cdi.value=new Date(Date.now()+7*86400000).toISOString().slice(0,10);
+  on('[data-counter]',b=>{ const r=R(b.dataset.counter), d=$('cd').value; if(!d){ $('cd').focus(); return; } const when=new Date(d+'T'+($('ct').value||'10:00')).toISOString();
+    DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='suggested'; x.suggested=when; x.suggestedBy='firm'; });
+    DS.alertExpert(r.expertId,'reply',FM().name+' suggested a new time for "'+r.topic+'": '+DS.when(when),'expert-dashboard.html#request-'+r.id);
+    flash='Sent. We\'ll book it as soon as '+esc(xFirst(X(r.expertId)))+' agrees.'; draw(); });
+  const picked={};
+  P.querySelectorAll('.paybox input[type=file]').forEach(inp=>inp.onchange=()=>{ const id=inp.id.slice(3); picked[id]=inp.files[0]?inp.files[0].name:''; $('rn-'+id).textContent=picked[id]?'Selected: '+picked[id]:''; });
+  on('[data-sample]',b=>{ const id=b.dataset.sample; picked[id]=FM().name.replace(/\W+/g,'-')+'-receipt-DPO-'+id.toUpperCase()+'.pdf'; $('rn-'+id).textContent='Selected: '+picked[id]; });
+  on('[data-receipt]',b=>{ const id=b.dataset.receipt, r=R(id);
+    if(!picked[id]){ $('re-'+id).textContent='Please choose the receipt file, or use the sample receipt.'; $('re-'+id).hidden=false; return; }
+    DS.update(s=>{ const d=s.requests.find(y=>y.id===id).donation; d.stage=3; d.paid=new Date().toISOString(); d.receipt=picked[id]; d.confirmAt=Date.now()+5000; });
+    DS.alertExpert(r.expertId,'donation',FM().name+' donated '+gbp(r.amount)+' to '+r.pledge.charity+' and uploaded the receipt','expert-dashboard.html#donations');
+    flash='Thank you. Receipt uploaded. We\'ve asked '+esc(r.pledge.charity)+' to confirm (in the prototype this takes about 5 seconds).'; draw(); });
+  on('[data-flag]',b=>{ const r=R(b.dataset.flag);
+    DS.update(s=>s.requests.find(y=>y.id===r.id).messages.push({from:'firm',text:'We\'ve flagged a problem with this donation and our team will be in touch.',at:new Date().toISOString(),read:false}));
+    DS.alertExpert(r.expertId,'donation',FM().name+' flagged a problem with the donation for "'+r.topic+'"','expert-dashboard.html#request-'+r.id);
+    flash='Flagged. We\'ve let '+esc(X(r.expertId).n)+' know, and Dapperowl will be in touch within one working day.'; draw(); });
+  on('[data-fdl]',b=>{ const r=R(b.dataset.fdl); DS.download(fcertSVG(r),'image/svg+xml','dapperowl-certificate-'+r.id+'.svg'); });
   on('[data-ics]',b=>{ const r=R(b.dataset.ics); DS.ics({uid:r.id,start:r.meeting.at,mins:/half a day/i.test(r.length)?240:60,title:'Dapperowl: '+r.topic+' with '+X(r.expertId).n,desc:'Your Dapperowl meeting. Join from your dashboard: firm-dashboard.html#request-'+r.id}); });
   P.querySelectorAll('form[data-msg]').forEach(fm=>fm.addEventListener('submit',e=>{ e.preventDefault(); const t=fm.querySelector('textarea').value.trim(); if(!t) return; const r=R(fm.dataset.msg);
     DS.update(s=>s.requests.find(x=>x.id===r.id).messages.push({from:'firm',text:t,at:new Date().toISOString(),read:false}));
@@ -216,4 +255,5 @@ function wire(){
   const nm=$('named'); if(nm) nm.onclick=()=>{ DS.update(s=>{ const f=s.firms.find(x=>x.id===me.ref); f.namedOnCerts=!f.namedOnCerts; }); draw(); };
 }
 draw();
+addEventListener('dapper-change',()=>{ const a=document.activeElement; if(a&&/^(TEXTAREA|INPUT|SELECT)$/.test(a.tagName)) return; draw(); });
 })();

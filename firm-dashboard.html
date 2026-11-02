@@ -125,6 +125,17 @@ dialog.cd::backdrop{background:rgba(20,37,79,.62)}
 @media (max-width:760px){.teamform{grid-template-columns:1fr}}
 .team{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
 @media (max-width:760px){.todo{grid-template-columns:1fr}.trow{flex-wrap:wrap}.msg{max-width:92%}.msgform{flex-direction:column;align-items:stretch}.xcard{flex-wrap:wrap}.xcard .acts{margin-left:0}}
+.counter{border-top:2px solid #E2DACA;padding-top:12px;display:flex;flex-direction:column;gap:12px}
+.counter summary{cursor:pointer;font-family:var(--ui);font-weight:700;font-size:17px;color:var(--navy)}
+.counter[open]{gap:14px}
+.counter .row{margin-top:12px}
+.counter .btn{margin-top:12px;align-self:flex-start}
+.counter input{font:inherit;font-size:19px;color:var(--navy);background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:10px 12px;width:100%;box-sizing:border-box}
+.ccert{border:3px solid var(--ink);border-radius:6px;overflow:hidden;box-shadow:5px 5px 0 var(--ink)}
+.certs{grid-template-columns:repeat(2,minmax(0,360px))}
+.paybox{border:3px solid var(--ink);border-radius:16px;background:#FFF6EC;padding:18px 20px;display:flex;flex-direction:column;gap:12px}
+.sample{all:unset;cursor:pointer;align-self:flex-start;font-family:var(--ui);font-weight:700;font-size:15px;color:var(--navy);border:2px dashed #C9C2B3;border-radius:10px;padding:6px 12px}
+.sample:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
 </style>
 </head><body>
 <header id="site-head"></header>

@@ -124,7 +124,20 @@ const DS={
     const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Dapperowl//Prototype//EN','BEGIN:VEVENT','UID:'+o.uid+'@dapperowl.co.uk','DTSTAMP:'+f(Date.now()),'DTSTART:'+f(o.start),'DTEND:'+f(end),'SUMMARY:'+o.title.replace(/[,;]/g,'\\$&'),'DESCRIPTION:'+(o.desc||'').replace(/\n/g,'\\n').replace(/[,;]/g,'\\$&'),'END:VEVENT','END:VCALENDAR'].join('\r\n');
     DS.download(txt,'text/calendar','dapperowl-meeting.ics'); },
   download(text,type,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500); },
+  // the charity confirms a donation about 5 seconds after the firm uploads its receipt (prototype only)
+  tick(){ const now=Date.now(); let changed=false;
+    load().requests.forEach(r=>{ const d=r.donation; if(d&&d.stage===3&&d.confirmAt&&now>=d.confirmAt){
+      DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id).donation; x.stage=4; x.received=new Date().toISOString(); delete x.confirmAt; });
+      const f=DS.firm(r.firmId)||{name:'The firm'};
+      DS.alertExpert(r.expertId,'donation',r.pledge.charity+' confirmed '+f.name+'\'s £'+Number(r.amount).toLocaleString('en-GB')+' donation. Your certificate is ready','expert-dashboard.html#donations');
+      DS.alertFirm(r.firmId,'donation',r.pledge.charity+' confirmed your £'+Number(r.amount).toLocaleString('en-GB')+' donation. Your certificate is ready','firm-dashboard.html#donations');
+      changed=true; } });
+    if(changed) dispatchEvent(new Event('dapper-change'));
+    return changed; },
   myAlerts(){ const u=DS.me(); return u?load().alerts.filter(a=>a.to===u.id):[]; }
 };
 window.DS=DS;
+if(typeof setInterval==='function'&&typeof document!=='undefined'){ DS.tick(); setInterval(()=>DS.tick(),1000); }
+// another tab changed the store: let the page redraw
+addEventListener('storage',e=>{ if(e.key===KEY) setTimeout(()=>dispatchEvent(new Event('dapper-change')),0); });
 })();

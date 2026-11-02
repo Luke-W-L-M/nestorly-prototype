@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="og-image.png" alt="Nestorly: Specialise for charity" width="720">
+<img src="og-image.png" alt="Nestorly: Your knowledge. Their cause." width="720">
 
 # Nestorly
 
@@ -37,7 +37,7 @@ No contracts, no selling yourself: just your expertise, put to work for a cause 
 | Homepage | Find an expert |
 |---|---|
 | ![Homepage](docs/screenshots/home.png) | ![Find an expert](docs/screenshots/find.png) |
-| **Join as an expert** | **Expert dashboard: my impact** |
+| **Join as an expert** | **Expert dashboard: donations & impact** |
 | ![Join as an expert](docs/screenshots/join.png) | ![Expert impact](docs/screenshots/expert-impact.png) |
 | **Firm certificate of impact** | |
 | ![Firm certificate](docs/screenshots/firm-certificate.png) | |
@@ -101,7 +101,7 @@ Plain HTML, CSS and JavaScript with no build step, hosted on [GitHub Pages](http
 
 ## Status
 
-This is a **working click-through prototype with invented sample data**. Everything is saved only in your own browser. The people, firms and charities shown are fictional, and no sign-ins, payments, video calls or emails are real. The full site (accounts, database and email sending) is planned next. *Nestorly* is a working name.
+This is a **working click-through prototype with invented sample data**. Everything is saved only in your own browser. The people, firms and charities shown are fictional, and no sign-ins, payments, video calls or emails are real. The full site (accounts, database and email sending) is planned next. The name *Nestorly* was confirmed on 2 Nov 2026.
 
 ---
 

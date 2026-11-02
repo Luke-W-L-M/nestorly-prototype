@@ -248,41 +248,18 @@ html{scroll-snap-type:y mandatory}
       <div class="gatecard">
         <h2 id="gate-h">Create a free firm account to see full profiles and send requests</h2>
         <p>It takes a couple of minutes with your work email. Searching and preview cards stay open to everyone.</p>
-        <div class="acts"><a class="btn" href="firm-signup.html?from=expert">Create a firm account</a><a class="btn ghost" href="signin.html#firm">Sign in</a></div>
+        <div class="acts"><a class="btn" href="firm-signup.html?from=expert">Create a firm account</a><a class="btn ghost" href="signin.html?next=find.html">Sign in</a></div>
       </div>
     </div>
   </dialog>
 
 <footer id="site-foot"></footer>
+<script src="store.js"></script>
 <script src="site.js"></script>
 <script>
 const IND=['Finance & Investment','Energy & Natural Resources','Shipping, Transport & Logistics','Food, Agriculture & Fisheries','Health & Life Sciences','Technology & Telecoms','Manufacturing & Construction','Property & Infrastructure','Consumer, Retail & Hospitality','Media, Entertainment & Games','Environment & Sustainability','Government, Policy & Defence','Law & Professional Services','Education, Charities & Social Impact'];
-const E=[
- {n:'The Hon. Inglebert Montgomery-Smythe',top:'Founder, Broom Bay Seaweed',cur:'Founder, Broom Bay Seaweed',loc:'Ullapool, Scotland',yrs:27,ind:['Food, Agriculture & Fisheries','Environment & Sustainability'],spec:['Seaweed farming','Marine licensing','Aquaculture','Coastal communities'],
-  about:"I spent ten years as a site manager at Summer Isles Salmon, where I learned how marine licensing, water quality and coastal communities really work. Before that, five years as a deckhand and then mate on fisheries survey vessels taught me to read the sea and the weather. In 2012 I founded Broom Bay Seaweed, growing sugar kelp and dulse on longlines in Loch Broom; it now supplies food, cosmetics and fertiliser makers across the UK.",
-  jobs:[['Founder, Broom Bay Seaweed','2012 – now · 14 years','Sugar kelp and dulse on longlines in Loch Broom; supplies food, cosmetics and fertiliser makers.'],['Site manager, Summer Isles Salmon','2002 – 2012 · 10 years','Daily operations, marine licensing, water quality, community relations.'],['Deckhand, then mate, fisheries survey vessels','1997 – 2002 · 5 years','Survey work at sea.']],
-  edu:'BSc Marine Biology, University of Aberdeen',lang:'English, Scottish Gaelic',ch:'Loch Broom Lifeboat Fund',chd:'Funds the volunteer lifeboat crew serving Loch Broom and the Summer Isles.',why:"The crew came out for our boat in a winter gale in 2004. I've supported them ever since.",don:'£250–£400',donk:'per hour for calls'},
- {n:'Alejandro Ruiz Cárdenas',top:'Former CMO, Petrosur Energía · 24 years',cur:'Senior Strategy Officer, Golfo Infraestructura',loc:'Villahermosa, Mexico',yrs:31,ind:['Energy & Natural Resources','Property & Infrastructure'],spec:['Oil plant infrastructure','Southern Mexico','Energy marketing','Government relations'],
-  about:"For 24 years I led marketing at Petrosur Energía, selling refinery capacity and building the relationships that keep big plants running in southern Mexico. I now advise Golfo Infraestructura on where to build next, which means knowing the land, the permits and the people in Tabasco and Campeche.",
-  jobs:[['Senior Strategy Officer, Golfo Infraestructura','2019 – now · 7 years','Site selection and strategy for energy infrastructure in the Gulf of Mexico.'],['Chief Marketing Officer, Petrosur Energía','1995 – 2019 · 24 years','Marketing for refinery and storage capacity; partner and government relations.']],
-  edu:'MBA, IPADE Business School',lang:'Spanish, English',ch:'Bridges to Literacy',chd:'Runs reading clubs for children in under-served communities.',why:'',don:'£500',donk:'suggested per hour'},
- {n:'Aino Väisänen',top:'Head of Forestry, Lappi Woodlands · 18 years',cur:'Independent woodland adviser',loc:'Rovaniemi, Finland',yrs:26,ind:['Environment & Sustainability'],spec:['Northern forestry','Woodland carbon','Sustainable harvesting'],
-  about:"I ran forestry at Lappi Woodlands for 18 years, managing slow-growing northern forests where every harvest decision lasts a century. I now advise landowners and investors on woodland carbon and how to harvest without harming the forest.",
-  jobs:[['Independent woodland adviser','2020 – now · 6 years','Advice on woodland carbon and sustainable harvesting.'],['Head of Forestry, Lappi Woodlands','2002 – 2020 · 18 years','Managed 40,000 hectares of northern forest.']],
-  edu:'MSc Forest Sciences, University of Helsinki',lang:'Finnish, English, Swedish',ch:'Northern Woodland Trust',chd:'Plants and protects native woodland across northern Europe.',why:'',don:'Open',donk:'the firm decides'},
- {n:'Isla Morrow',top:'Founder, Kelpwell',cur:'Founder and CEO, Kelpwell',loc:'Oban, Scotland',yrs:15,ind:['Food, Agriculture & Fisheries','Consumer, Retail & Hospitality'],spec:['Fermented seaweed drinks','Drinks start-ups','Retail listings'],
-  about:"I founded Kelpwell in 2016 to make fermented seaweed drinks, and took it from a kitchen in Oban to shelves in three national supermarkets. I know what it takes to launch a new drink and win retail buyers.",
-  jobs:[['Founder and CEO, Kelpwell','2016 – now · 10 years','Fermented seaweed drinks sold in UK supermarkets.'],['Brand manager, Highland Springs Co.','2011 – 2016 · 5 years','Launched two soft drink lines.']],
-  edu:'BA Marketing, University of Stirling',lang:'English',ch:'Oban Food Bank',chd:'Provides emergency food parcels across Argyll.',why:'',don:'£150–£200',donk:'per hour for calls'},
- {n:'Priya Raman',top:'Former COO, Northbridge Shipping · 22 years',cur:'Non-executive director, Tidewater Ports',loc:'London, England',yrs:30,ind:['Shipping, Transport & Logistics','Finance & Investment'],spec:['Ship sale and purchase','Fleet operations','Port investment'],
-  about:"I spent 22 years at Northbridge Shipping, ending as chief operating officer of a 60-vessel fleet. I've bought, sold and run ships through three market cycles, and now sit on the board of Tidewater Ports.",
-  jobs:[['Non-executive director, Tidewater Ports','2021 – now · 5 years','Board oversight of UK port investments.'],['Chief Operating Officer, Northbridge Shipping','1999 – 2021 · 22 years','Fleet operations, vessel sale and purchase.']],
-  edu:'BSc Economics, London School of Economics',lang:'English, Tamil',ch:'Seafarers Support Network',chd:'Helps merchant seafarers and their families in hardship.',why:'',don:'£500',donk:'suggested per hour'},
- {n:'Tom Achterberg',top:'Former Director of Clinical Operations, Westvale Health · 16 years',cur:'Hospital operations consultant',loc:'Leeds, England',yrs:28,ind:['Health & Life Sciences'],spec:['Hospital operations','Waiting lists','Clinical staffing'],
-  about:"I ran clinical operations at Westvale Health for 16 years, responsible for theatres, wards and waiting lists across four hospitals. I now help hospitals cut waiting times without burning out their staff.",
-  jobs:[['Hospital operations consultant','2021 – now · 5 years','Waiting-list and staffing projects.'],['Director of Clinical Operations, Westvale Health','2005 – 2021 · 16 years','Theatres, wards and waiting lists across four hospitals.']],
-  edu:'MSc Healthcare Management, University of Leeds',lang:'English, Dutch',ch:'Yorkshire Carers Trust',chd:'Supports unpaid carers across Yorkshire.',why:'',don:'£250–£400',donk:'per hour for calls'}
-];
+// experts come from the shared store (2 Nov), so newly published profiles appear here too
+const E=DS.get().experts.filter(e=>e.status==='live');
 function keep(){try{sessionStorage.setItem('dapper-expert',String(sel))}catch(e){}}
 let ind=null, sel=0, shown=[];
 const $=id=>document.getElementById(id);

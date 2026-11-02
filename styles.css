@@ -307,3 +307,47 @@ main > .bleed:last-child::after{display:none}
   .top nav a.topcta{font-size:12px;padding:0 8px}
 }
 @media (prefers-reduced-motion:reduce){.top nav a.topcta:hover{transform:none}}
+
+/* Signed-in top bar (2 Nov): role-aware links, bell with unread count, account menu */
+.sr{position:absolute!important;left:-9999px;width:1px;height:1px;overflow:hidden}
+.top nav.r{align-items:center}
+.tb-pop{position:relative}
+.tb-bell{all:unset;box-sizing:border-box;cursor:pointer;position:relative;width:46px;height:46px;display:grid;place-items:center;border-radius:50%;transition:background .2s ease}
+.tb-bell svg{width:26px;height:26px}
+.tb-bell:hover,.tb-bell[aria-expanded="true"]{background:rgba(20,37,79,.1)}
+.tb-count{position:absolute;top:1px;right:-1px;min-width:22px;height:22px;box-sizing:border-box;padding:0 5px;border-radius:11px;background:#9B1236;color:#fff;border:2px solid #FBEFC6;font:700 12px/18px var(--ui);text-align:center}
+.tb-acct{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:8px;min-height:44px;padding:4px 12px 4px 4px;border:2px solid var(--ink);border-radius:999px;background:#fff;box-shadow:3px 3px 0 var(--ink);font:700 16px var(--ui);color:#14254F;transition:transform .2s ease,box-shadow .2s ease}
+.tb-acct:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.tb-av{width:34px;height:34px;border-radius:50%;background:#14254F;color:#F5F0E6;display:grid;place-items:center;font:700 14px var(--ui);letter-spacing:.02em}
+.tb-caret{width:12px;height:8px}
+.tb-bell:focus-visible,.tb-acct:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.tb-menu{position:absolute;right:0;top:calc(100% + 12px);z-index:30;box-sizing:border-box;min-width:270px;max-width:calc(100vw - 32px);background:#fff;border:3px solid var(--ink);border-radius:16px;box-shadow:6px 6px 0 var(--ink);padding:8px;text-align:left}
+.tb-menu ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.top nav .tb-menu a,.tb-menu li > button{all:unset;box-sizing:border-box;cursor:pointer;display:block;width:100%;padding:10px 12px;border-radius:10px;font:600 17px/1.35 var(--body);color:#14254F;text-transform:none;letter-spacing:0}
+.top nav .tb-menu a:hover,.tb-menu li > button:hover{background:#F5F0E6;color:#14254F}
+.top nav .tb-menu a:focus-visible,.tb-menu li > button:focus-visible{outline:3px solid var(--navy);outline-offset:-3px}
+.tb-menu li > button[data-signout]{border-top:2px solid #E9E2D3;border-radius:0 0 10px 10px;margin-top:4px}
+.tb-who{display:flex;flex-direction:column;padding:8px 12px 12px;border-bottom:2px solid #E9E2D3;margin-bottom:6px}
+.tb-who b{font:700 17px var(--ui);color:#14254F}
+.tb-who span{font-size:14px;color:#4A5675;overflow-wrap:anywhere}
+.tb-alerts{width:360px}
+.tb-mh{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:6px 10px 10px;border-bottom:2px solid #E9E2D3;margin-bottom:6px}
+.tb-mh b{font:700 17px var(--ui);color:#14254F}
+.tb-mh button{all:unset;cursor:pointer;font:700 14px var(--ui);color:#14254F;text-decoration:underline;text-underline-offset:3px}
+.tb-mh button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+.top nav .tb-alerts li a{font-size:16px;font-weight:400;border-left:4px solid transparent}
+.top nav .tb-alerts li.unread a{font-weight:700;border-left-color:#FF7A1A;background:#FFF6EC}
+.tb-alerts li a span{display:block;font-size:13px;font-weight:400;color:#4A5675;margin-top:2px}
+.tb-alerts li.none{padding:12px;color:#4A5675;font-size:16px}
+@media (max-width:700px){
+  .tb-pop{position:static}
+  .tb-menu{position:fixed;left:16px;right:16px;top:var(--tbm-top,120px);width:auto;max-width:none;max-height:calc(100svh - var(--tbm-top,120px) - 16px);overflow:auto}
+  .tb-nm{display:none}
+  .tb-acct{padding-right:10px}
+}
+/* footer: Reset prototype */
+.foot-reset{all:unset;cursor:pointer;color:var(--paper);font-size:18px}
+.foot-reset:hover{text-decoration:underline}
+.foot-reset:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+#reset-dlg .gatecard .btn{box-shadow:4px 4px 0 var(--ink)}
+#reset-dlg .gatecard p{color:var(--navy);margin:0;max-width:none;font-size:19px}

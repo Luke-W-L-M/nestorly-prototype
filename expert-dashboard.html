@@ -74,6 +74,7 @@ main{max-width:1180px;margin:0 auto;padding-block:48px 90px;display:flex;flex-di
   </div>
 </main>
 <footer id="site-foot"></footer>
+<script src="store.js"></script>
 <script src="site.js"></script>
 <script>
 const S={
@@ -105,7 +106,9 @@ const S={
 };
 const CH='Loch Broom Lifeboat Fund';
 const TABS=[['new','New requests'],['up','Upcoming'],['don','Donations'],['imp','My impact'],['prof','My profile']];
-let tab='new';
+const HASHTAB={'#requests':'new','#meetings':'up','#donations':'don','#profile':'prof','#questions':'new'}; // links from the account menu (2 Nov)
+let tab=HASHTAB[location.hash]||'new';
+addEventListener('hashchange',()=>{ tab=HASHTAB[location.hash]||tab; S.msg=''; draw(); scrollTo({top:0,behavior:'instant'}); });
 const $=id=>document.getElementById(id), gbp=n=>'£'+n.toLocaleString('en-GB');
 function trk(stage){ return DapperTracker.html(['Pledged','You sent it','Firm paid','Charity received'],stage); }
 function tabs(){

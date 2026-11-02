@@ -72,6 +72,7 @@ dialog.cd::backdrop{background:rgba(20,37,79,.62)}
 </main>
 <dialog class="cd" id="cdlg" aria-labelledby="cdT"><div class="wrap"><button class="x" type="button" id="cdx" aria-label="Close">×</button><h2 class="sec" id="cdT" style="font-size:28px;margin:0">Certificate of impact</h2><div class="ccert" id="cdc"></div><p class="hint" style="margin:0">Optional. Share it only if you would like to.</p><p class="post" id="cdp"></p><div class="acts"><button class="btn sm" type="button" data-done="Opening LinkedIn">Post on LinkedIn</button><button class="btn ghost sm" type="button" data-done="Saved">Download image</button></div></div></dialog>
 <footer id="site-foot"></footer>
+<script src="store.js"></script>
 <script src="site.js"></script>
 <script>
 const S={
@@ -87,7 +88,9 @@ const S={
 };
 try{ const L=JSON.parse(sessionStorage.getItem('dapper-lastreq')||'null'); if(L) S.requests.unshift({who:L.who,topic:L.topic,amt:L.amt,st:'wait',lab:'Waiting for reply',sent:'Sent just now',pledge:L.pledge}); }catch(e){}
 const TABS=[['req','Requests'],['book','Booked'],['pay','Donations to make'],['rec','Receipts'],['acc','Account']];
-let tab='req';
+const HASHTAB={'#requests':'req','#meetings':'book','#donations':'pay','#account':'acc','#questions':'req'}; // links from the account menu (2 Nov)
+let tab=HASHTAB[location.hash]||'req';
+addEventListener('hashchange',()=>{ tab=HASHTAB[location.hash]||tab; S.msg=''; draw(); scrollTo({top:0,behavior:'instant'}); });
 const $=id=>document.getElementById(id), gbp=n=>'£'+n.toLocaleString('en-GB');
 function trk(stage){ return DapperTracker.html(['Pledged','Expert sent it','You paid','Charity received'],stage); }
 function tabs(){

@@ -198,6 +198,7 @@ html{scroll-snap-type:y mandatory}
 </main>
 
 <footer id="site-foot"></footer>
+<script src="store.js"></script>
 <script src="site.js"></script>
 <script>
 // Prototype only: the checks below are simulated in the browser. The live site checks the email link and the website on the server.
@@ -250,7 +251,7 @@ function show(n,user){
   $('navrow').hidden=n===5;
   $('next').textContent=n===3?'Agree and continue →':'Continue →';
   if(n===4) $('rstat').textContent='';
-  if(n===5){ DapperFirm.signIn(); $('badge').innerHTML=DapperFirm.badges(false);
+  if(n===5){ const u=DS.addFirm({name:$('nm').value.trim(),title:$('jt').value.trim(),email:$('em').value.trim().toLowerCase(),org:$('org').value.trim(),site:host($('site').value),type:$('otype').value,size:$('size').value}); DS.signIn(u.id); $('badge').innerHTML=DapperFirm.badges(false);
     if(from&&from.n){ $('onward').textContent='Back to '+from.n+' →'; $('onward').href='find.html#expert-'+from.i; } }
   if(!user) return;
   // swap in place: the page keeps its position; only the card's own scroll goes back to the top

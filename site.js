@@ -11,20 +11,70 @@
   window.DAPPER_LOGO = LOGO;
   const here = (location.pathname.split('/').pop() || 'index.html');
   const cls = f => here===f ? ' class="here"' : '';
-  // page-specific button left of Sign in (30 Oct): Join gets "Start your profile", Find gets "Create a firm account" (not once a firm is signed in)
+  const DS = window.DS, me = DS ? DS.me() : null;
+  // pages that need an account (2 Nov): signed out → Sign in; the other role → their own dashboard
+  const NEED={'expert-dashboard.html':'expert','firm-dashboard.html':'firm','request.html':'firm'};
+  if(DS && NEED[here]){
+    if(!me){ location.replace('signin.html?next='+encodeURIComponent(here+location.search+location.hash)); return; }
+    if(me.role!==NEED[here]){ location.replace(DS.home(me)); return; }
+  }
+  // page-specific button left of Sign in (30 Oct): Join gets "Start your profile", Find gets "Create a firm account"; signed-in visitors never see them
   const cta = ()=>{
     if(here==='join.html') return '<a class="topcta" href="create-profile.html">Start your profile</a>';
-    let firm=false; try{ firm=sessionStorage.getItem('dapper-firm')==='1'; }catch(e){}
-    if(here==='find.html' && !firm) return '<a class="topcta tang" href="firm-signup.html">Create a firm account</a>';
+    if(here==='find.html') return '<a class="topcta tang" href="firm-signup.html">Create a firm account</a>';
     return '';
   };
+  const esc = t => String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const BELL='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-6 6v4.2L4.3 16.5h15.4L18 13.2V9a6 6 0 0 0-6-6z" fill="#14254F"/><path d="M9.5 18.5a2.5 2.5 0 0 0 5 0" fill="none" stroke="#14254F" stroke-width="2.2" stroke-linecap="round"/></svg>';
   const head = document.getElementById('site-head');
-  if(head){
+  if(head && !me){
     head.className='top gut';
     head.innerHTML = '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
       '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#FBEFC6','#1F9D55')+'</a>'+
       '<nav class="r" aria-label="Main right">'+cta()+'<a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
+  } else if(head){
+    // signed in (2 Nov): role-aware links, the bell and the account menu
+    const ex = me.role==='expert', dash = DS.home(me);
+    const left = ex
+      ? '<a href="expert-dashboard.html"'+(here===dash&&location.hash!=='#questions'?' class="here"':'')+'>Dashboard</a><a href="expert-dashboard.html#questions"'+(here===dash&&location.hash==='#questions'?' class="here"':'')+'>Open questions</a>'
+      : '<a href="find.html"'+cls('find.html')+'>Find an expert</a><a href="firm-dashboard.html"'+cls('firm-dashboard.html')+'>Dashboard</a>';
+    const items = ex
+      ? [['Dashboard',dash],['Donations & impact',dash+'#donations'],['Profile & settings',dash+'#profile']]
+      : [['Dashboard',dash],['Donations & receipts',dash+'#donations'],['Organisation & settings',dash+'#account']];
+    const org = ex ? 'Expert' : ((DS.firm(me.ref)||{}).name||'Firm');
+    const initials = me.name.split(/\s+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    head.className='top gut tb-in';
+    head.innerHTML = '<nav aria-label="Main left">'+left+'</nav>'+
+      '<a href="'+dash+'" aria-label="Dapperowl, your dashboard">'+LOGO('#FBEFC6','#1F9D55')+'</a>'+
+      '<nav class="r" aria-label="Your account">'+
+        '<div class="tb-pop"><button type="button" class="tb-bell" id="tb-bell" aria-expanded="false" aria-controls="tb-alerts">'+BELL+'<span class="tb-count" id="tb-count" hidden></span><span class="sr">Alerts</span></button>'+
+          '<div class="tb-menu tb-alerts" id="tb-alerts" hidden><div class="tb-mh"><b>Alerts</b><button type="button" id="tb-readall">Mark all read</button></div><ul id="tb-alist"></ul></div></div>'+
+        '<div class="tb-pop"><button type="button" class="tb-acct" id="tb-acct" aria-expanded="false" aria-controls="tb-amenu"><span class="tb-av" aria-hidden="true">'+esc(initials)+'</span><span class="tb-nm">'+esc(me.name.split(' ')[0])+'</span><svg class="tb-caret" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1l5 5 5-5" fill="none" stroke="#14254F" stroke-width="2"/></svg></button>'+
+          '<div class="tb-menu" id="tb-amenu" hidden><div class="tb-who"><b>'+esc(me.name)+'</b><span>'+esc(org)+'</span><span>'+esc(me.email)+'</span></div><ul>'+
+          items.map(([l,h])=>'<li><a href="'+h+'">'+esc(l)+'</a></li>').join('')+'<li><button type="button" data-signout>Sign out</button></li></ul></div></div>'+
+      '</nav>';
+    const pops=[['tb-bell','tb-alerts'],['tb-acct','tb-amenu']];
+    const close=(except)=>pops.forEach(([b,m])=>{ if(b===except) return; document.getElementById(m).hidden=true; document.getElementById(b).setAttribute('aria-expanded','false'); });
+    pops.forEach(([b,m])=>{ const btn=document.getElementById(b), menu=document.getElementById(m);
+      btn.addEventListener('click',e=>{ e.stopPropagation(); const open=menu.hidden; close(b); document.documentElement.style.setProperty('--tbm-top',Math.round(btn.getBoundingClientRect().bottom+10)+'px'); menu.hidden=!open; btn.setAttribute('aria-expanded',String(open)); if(open&&b==='tb-bell') drawAlerts(); }); });
+    document.addEventListener('click',e=>{ if(!e.target.closest('.tb-pop')) close(); });
+    document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ const o=pops.find(([b,m])=>!document.getElementById(m).hidden); if(o){ close(); document.getElementById(o[0]).focus(); } } });
+    // a hash link to the page you're on (e.g. Donations & impact from the dashboard) closes the menu
+    head.querySelectorAll('.tb-menu a').forEach(a=>a.addEventListener('click',()=>close()));
+    const ago=t=>{ const m=Math.round((Date.now()-new Date(t))/60000); return m<1?'just now':m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' d ago'; };
+    function drawAlerts(){
+      const list=DS.myAlerts(), n=list.filter(a=>!a.read).length, c=document.getElementById('tb-count');
+      c.hidden=!n; c.textContent=n>9?'9+':n; document.getElementById('tb-bell').setAttribute('aria-label','Alerts'+(n?', '+n+' unread':''));
+      document.getElementById('tb-alist').innerHTML=list.length?list.slice(0,8).map(a=>'<li class="'+(a.read?'':'unread')+'"><a href="'+esc(a.link)+'" data-a="'+a.id+'">'+esc(a.text)+'<span>'+ago(a.at)+'</span></a></li>').join(''):'<li class="none">Nothing new yet.</li>';
+      document.querySelectorAll('#tb-alist a').forEach(x=>x.addEventListener('click',()=>{ DS.update(s=>{ const al=s.alerts.find(y=>y.id===x.dataset.a); if(al) al.read=true; }); close(); }));
+    }
+    window.DapperAlerts={draw:drawAlerts};
+    document.getElementById('tb-readall').onclick=()=>{ DS.update(s=>s.alerts.forEach(a=>{ if(a.to===me.id) a.read=true; })); drawAlerts(); };
+    drawAlerts();
   }
+  // sign out from anywhere (the account menu, or any "Sign out" link or button): back to the homepage, signed out
+  document.addEventListener('click',e=>{ const t=e.target.closest&&e.target.closest('a,button'); if(!t) return;
+    if(t.hasAttribute('data-signout')||/^\s*sign out\s*$/i.test(t.textContent)){ e.preventDefault(); if(DS) DS.signOut(); location.href='index.html'; } });
   const foot = document.getElementById('site-foot');
   if(foot){
     foot.className='foot gut';
@@ -33,8 +83,15 @@
       '<p>Dapperowl is a community interest company. We never touch the money: 100% of every donation goes straight to the expert\'s chosen charity.</p>'+
       '<p>Questions? <span style="color:#fff;font-weight:700">hello@dapperowl.co.uk</span></p></div>'+
       '<div><h4>Pages</h4><ul><li><a href="find.html">Find an expert</a></li><li><a href="join.html">Join as an expert</a></li><li><a href="signin.html">Sign in</a></li></ul></div>'+
-      '<div><h4>Small print</h4><ul><li><a href="legal.html#terms">Terms</a></li><li><a href="legal.html#privacy">Privacy</a></li><li><a href="legal.html#conduct">Code of conduct</a></li><li><a href="legal.html#cookies">Cookies</a></li><li><a href="emails.html">Email designs</a></li></ul></div>'+
-      '<div class="base"><span>\u00a9 2026 Dapperowl CIC</span></div></div>';
+      '<div><h4>Small print</h4><ul><li><a href="legal.html#terms">Terms</a></li><li><a href="legal.html#privacy">Privacy</a></li><li><a href="legal.html#conduct">Code of conduct</a></li><li><a href="legal.html#cookies">Cookies</a></li><li><a href="emails.html">Email designs</a></li><li><button type="button" class="foot-reset" id="foot-reset">Reset prototype</button></li></ul></div>'+
+      '<div class="base"><span>\u00a9 2026 Dapperowl CIC</span></div></div>'+
+      '<dialog class="enldlg" id="reset-dlg" aria-labelledby="reset-h"><div class="gatecard"><h2 id="reset-h">Reset the prototype?</h2><p>This clears everything created in this browser (profiles, firm accounts, requests, messages) and puts the sample data back. You\'ll be signed out.</p><div class="acts"><button type="button" class="btn" id="reset-yes">Reset</button><button type="button" class="btn ghost" id="reset-no">Cancel</button></div></div></dialog>';
+    const dlg=document.getElementById('reset-dlg');
+    document.getElementById('foot-reset').onclick=()=>{ if(dlg.showModal) dlg.showModal(); else if(confirm('Reset the prototype?')) doReset(); };
+    document.getElementById('reset-no').onclick=()=>dlg.close();
+    dlg.addEventListener('click',e=>{ if(e.target===dlg) dlg.close(); });
+    const doReset=()=>{ if(window.DS) DS.reset(); location.href='index.html'; };
+    document.getElementById('reset-yes').onclick=doReset;
   }
 })();
 
@@ -221,14 +278,13 @@
   const TICK='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#14254F"/><path d="M5.8 10.3l2.8 2.8 5.6-6" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const STAR='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9" fill="#fff"/><path d="M10 4.6l1.6 3.4 3.7.4-2.8 2.5.8 3.7L10 12.7l-3.3 1.9.8-3.7-2.8-2.5 3.7-.4z" fill="#1F9D55"/></svg>';
   window.DapperFirm={
-    signedIn(){ try{ return sessionStorage.getItem(K)==='1'; }catch(e){ return false; } },
-    signIn(){ try{ sessionStorage.setItem(K,'1'); }catch(e){} },
-    signOut(){ try{ sessionStorage.removeItem(K); }catch(e){} },
+    // backed by the shared store (2 Nov): signed in as a firm account
+    signedIn(){ const u=window.DS&&DS.me(); return !!(u&&u.role==='firm'); },
+    signIn(userId){ if(window.DS&&userId) DS.signIn(userId); },
+    signOut(){ if(window.DS) DS.signOut(); },
     // every verified firm gets the first badge; "Reliable donor" after 3 out of 3 donations on time (no numbers shown)
     badges(reliable){ return '<span class="fbadges"><span class="fbadge">'+TICK+'Verified organisation</span>'+(reliable?'<span class="fbadge rel">'+STAR+'Reliable donor</span>':'')+'</span>'; },
     pledgeText(p){ return 'I, '+p.name+', '+p.title+', pledge on behalf of '+p.company+' to donate £'+Number(p.amount).toLocaleString('en-GB')+' to '+p.charity+' within 48 hours of the expert pressing Send.'; },
     signedBlock(p){ return '<div class="signed"><span class="eyebrow">Signed pledge</span><q>'+this.pledgeText(p)+'</q><span class="by">Signed by '+p.name+', '+p.title+' <span>· '+p.at+'</span></span></div>'; }
   };
-  // signing out from a firm page clears the prototype's signed-in state
-  document.addEventListener('click',e=>{ const a=e.target.closest&&e.target.closest('a'); if(a&&/sign out/i.test(a.textContent)) window.DapperFirm.signOut(); });
 })();

@@ -18,72 +18,127 @@
 <link rel="stylesheet" href="styles.css">
 <style>
 main{max-width:640px;margin:0 auto;padding-block:56px 90px;display:flex;flex-direction:column;gap:26px}
-.who{display:grid;grid-template-columns:1fr 1fr;border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:4px 4px 0 var(--ink)}
-.who button{font-family:var(--ui);font-weight:700;font-size:18px;padding:14px;border:none;background:var(--white);color:var(--navy);cursor:pointer}
-.who button[aria-pressed="true"]{background:var(--ink);color:var(--white)}
 .card{display:flex;flex-direction:column;gap:20px}
 .social{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.social .btn{background:var(--white);color:var(--navy);text-transform:none;letter-spacing:0;font-size:18px}
+.social .btn{background:var(--white);color:var(--navy);text-transform:none;letter-spacing:0;font-size:18px;gap:10px}
+.social .btn svg{width:22px;height:22px;flex:none}
 .or{display:flex;align-items:center;gap:14px;color:var(--muted);font-family:var(--ui);font-weight:600}
 .or::before,.or::after{content:"";flex:1;height:2px;background:var(--navy);opacity:.25}
 .sent{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
-.ctx{background:#DCE5FF;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;font-size:18px}
+.ctx{background:#FFF6EC;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;font-size:18px;margin:0}
+.err{color:#A3202F;font-weight:700;font-size:16px}
+.unknown{border:3px solid var(--ink);border-radius:16px;background:var(--paper);padding:20px 22px;display:flex;flex-direction:column;gap:14px}
+.unknown p{margin:0}
+.unknown .acts{display:flex;gap:12px;flex-wrap:wrap}
+.unknown .btn.tang{background:#FF7A1A;color:#14254F}
+.unknown .btn.tang:hover{background:#E86A0C}
+.samples{border-top:2px dashed #C9C2B3;padding-top:16px;font-size:16px;color:var(--muted)}
+.samples summary{cursor:pointer;font-family:var(--ui);font-weight:700;color:var(--navy)}
+.samples ul{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.samples button{all:unset;cursor:pointer;color:var(--navy);text-decoration:underline;text-underline-offset:3px;font-weight:600}
+.samples button:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+/* mock Google / LinkedIn account picker */
+.pick{padding:0;border:0;background:none;max-width:none;max-height:none;overflow:visible}
+.pick::backdrop{background:rgba(20,37,79,.8)}
+.pickbox{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);width:min(440px,calc(100vw - 32px));box-sizing:border-box;padding:28px 24px 22px;display:flex;flex-direction:column;gap:14px;color:var(--navy)}
+.pickbox h2{margin:0;font-family:var(--ui);font-size:22px}
+.pickbox p{margin:0;font-size:16px;color:var(--muted)}
+.pickbox ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-height:50svh;overflow:auto}
+.pickbox li button{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:flex;gap:12px;align-items:center;padding:10px 12px;border:2px solid #E9E2D3;border-radius:12px}
+.pickbox li button:hover,.pickbox li button:focus-visible{border-color:var(--ink);background:var(--paper);outline:none}
+.pickbox .av{flex:none;width:38px;height:38px;border-radius:50%;background:#14254F;color:#F5F0E6;display:grid;place-items:center;font:700 14px var(--ui)}
+.pickbox .who{display:flex;flex-direction:column;min-width:0}
+.pickbox .who b{font-family:var(--ui);font-size:16px}
+.pickbox .who span{font-size:14px;color:var(--muted);overflow-wrap:anywhere}
+.pickbox .mock{font-family:var(--ui);font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 @media (max-width:600px){.social{grid-template-columns:1fr}}
 </style>
 </head><body>
 <header id="site-head"></header>
 <main class="gut">
   <h1 class="page">Sign in</h1>
-  <p class="ctx" id="ctx" hidden>To see full profiles and request a conversation, sign in with your firm account, or create one first. It's free.</p>
-  <div class="who" role="group" aria-label="I am">
-    <button type="button" id="asExpert" aria-pressed="true">I'm an expert</button>
-    <button type="button" id="asFirm" aria-pressed="false">I'm a firm</button>
-  </div>
+  <p class="lead" style="margin:0">One sign-in for experts and firms. No password to remember.</p>
+  <p class="ctx" id="ctx" hidden>Sign in to carry on where you were.</p>
 
   <form class="card" id="form" novalidate>
     <div id="step1" style="display:flex;flex-direction:column;gap:20px">
-      <p class="lead" style="margin:0">No password to remember. We'll email you a link to sign in.</p>
       <div class="social">
-        <button type="button" class="btn" data-go>Continue with Google</button>
-        <button type="button" class="btn" data-go>Continue with LinkedIn</button>
+        <button type="button" class="btn" data-pick="Google"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#14254F" stroke-width="2.4"/><path d="M12 11h8" stroke="#14254F" stroke-width="2.4"/></svg>Continue with Google</button>
+        <button type="button" class="btn" data-pick="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="4" fill="#14254F"/><path d="M7 10v7M7 7v.01M11 17v-4a2.5 2.5 0 0 1 5 0v4M11 10v7" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>Continue with LinkedIn</button>
       </div>
       <div class="or">or</div>
-      <div class="f"><label for="em" id="emlab">Your email address</label><input type="email" id="em" value="inglebert@example.co.uk" autocomplete="email"><small id="emhint">Use the email on your expert profile.</small></div>
-      <p id="newfirm" hidden style="margin:0;font-size:18px">New firm? <a class="link" href="firm-signup.html">Create a free firm account →</a> You'll need a work email on your company's domain.</p>
+      <div class="f"><label for="em">Your email address</label><input type="email" id="em" autocomplete="email" aria-describedby="em-h em-e" placeholder="you@example.com"><small id="em-h">We'll email you a link to sign in.</small><span class="err" id="em-e" hidden></span></div>
       <button type="submit" class="btn">Email me a sign-in link</button>
-      <p style="margin:0;font-size:18px" id="joinline">New expert? <a class="link" href="join.html">Join as an expert →</a></p>
+      <div class="unknown" id="unknown" hidden>
+        <p><b>We don't have an account for <span id="unk-em"></span>.</b> Check the spelling, or create one:</p>
+        <div class="acts"><a class="btn sm" href="create-profile.html">Join as an expert</a><a class="btn sm tang" href="firm-signup.html">Create a firm account</a></div>
+      </div>
+      <details class="samples"><summary>Prototype only: sample accounts</summary>
+        <ul id="samples"></ul>
+      </details>
     </div>
     <div class="sent" id="step2" hidden>
-      <h2 class="sec" style="font-size:34px">Check your email</h2>
-      <p style="margin:0">We've sent a sign-in link to <b id="sentto"></b>. It works for 15 minutes.</p>
-      <a class="btn" id="open" href="expert-dashboard.html">Open the sign-in link →</a>
+      <h2 class="sec" style="font-size:34px" tabindex="-1" id="sent-h">Check your email</h2>
+      <p style="margin:0">We've emailed you a sign-in link at <b id="sentto"></b>. It works for 15 minutes.</p>
+      <button type="button" class="btn" id="open">Open the link →</button>
       <button type="button" class="btn ghost sm" id="again">Use a different email</button>
     </div>
   </form>
 </main>
+<dialog class="pick" id="pick" aria-labelledby="pick-h">
+  <div class="pickbox">
+    <span class="mock">Prototype only · pretend <span id="pick-p">Google</span></span>
+    <h2 id="pick-h">Choose an account</h2>
+    <p>to continue to Dapperowl</p>
+    <ul id="pick-list"></ul>
+    <button type="button" class="btn ghost sm" id="pick-x" style="align-self:flex-start">Cancel</button>
+  </div>
+</dialog>
 <footer id="site-foot"></footer>
+<script src="store.js"></script>
 <script src="site.js"></script>
 <script>
-const req = location.hash==='#request';
-let firm = req || location.hash==='#firm';
+// One sign-in for both roles (2 Nov): the account's role decides where it lands. ?next= sends it back to the page it came from.
 const $=id=>document.getElementById(id);
-function dest(){ return firm ? (req ? 'request.html' : 'firm-dashboard.html') : 'expert-dashboard.html'; }
-function mode(f){
-  firm=f;
-  $('asExpert').setAttribute('aria-pressed',!f); $('asFirm').setAttribute('aria-pressed',f);
-  $('newfirm').hidden=!f; $('joinline').hidden=f;
-  $('em').value = f ? 'james.okafor@harbourline.example.com' : 'inglebert@example.co.uk';
-  $('emlab').textContent = f ? 'Your work email' : 'Your email address';
-  $('emhint').textContent = f ? 'Use the work email your firm account is registered with.' : 'Use the email on your expert profile.';
-  $('open').href=dest();
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const next=new URLSearchParams(location.search).get('next');
+$('ctx').hidden=!next;
+const NEEDS={'request.html':'firm','firm-dashboard.html':'firm','expert-dashboard.html':'expert','find.html':'firm'};
+function go(u){
+  DS.signIn(u.id);
+  const page=next&&next.split(/[?#]/)[0];
+  location.href=(next&&/^[\w\-]+\.html([?#].*)?$/.test(next)&&(!NEEDS[page]||NEEDS[page]===u.role))?next:DS.home(u);
 }
-$('ctx').hidden=!req;
-$('asExpert').onclick=()=>mode(false); $('asFirm').onclick=()=>mode(true);
-const go=()=>{ if(firm) DapperFirm.signIn(); };
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{go();location.href=dest();});
-$('open').addEventListener('click',go);
-$('form').addEventListener('submit',e=>{e.preventDefault();$('sentto').textContent=$('em').value;$('step1').hidden=true;$('step2').hidden=false;$('open').href=dest();});
-$('again').onclick=()=>{$('step2').hidden=true;$('step1').hidden=false;};
-mode(firm);
+let pending=null;
+$('form').addEventListener('submit',e=>{
+  e.preventDefault();
+  const em=$('em').value.trim(); $('unknown').hidden=true;
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ $('em-e').textContent='Please enter your email address.'; $('em-e').hidden=false; $('em').setAttribute('aria-invalid','true'); $('em').focus(); return; }
+  $('em-e').hidden=true; $('em').removeAttribute('aria-invalid');
+  const u=DS.userByEmail(em);
+  if(!u){ $('unk-em').textContent=em; $('unknown').hidden=false; return; }
+  pending=u; $('sentto').textContent=u.email; $('step1').hidden=true; $('step2').hidden=false; $('sent-h').focus();
+});
+$('open').onclick=()=>{ if(pending) go(pending); };
+$('again').onclick=()=>{ $('step2').hidden=true; $('step1').hidden=false; $('em').focus(); };
+// sample accounts: experts and firms in the store, including any you've created
+function people(){
+  const s=DS.get();
+  return s.users.map(u=>({u,sub:u.role==='expert'?'Expert':((DS.firm(u.ref)||{}).name||'Firm')}));
+}
+$('samples').innerHTML=people().map(({u,sub})=>'<li><button type="button" data-em="'+esc(u.email)+'">'+esc(u.email)+'</button> · '+esc(sub)+'</li>').join('');
+$('samples').querySelectorAll('button').forEach(b=>b.onclick=()=>{ $('em').value=b.dataset.em; $('em').focus(); });
+// mock Google / LinkedIn: pick one of the sample accounts
+const P=$('pick');
+document.querySelectorAll('[data-pick]').forEach(b=>b.onclick=()=>{
+  $('pick-p').textContent=b.dataset.pick;
+  $('pick-list').innerHTML=people().map(({u,sub})=>'<li><button type="button" data-id="'+u.id+'"><span class="av">'+esc(u.name.split(/\s+/).map(w=>w[0]).slice(0,2).join(''))+'</span><span class="who"><b>'+esc(u.name)+'</b><span>'+esc(u.email)+' · '+esc(sub)+'</span></span></button></li>').join('');
+  $('pick-list').querySelectorAll('button').forEach(x=>x.onclick=()=>go(DS.get().users.find(u=>u.id===x.dataset.id)));
+  if(P.showModal) P.showModal(); else go(people()[0].u);
+});
+$('pick-x').onclick=()=>P.close();
+P.addEventListener('click',e=>{ if(e.target===P) P.close(); });
+// already signed in: straight to your dashboard
+if(DS.me()) location.replace(DS.home());
 </script>
 </body></html>

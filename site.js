@@ -29,8 +29,8 @@
   const head = document.getElementById('site-head');
   if(head && !me){
     head.className='top gut';
-    head.innerHTML = '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
-      '<a href="index.html" aria-label="Nestorly home">'+LOGO('navy')+'</a>'+
+    head.innerHTML = '<a href="index.html" aria-label="Nestorly home">'+LOGO('navy')+'</a>'+
+      '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
       '<nav class="r" aria-label="Main right">'+cta()+'<a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
   } else if(head){
     // signed in (2 Nov): role-aware links, the bell and the account menu
@@ -44,8 +44,8 @@
     const org = ex ? 'Expert' : ((DS.firm(me.ref)||{}).name||'Firm');
     const initials = me.name.split(/\s+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
     head.className='top gut tb-in';
-    head.innerHTML = '<nav aria-label="Main left">'+left+'</nav>'+
-      '<a href="'+dash+'" aria-label="Nestorly, your dashboard">'+LOGO('navy')+'</a>'+
+    head.innerHTML = '<a href="'+dash+'" aria-label="Nestorly, your dashboard">'+LOGO('navy')+'</a>'+
+      '<nav aria-label="Main left">'+left+'</nav>'+
       '<nav class="r" aria-label="Your account">'+
         '<div class="tb-pop"><button type="button" class="tb-bell" id="tb-bell" aria-expanded="false" aria-controls="tb-alerts">'+BELL+'<span class="tb-count" id="tb-count" hidden></span><span class="sr">Alerts</span></button>'+
           '<div class="tb-menu tb-alerts" id="tb-alerts" hidden><div class="tb-mh"><b>Alerts</b><button type="button" id="tb-readall">Mark all read</button></div><ul id="tb-alist"></ul></div></div>'+

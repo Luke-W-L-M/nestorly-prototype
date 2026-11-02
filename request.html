@@ -41,6 +41,15 @@ fieldset>*:not(legend){clear:both}
 .sent{display:flex;flex-direction:column;gap:18px;align-items:flex-start}
 .sent svg{width:80px;height:80px}
 @media (max-width:960px){.layout{grid-template-columns:1fr}.side{position:static;order:-1}.pledge{grid-template-columns:1fr}.time{grid-template-columns:40px minmax(0,1fr)}.time input[type=time]{grid-column:2}}
+.sample{all:unset;cursor:pointer;align-self:flex-start;font-family:var(--ui);font-weight:700;font-size:16px;color:var(--navy);text-decoration:underline;text-underline-offset:3px;border:2px dashed #C9C2B3;border-radius:10px;padding:6px 12px;text-decoration:none}
+.sample:focus-visible{outline:3px solid var(--navy);outline-offset:2px}
+#form .btn[type=submit],#sent .btn{background:#FF7A1A;color:#14254F}
+#form .btn[type=submit]:hover,#sent .btn:hover{background:#E86A0C}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+label.chip{cursor:pointer;display:inline-flex;align-items:center;gap:8px;border:2px solid var(--ink);border-radius:999px;padding:8px 16px;font-family:var(--ui);font-weight:600;font-size:17px;background:#fff}
+label.chip input{position:absolute;opacity:0;width:1px;height:1px}
+label.chip:has(input:checked){background:var(--ink);color:#fff}
+label.chip:has(input:focus-visible){outline:3px solid var(--navy);outline-offset:2px}
 </style>
 </head><body>
 <header id="site-head"></header>
@@ -48,25 +57,24 @@ fieldset>*:not(legend){clear:both}
   <div style="display:flex;flex-direction:column;gap:12px">
     <a class="link" href="find.html" style="font-size:17px">← Back to Find an expert</a>
     <h1 class="page">Request a conversation</h1>
-    <p class="lead">Signed in as <b>James Okafor, Harbourline Capital</b>. The expert will reply within a few days.</p>
+    <p class="lead">Signed in as <b id="who"></b>. The expert will reply within a few days.</p>
   </div>
   <div class="layout">
     <form class="card" id="form" novalidate>
+      <button type="button" class="sample" id="sample">Prototype only: fill in sample answers</button>
       <fieldset>
         <legend>About you</legend>
         <div class="row">
-          <div class="f"><label for="nm">Your name</label><input type="text" id="nm" value="James Okafor"></div>
-          <div class="f"><label for="rl">Your role</label><input type="text" id="rl" value="Investment Director"></div>
+          <div class="f"><label for="nm">Your name</label><input type="text" id="nm"></div>
+          <div class="f"><label for="rl">Your role</label><input type="text" id="rl"></div>
         </div>
-        <div class="f"><label for="org">Organisation</label><input type="text" id="org" value="Harbourline Capital"></div>
+        <div class="f"><label for="org">Organisation</label><input type="text" id="org" readonly></div>
       </fieldset>
       <fieldset>
         <legend>What you'd like to discuss</legend>
-        <div class="f"><label for="topic">Topic</label><input type="text" id="topic" value="Scaling seaweed farming in the Scottish Highlands"></div>
-        <div class="f"><label for="goal">What you hope to get out of it</label><textarea id="goal" style="min-height:100px">Decide by December whether to invest about £2m in a new longline seaweed farm on the west coast of Scotland, and understand what a realistic plan for the first five years looks like.</textarea><small>The expert sees this first. Be specific about the decision you're making.</small></div>
-        <div class="f"><label for="qs">Questions you'd like to cover</label><textarea id="qs">1. What does it cost to set up a new longline site, and how long does licensing take?
-2. Which buyers (food, cosmetics, fertiliser) are growing fastest?
-3. What are the biggest risks in the first three years?</textarea></div>
+        <div class="f"><label for="topic">Topic</label><input type="text" id="topic" placeholder="e.g. Choosing a site for a new seaweed farm"></div>
+        <div class="f"><label for="goal">What you hope to get out of it</label><textarea id="goal" style="min-height:100px" placeholder="The decision you're making, and by when"></textarea><small>The expert sees this first. Be specific about the decision you're making.</small></div>
+        <div class="f"><label for="qs">Questions you'd like to cover</label><textarea id="qs" placeholder="One question per line"></textarea></div>
         <div class="f"><span class="lab">Format</span><div class="chips" role="radiogroup" aria-label="Format">
           <label class="chip"><input type="radio" name="fmt" id="f1" checked>Phone or video call</label>
           <label class="chip"><input type="radio" name="fmt" id="f2">Written advice</label>
@@ -74,17 +82,17 @@ fieldset>*:not(legend){clear:both}
           <label class="chip"><input type="radio" name="fmt" id="f4">Talk or presentation</label>
           <label class="chip"><input type="radio" name="fmt" id="f5">Mentoring</label>
         </div></div>
-        <div class="f"><label for="bg">What you already know <span class="opt">(optional)</span></label><textarea id="bg" style="min-height:90px">We have read the Crown Estate Scotland seaweed reports and spoken to two buyers. We have not visited a site yet.</textarea></div>
-        <div class="row"><div class="f"><label for="att">Who will attend</label><input type="text" id="att" value="James Okafor (Investment Director), Mei Chen (Analyst)"></div><div class="f"><label for="doc">Anything for the expert to read <span class="opt">(optional)</span></label><input type="file" id="doc" style="font-size:17px"></div></div>
+        <div class="f"><label for="bg">What you already know <span class="opt">(optional)</span></label><textarea id="bg" style="min-height:90px"></textarea></div>
+        <div class="row"><div class="f"><label for="att">Who will attend</label><input type="text" id="att"></div><div class="f"><label for="doc">Anything for the expert to read <span class="opt">(optional)</span></label><input type="file" id="doc" style="font-size:17px"></div></div>
         <div class="f"><label for="len">Length</label><select id="len"><option>30 minutes</option><option selected>1 hour</option><option>90 minutes</option><option>Half a day</option></select></div>
       </fieldset>
       <fieldset>
         <legend>Three times that suit you</legend>
         <p class="hint" style="margin:0">The expert picks one, or suggests another time. You'll both get a calendar invite and a video link.</p>
         <div class="times">
-          <div class="time"><span>1</span><input type="date" id="d1" value="2026-11-04" aria-label="First date"><input type="time" id="t1" value="10:00" aria-label="First time"></div>
-          <div class="time"><span>2</span><input type="date" id="d2" value="2026-11-05" aria-label="Second date"><input type="time" id="t2" value="14:30" aria-label="Second time"></div>
-          <div class="time"><span>3</span><input type="date" id="d3" value="2026-11-10" aria-label="Third date"><input type="time" id="t3" value="11:00" aria-label="Third time"></div>
+          <div class="time"><span>1</span><input type="date" id="d1" aria-label="First date"><input type="time" id="t1" value="10:00" aria-label="First time"></div>
+          <div class="time"><span>2</span><input type="date" id="d2" aria-label="Second date"><input type="time" id="t2" value="14:30" aria-label="Second time"></div>
+          <div class="time"><span>3</span><input type="date" id="d3" aria-label="Third date"><input type="time" id="t3" value="11:00" aria-label="Third time"></div>
         </div>
       </fieldset>
       <fieldset>
@@ -138,43 +146,66 @@ fieldset>*:not(legend){clear:both}
     <h2 class="sec">Request sent</h2>
     <p class="lead" id="sentmsg"></p>
     <div id="sentpledge" style="width:100%;max-width:760px"></div>
-    <div class="acts"><a class="btn" href="firm-dashboard.html">Go to My bookings →</a></div>
+    <div class="acts"><a class="btn" id="todash" href="firm-dashboard.html">Go to my dashboard →</a></div>
   </div>
 </main>
 <footer id="site-foot"></footer>
 <script src="store.js"></script>
 <script src="site.js"></script>
 <script>
-const X=[
- ['The Hon. Inglebert Montgomery-Smythe','Founder, Broom Bay Seaweed','Loch Broom Lifeboat Fund','£250–£400','per hour for calls'],
- ['Alejandro Ruiz Cárdenas','Senior Strategy Officer, Golfo Infraestructura','Bridges to Literacy','£500','suggested per hour'],
- ['Aino Väisänen','Independent woodland adviser','Northern Woodland Trust','Open','the firm decides'],
- ['Isla Morrow','Founder and CEO, Kelpwell','Oban Food Bank','£150–£200','per hour for calls'],
- ['Priya Raman','Non-executive director, Tidewater Ports','Seafarers Support Network','£500','suggested per hour'],
- ['Tom Achterberg','Hospital operations consultant','Yorkshire Carers Trust','£250–£400','per hour for calls']];
-let i=0; try{ i=+(sessionStorage.getItem('dapper-expert')||0); }catch(e){}
-const x=X[i]||X[0], $=id=>document.getElementById(id);
-$('xn').textContent=x[0]; $('xr').textContent=x[1]; $('xc').textContent='Supports: '+x[2];
-$('sug').textContent=x[3]; $('sugk').textContent=x[4];
-$('to').textContent='100% goes to '+x[2]+'.';
+// Request form (2 Nov): the expert comes from ?expert=, the firm from the signed-in account; sending creates the request in the shared store
+const $=id=>document.getElementById(id), esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const me=DS.me(), firm=me&&DS.firm(me.ref);
+const qp=new URLSearchParams(location.search);
+let x=DS.expert(qp.get('expert'));
+if(!x){ let i=0; try{ i=+(sessionStorage.getItem('dapper-expert')||0); }catch(e){} x=DS.get().experts.filter(e=>e.status==='live')[i]||DS.get().experts[0]; }
+const fromQ=DS.get().questions.find(q=>q.id===qp.get('q'));
+$('who').textContent=me.name+', '+firm.name;
+$('nm').value=me.name; $('rl').value=me.title||''; $('org').value=firm.name;
+$('pn').value=me.name; $('pt').value=me.title||'';
+$('xn').textContent=x.n; $('xr').textContent=x.cur; $('xc').textContent='Supports: '+x.ch;
+$('sug').textContent=x.don; $('sugk').textContent=x.donk;
+$('to').textContent='100% goes to '+x.ch+'.';
+if(fromQ){ $('topic').value=fromQ.title; $('goal').value=fromQ.desc; }
+// three times next week, on the hour
+const t0=new Date(); t0.setHours(0,0,0,0); const ymd=d=>{ const z=new Date(t0.getTime()+d*86400000); return z.getFullYear()+'-'+String(z.getMonth()+1).padStart(2,'0')+'-'+String(z.getDate()).padStart(2,'0'); };
+$('d1').value=ymd(7); $('d2').value=ymd(8); $('d3').value=ymd(10);
+$('sample').onclick=()=>{ const sp=(x.spec&&x.spec[0]||x.ind[0]||'your field').toLowerCase();
+  if(!$('topic').value) $('topic').value='Advice on '+sp;
+  if(!$('goal').value) $('goal').value='We are deciding by the end of the quarter whether to invest in '+sp+', and want a practitioner\'s honest view before we commit.';
+  $('qs').value=['What do newcomers usually underestimate?','What would a realistic first year look like?','Who should we talk to next?'].map((q,i)=>(i+1)+'. '+q).join('\n');
+  $('bg').value='We have read the main industry reports but have not spoken to anyone working in it yet.';
+  $('att').value=me.name+(me.title?' ('+me.title+')':'');
+  const m=String(x.don).match(/\d[\d,]*/); $('amt').value=m?m[0].replace(/,/g,''):300;
+  document.querySelectorAll('.ag').forEach(a=>a.checked=true); $('psign').checked=true; showP(); $('topic').focus(); };
 // the pledge sentence fills in as the firm types
-const P=()=>({name:$('pn').value.trim()||'[full name]',title:$('pt').value.trim()||'[job title]',company:$('org').value.trim()||'[company]',amount:+$('amt').value||0,charity:x[2]});
+const P=()=>({name:$('pn').value.trim()||'[full name]',title:$('pt').value.trim()||'[job title]',company:firm.name,amount:+$('amt').value||0,charity:x.ch});
 const showP=()=>{ const p=P(); $('ptext').textContent=DapperFirm.pledgeText(p).replace('£0 ','£[amount] '); };
-['pn','pt','org','amt'].forEach(id=>$(id).addEventListener('input',showP)); showP();
+['pn','pt','amt'].forEach(id=>$(id).addEventListener('input',showP)); showP();
 $('form').addEventListener('submit',e=>{
   e.preventDefault();
   const amt=+$('amt').value, ags=[...document.querySelectorAll('.ag')];
+  const times=[1,2,3].map(i=>$('d'+i).value?new Date($('d'+i).value+'T'+($('t'+i).value||'10:00')).toISOString():null).filter(Boolean);
   let msg='';
-  if(!amt) msg='Please enter the amount you\'ll donate.';
+  if(!$('topic').value.trim()||!$('goal').value.trim()) msg='Please add a topic and what you hope to get out of it.';
+  else if(!times.length) msg='Please suggest at least one time.';
+  else if(!amt) msg='Please enter the amount you\'ll donate.';
   else if(!ags.every(a=>a.checked)) msg='Please tick all six points in "Our agreement".';
   else if(!$('pn').value.trim()||!$('pt').value.trim()) msg='Please type your full name and job title to sign the pledge.';
   else if(!$('psign').checked) msg='Please tick "I sign this pledge".';
-  $('err').textContent=msg; $('err').hidden=!msg; if(msg) return;
-  $('sentmsg').textContent='We\'ve sent your request to '+x[0]+', with a pledged donation of £'+amt.toLocaleString('en-GB')+' to '+x[2]+'. We\'ll email you when they reply.';
-  const now=new Date(), pl=Object.assign(P(),{at:now.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+now.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})});
-  $('sentpledge').innerHTML=DapperFirm.signedBlock(pl);
-  try{ sessionStorage.setItem('dapper-lastreq',JSON.stringify({who:x[0],topic:$('topic').value.trim(),amt:amt,pledge:pl})); }catch(err){}
-  document.querySelector('.layout').hidden=true; $('sent').hidden=false; window.scrollTo({top:0,behavior:'smooth'});
+  $('err').textContent=msg; $('err').hidden=!msg; if(msg){ $('err').scrollIntoView({block:'center'}); return; }
+  const fmt=document.querySelector('input[name=fmt]:checked'), pl=Object.assign(P(),{at:new Date().toISOString()});
+  const id=DS.update(s=>{ const rid='r'+(++s.seq);
+    s.requests.push({id:rid,firmId:firm.id,expertId:x.id,state:'sent',created:new Date().toISOString(),topic:$('topic').value.trim(),goal:$('goal').value.trim(),
+      questions:$('qs').value.split('\n').map(q=>q.replace(/^\s*\d+[.)]\s*/,'').trim()).filter(Boolean),fmt:fmt?fmt.parentElement.textContent.trim():'Phone or video call',length:$('len').value,
+      times,amount:amt,pledge:pl,conf:$('conf').checked,attendees:$('att').value.trim(),known:$('bg').value.trim(),docs:$('doc').files[0]?$('doc').files[0].name:'',
+      compliance:$('comp').checked,record:$('rec').checked,fromQuestion:fromQ?fromQ.id:null,messages:[],meeting:null,donation:{stage:1},declined:null});
+    return rid; });
+  DS.alertExpert(x.id,'request','New request from '+firm.name+': '+$('topic').value.trim(),'expert-dashboard.html#request-'+id);
+  $('sentmsg').textContent='We\'ve sent your request to '+x.n+', with a pledged donation of £'+amt.toLocaleString('en-GB')+' to '+x.ch+'. We\'ll let you know when they reply.';
+  $('sentpledge').innerHTML=DapperFirm.signedBlock(Object.assign({},pl,{at:DS.when(pl.at)}));
+  $('todash').href='firm-dashboard.html#request-'+id;
+  document.querySelector('.layout').hidden=true; $('sample').hidden=true; $('sent').hidden=false; window.scrollTo({top:0,behavior:'smooth'});
 });
 </script>
 </body></html>

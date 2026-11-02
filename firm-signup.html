@@ -131,19 +131,19 @@ html{scroll-snap-type:y mandatory}
       <div data-step="1">
         <h2 tabindex="-1">Your details</h2>
         <p class="lead">Experts see who they're meeting, so please use your own name and work email.</p>
-        <div class="f"><label for="nm">Full name</label><input type="text" id="nm" value="Sarah Lindqvist" autocomplete="name" aria-describedby="nm-e"><span class="err" id="nm-e" hidden></span></div>
-        <div class="f"><label for="jt">Job title</label><input type="text" id="jt" value="Head of Strategy" autocomplete="organization-title" aria-describedby="jt-e"><span class="err" id="jt-e" hidden></span></div>
-        <div class="f"><label for="em">Work email</label><input type="email" id="em" value="sarah.lindqvist@northfieldfoods.example.com" autocomplete="email" aria-describedby="em-h em-e"><small id="em-h">Personal addresses (Gmail, Outlook, Hotmail, Yahoo, iCloud and similar) can't be used.</small><span class="err" id="em-e" hidden></span></div>
+        <div class="f"><label for="nm">Full name</label><input type="text" id="nm" value="Rowan Hale" autocomplete="name" aria-describedby="nm-e"><span class="err" id="nm-e" hidden></span></div>
+        <div class="f"><label for="jt">Job title</label><input type="text" id="jt" value="Head of Research" autocomplete="organization-title" aria-describedby="jt-e"><span class="err" id="jt-e" hidden></span></div>
+        <div class="f"><label for="em">Work email</label><input type="email" id="em" value="rowan.hale@brightwaterventures.example.com" autocomplete="email" aria-describedby="em-h em-e"><small id="em-h">Personal addresses (Gmail, Outlook, Hotmail, Yahoo, iCloud and similar) can't be used.</small><span class="err" id="em-e" hidden></span></div>
       </div>
 
       <div data-step="2" hidden>
         <h2 tabindex="-1">Your organisation</h2>
         <p class="lead">This is what experts see in "About the firm" on every request.</p>
-        <div class="f"><label for="org">Organisation name</label><input type="text" id="org" value="Northfield Foods" autocomplete="organization" aria-describedby="org-e"><span class="err" id="org-e" hidden></span></div>
-        <div class="f"><label for="site">Website</label><input type="text" id="site" value="northfieldfoods.example.com" inputmode="url" aria-describedby="site-h site-e"><small id="site-h">It must match your email: you@<b>yourcompany.com</b> and <b>yourcompany.com</b>.</small><span class="err" id="site-e" hidden></span></div>
+        <div class="f"><label for="org">Organisation name</label><input type="text" id="org" value="Brightwater Ventures" autocomplete="organization" aria-describedby="org-e"><span class="err" id="org-e" hidden></span></div>
+        <div class="f"><label for="site">Website</label><input type="text" id="site" value="brightwaterventures.example.com" inputmode="url" aria-describedby="site-h site-e"><small id="site-h">It must match your email: you@<b>yourcompany.com</b> and <b>yourcompany.com</b>.</small><span class="err" id="site-e" hidden></span></div>
         <div class="row">
-          <div class="f"><label for="otype">Organisation type</label><select id="otype" aria-describedby="otype-e"><option value="">Choose one</option><option>Investor</option><option selected>Company</option><option>Event organiser</option><option>NGO or charity</option><option>Public body</option><option>Other</option></select><span class="err" id="otype-e" hidden></span></div>
-          <div class="f"><label for="size">Size</label><select id="size" aria-describedby="size-e"><option value="">Choose one</option><option>1–10</option><option>11–50</option><option>51–250</option><option selected>251–1,000</option><option>1,000+</option></select><span class="err" id="size-e" hidden></span></div>
+          <div class="f"><label for="otype">Organisation type</label><select id="otype" aria-describedby="otype-e"><option value="">Choose one</option><option selected>Investor</option><option>Company</option><option>Event organiser</option><option>NGO or charity</option><option>Public body</option><option>Other</option></select><span class="err" id="otype-e" hidden></span></div>
+          <div class="f"><label for="size">Size</label><select id="size" aria-describedby="size-e"><option value="">Choose one</option><option>1–10</option><option selected>11–50</option><option>51–250</option><option>251–1,000</option><option>1,000+</option></select><span class="err" id="size-e" hidden></span></div>
         </div>
       </div>
 
@@ -158,7 +158,7 @@ html{scroll-snap-type:y mandatory}
           <li>It's a personal view, not professional advice: our decisions are our own.</li>
         </ol>
         <div class="pledge"><p><b>Plus a signed pledge with every request.</b> A named person states the charity and the amount, and the expert sees it before saying yes. You confirm these points again on each request. Firms that don't donate get reminders, then lose their account.</p></div>
-        <label class="tick"><input type="checkbox" id="agree" aria-describedby="agree-e"><span>I agree on behalf of <span id="agorg">Northfield Foods</span></span></label>
+        <label class="tick"><input type="checkbox" id="agree" aria-describedby="agree-e"><span>I agree on behalf of <span id="agorg">Brightwater Ventures</span></span></label>
         <span class="terr" id="agree-e" hidden></span>
       </div>
 
@@ -218,6 +218,7 @@ const checks={
     const em=$('em').value.trim();
     if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) ok=say('em-e','Please enter your work email address.')&&ok;
     else if(isFree(dom())) ok=say('em-e','Please use your work email.')&&ok;
+    else if(DS.userByEmail(em)) ok=say('em-e','There\'s already an account for this email. Please sign in instead.')&&ok;
     else say('em-e','');
     return ok; },
   2(){ let ok=true; const site=host($('site').value), d=dom();

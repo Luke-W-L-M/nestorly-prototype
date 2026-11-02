@@ -128,6 +128,11 @@ h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,6
 .cat.out .list{position:static;max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:4px}
 .cat.out .prof{display:none}
 .ec .go{margin-top:12px;align-self:flex-start}
+.pacts{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.savebtn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;gap:8px;align-items:center;min-height:48px;padding:0 16px;border:3px solid var(--ink);border-radius:14px;background:#fff;font-family:var(--ui);font-weight:700;font-size:17px;color:var(--navy);box-shadow:4px 4px 0 var(--ink)}
+.savebtn svg{width:22px;height:22px;color:#fff}
+.savebtn[aria-pressed="true"] svg{color:#FF7A1A}
+.savebtn:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
 /* ===== Find an expert (2 Nov): the Join page system in tangerine. Navy header with search, apricot results, navy closing band; snap scrolling ===== */
 :root{--topbar:86px}
 html{scroll-snap-type:y mandatory}
@@ -275,15 +280,23 @@ function list(){
     b.innerHTML='<span class="nm">'+esc(e.n)+'</span><span class="rl">'+esc(e.top)+'</span>'+(e.cur&&e.cur!==e.top?'<span class="mt">Now: '+esc(e.cur)+'</span>':'')+'<span class="mt">Based in '+esc(e.loc)+'</span><span class="mt">'+esc(e.ind.join(' · '))+'</span><span class="chr">Supports: '+esc(e.ch)+'</span>'+(OUT?'<span class="btn sm go" aria-hidden="true">Request a conversation</span>':'');
     b.onclick=()=>{sel=i;keep();if(OUT) return gate(b);list();prof();if(innerWidth<960)$('prof').scrollIntoView({behavior:'smooth'});};$('list').appendChild(b);});
 }
+// signed-in firms can save experts (2 Nov): a bookmark, kept in the shared store
+const ME=DS.me(), FIRM=ME&&ME.role==='firm'?ME.ref:null;
+const BM='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z" fill="currentColor" stroke="#141414" stroke-width="2" stroke-linejoin="round"/></svg>';
+const isSaved=id=>!!FIRM&&((DS.get().saved[FIRM]||[]).includes(id));
+function saveBtn(e){ return FIRM?'<button type="button" class="savebtn" data-save="'+esc(e.id)+'" aria-pressed="'+isSaved(e.id)+'">'+BM+'<span>'+(isSaved(e.id)?'Saved':'Save')+'</span></button>':''; }
+function wireSave(){ document.querySelectorAll('[data-save]').forEach(b=>b.onclick=ev=>{ ev.stopPropagation(); const id=b.dataset.save;
+  DS.update(s=>{ const l=s.saved[FIRM]=s.saved[FIRM]||[]; const k=l.indexOf(id); if(k<0) l.push(id); else l.splice(k,1); });
+  const on=isSaved(id); document.querySelectorAll('[data-save="'+id+'"]').forEach(x=>{ x.setAttribute('aria-pressed',on); x.querySelector('span').textContent=on?'Saved':'Save'; }); }); }
 function prof(){
   const e=E[sel];
-  $('prof').innerHTML='<div class="ph"><div class="pic">'+person+'</div><div class="pt"><h2>'+esc(e.n)+'</h2><span class="hl">'+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+' · '+e.yrs+' years\' experience</span><a class="link" style="font-size:17px" href="https://www.linkedin.com/" target="_blank" rel="noopener">View LinkedIn profile ↗</a></div><a class="btn req" href="request.html" onclick="keep()">Request a conversation</a></div>'
+  $('prof').innerHTML='<div class="ph"><div class="pic">'+person+'</div><div class="pt"><h2>'+esc(e.n)+'</h2><span class="hl">'+esc(e.cur)+'</span><span class="mt">Based in '+esc(e.loc)+' · '+e.yrs+' years\' experience</span><a class="link" style="font-size:17px" href="https://www.linkedin.com/" target="_blank" rel="noopener">View LinkedIn profile ↗</a></div><div class="pacts"><a class="btn req" href="request.html?expert='+encodeURIComponent(e.id)+'" onclick="keep()">Request a conversation</a>'+saveBtn(e)+'</div></div>'
   +'<section><h3>Industries and specialities</h3><div class="tags">'+e.ind.map(t=>'<span class="ind">'+esc(t)+'</span>').join('')+e.spec.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div></section>'
   +'<section><h3>About</h3><p>'+esc(e.about)+'</p></section>'
   +'<section><h3>Career</h3><ol class="tl">'+e.jobs.map(j=>'<li><div><b>'+esc(j[0])+'</b><span class="w">'+esc(j[1])+'</span><p>'+esc(j[2])+'</p></div></li>').join('')+'</ol></section>'
   +'<section class="two"><div><h3>Education</h3><p>'+esc(e.edu)+'</p></div><div><h3>Languages</h3><p>'+esc(e.lang)+'</p></div></section>'
   +'<section><h3>Chosen charity</h3><div class="charity"><b>'+esc(e.ch)+'</b><p>'+esc(e.chd)+'</p>'+(e.why?'<p><q>'+esc(e.why)+'</q></p>':'')+'</div></section>'
-  +'<section class="don"><div><h3>Suggested donation</h3><span class="amt">'+esc(e.don)+'</span><small>'+esc(e.donk)+' · 100% goes to '+esc(e.ch)+'</small></div><a class="btn" href="request.html" onclick="keep()">Request a conversation</a></section>';
+  +'<section class="don"><div><h3>Suggested donation</h3><span class="amt">'+esc(e.don)+'</span><small>'+esc(e.donk)+' · 100% goes to '+esc(e.ch)+'</small></div><a class="btn" href="request.html?expert='+encodeURIComponent(e.id)+'" onclick="keep()">Request a conversation</a></section>'; wireSave();
 }
 function render(){ $('count').textContent=shown.length+(shown.length===1?' expert':' experts')+(ind?' in '+ind:''); list(); if(shown.length&&!OUT) prof(); }
 // Signed-out visitors (30 Oct): search and preview cards are open to all; full profiles and requests need a verified firm account
@@ -325,9 +338,10 @@ if(pv && pme && pme.role==='expert' && pme.ref===pv){
   requestAnimationFrame(()=>toResults(true)); addEventListener('load',()=>toResults(true));
 }
 // back from the firm sign-up (#expert-N): open that expert's full profile straight away
-const back=/^#expert-(\d+)$/.exec(location.hash);
-if(back && E[+back[1]] && !OUT){
-  sel=+back[1]; shown=E.map((_,i)=>i); state('cat'); render();
+const back=/^#expert-([\w-]+)$/.exec(location.hash);
+const backI=back?(/^\d+$/.test(back[1])?+back[1]:E.findIndex(e=>e.id===back[1])):-1;
+if(back && E[backI] && !OUT){
+  sel=backI; shown=E.map((_,i)=>i); state('cat'); render();
   $('count').textContent='Showing all '+E.length+' experts';
   const c=$('e'+sel); if(c) $('list').scrollTop=c.getBoundingClientRect().top-$('list').getBoundingClientRect().top-4;
   if('scrollRestoration' in history) history.scrollRestoration='manual';

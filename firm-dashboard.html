@@ -57,105 +57,89 @@ dialog.cd::backdrop{background:rgba(20,37,79,.62)}
 .cd .post{font-size:17px;background:var(--white);border:2px solid var(--soft);border-radius:12px;padding:12px 14px;margin:0}
 @media (max-width:760px){.certs{grid-template-columns:1fr}}
 @media (max-width:760px){.pay{grid-template-columns:1fr}}
+.ok-msg{margin:0}
+.tabs button{font-size:16px;padding:11px 14px}
+.tabs button[aria-selected="true"]{padding-bottom:14px}
+.btn.tang,.panel .btn:not(.ghost):not(.green){background:#FF7A1A;color:#14254F}
+.btn.tang:hover,.panel .btn:not(.ghost):not(.green):hover{background:#E86A0C}
+.panel .btn:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.empty{color:var(--muted);font-size:18px;border:3px dashed var(--ink);border-radius:16px;padding:20px;margin:0}
+.acts{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.sec2{margin:0;font-family:var(--head);font-weight:400;font-size:32px;line-height:1.1;text-transform:uppercase;color:var(--navy)}
+.todo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.tcard{border:3px solid var(--ink);border-radius:18px;background:var(--paper);padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.tcard h3{margin:0;font-family:var(--ui);font-size:19px;display:flex;gap:10px;align-items:center}
+.tcard h3 .badge{background:var(--navy)}
+.tcard.wide{grid-column:1/-1}
+.trow{display:flex;justify-content:space-between;align-items:center;gap:14px;border-top:2px solid #E2DACA;padding-top:12px}
+.trow b{font-family:var(--ui);font-size:17px;display:block}
+.trow span{color:var(--muted);font-size:16px}
+.trow .btn{flex:none}
+.seg{display:inline-flex;flex-wrap:wrap;border:3px solid var(--ink);border-radius:12px;overflow:hidden;align-self:flex-start}
+.seg button{all:unset;cursor:pointer;font-family:var(--ui);font-weight:700;font-size:16px;padding:10px 16px;color:var(--navy);background:#fff}
+.seg button+button{border-left:3px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#F5F0E6}
+.seg button:focus-visible{outline:3px solid var(--navy);outline-offset:-5px}
+.back{all:unset;cursor:pointer;font-family:var(--ui);font-weight:700;font-size:17px;color:var(--navy);text-decoration:underline;text-underline-offset:4px;align-self:flex-start}
+.back:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.goal{background:#FCEFC7;border:3px solid var(--ink);border-radius:14px;padding:14px 18px;box-shadow:4px 4px 0 var(--ink)}
+.goal p{margin:6px 0 0;font-size:19px;font-weight:600}
+.rsec{display:flex;flex-direction:column;gap:8px}
+.rsec ol{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:6px;font-size:18px}
+.panel2{background:var(--white);border:3px solid var(--ink);border-radius:16px;padding:22px;display:flex;flex-direction:column;gap:16px}
+.panel2 h3{margin:0;font-family:var(--head);font-weight:400;font-size:28px;text-transform:uppercase}
+.panel2.acc{border-color:var(--green);box-shadow:5px 5px 0 var(--green)}
+.xcard{display:flex;gap:18px;align-items:center;border:3px solid var(--ink);border-radius:16px;background:#fff;padding:16px 18px}
+.xcard .av{flex:none;width:64px;height:64px;border-radius:14px;border:3px solid var(--ink);background:#E9E2D3;display:grid;place-items:end center;overflow:hidden}
+.xcard .av svg{width:50px;height:50px}
+.xcard b{font-family:var(--ui);font-size:19px;display:block}
+.xcard span{color:var(--muted);font-size:16px}
+.xcard .acts{margin-left:auto}
+.thread{display:flex;flex-direction:column;gap:10px}
+.msg{max-width:78%;border:2px solid var(--ink);border-radius:14px;padding:10px 14px;background:#fff;font-size:18px}
+.msg.me{align-self:flex-end;background:#FFE7D4}
+.msg small{display:block;color:var(--muted);font-size:14px;font-family:var(--ui);font-weight:600;margin-bottom:2px}
+.msgform{display:flex;gap:10px;align-items:flex-end}
+.msgform textarea{flex:1;min-height:60px;font:inherit;font-size:18px;border:3px solid var(--ink);border-radius:12px;padding:10px 14px;background:var(--paper);color:var(--navy)}
+.q{border:3px solid var(--ink);border-radius:18px;background:var(--paper);padding:20px 22px;display:flex;flex-direction:column;gap:12px}
+.q h3{margin:0;font-family:var(--ui);font-size:21px}
+.q p{margin:0}
+.q .meta{color:var(--muted);font-size:16px}
+.hand{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;border-top:2px solid #E2DACA;padding-top:12px}
+.hand .note2{white-space:pre-line;font-size:17px;border-left:5px solid var(--green);padding:4px 12px;background:#fff;margin-top:6px}
+.qform{display:flex;flex-direction:column;gap:14px;border:3px solid var(--ink);border-radius:18px;background:#FFF6EC;padding:20px 22px}
+.qform input,.qform select,.qform textarea,.oform input,.oform select{font:inherit;font-size:19px;color:var(--navy);background:#fff;border:3px solid var(--ink);border-radius:12px;padding:12px 14px;width:100%;box-sizing:border-box}
+.qform textarea{min-height:100px}
+.oform{display:flex;flex-direction:column;gap:18px}
+.oform fieldset{border:3px solid var(--ink);border-radius:16px;padding:18px 20px;display:flex;flex-direction:column;gap:14px;margin:0}
+.oform legend{font-family:var(--ui);font-weight:700;font-size:19px;padding:0 6px}
+.oform input[readonly]{background:#F5F0E6}
+.tgl{all:unset;cursor:pointer;display:inline-flex;gap:12px;align-items:center;font-family:var(--ui);font-weight:700;font-size:17px;color:var(--navy)}
+.tgl i{width:52px;height:30px;border-radius:999px;border:3px solid var(--ink);background:#E9E2D3;position:relative;box-sizing:border-box;flex:none}
+.tgl i::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--ink);transition:transform .2s ease}
+.tgl[aria-checked="true"] i{background:#1F9D55}
+.tgl[aria-checked="true"] i::after{transform:translateX(22px);background:#fff}
+.tgl:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.team li{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;border-top:2px solid #E2DACA;padding-top:10px}
+.teamform{display:grid;grid-template-columns:1fr 1fr 1.4fr auto;gap:12px;align-items:end}
+@media (max-width:760px){.teamform{grid-template-columns:1fr}}
+.team{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+@media (max-width:760px){.todo{grid-template-columns:1fr}.trow{flex-wrap:wrap}.msg{max-width:92%}.msgform{flex-direction:column;align-items:stretch}.xcard{flex-wrap:wrap}.xcard .acts{margin-left:0}}
 </style>
 </head><body>
 <header id="site-head"></header>
 <main class="gut">
   <div class="hello">
-    <div><span class="eyebrow">Harbourline Capital</span><h1 class="page">My bookings</h1></div>
-    <div class="acts"><a class="btn sm" href="find.html">Find an expert</a><a class="btn ghost sm" href="index.html">Sign out</a></div>
+    <div><span class="eyebrow" id="orgname">Firm dashboard</span><h1 class="page" id="hi">Hello</h1></div>
+    <a class="btn sm tang" href="find.html">Find an expert</a>
   </div>
   <div>
     <div class="tabs" role="tablist" id="tabs"></div>
     <div class="panel" id="panel" role="tabpanel"></div>
   </div>
 </main>
-<dialog class="cd" id="cdlg" aria-labelledby="cdT"><div class="wrap"><button class="x" type="button" id="cdx" aria-label="Close">×</button><h2 class="sec" id="cdT" style="font-size:28px;margin:0">Certificate of impact</h2><div class="ccert" id="cdc"></div><p class="hint" style="margin:0">Optional. Share it only if you would like to.</p><p class="post" id="cdp"></p><div class="acts"><button class="btn sm" type="button" data-done="Opening LinkedIn">Post on LinkedIn</button><button class="btn ghost sm" type="button" data-done="Saved">Download image</button></div></div></dialog>
 <footer id="site-foot"></footer>
 <script src="store.js"></script>
 <script src="site.js"></script>
-<script>
-const S={
-  requests:[
-    {who:'The Hon. Inglebert Montgomery-Smythe',topic:'Scaling seaweed farming in the Scottish Highlands',amt:350,st:'wait',lab:'Waiting for reply',sent:'Sent today',pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:350,charity:'Loch Broom Lifeboat Fund',at:'30 Oct 2026, 09:12'}},
-    {who:'Aino Väisänen',topic:'Woodland carbon in northern Finland',amt:500,st:'ok',lab:'Accepted',sent:'Sent 20 Oct',pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:500,charity:'Northern Woodland Trust',at:'20 Oct 2026, 11:05'}},
-    {who:'Priya Raman',topic:'Port investment outlook',amt:500,st:'no',lab:'Declined',sent:'Sent 12 Oct',why:'Priya is fully booked this month.',pledge:{name:'James Okafor',title:'Investment Director',company:'Harbourline Capital',amount:500,charity:'Seafarers Support Network',at:'12 Oct 2026, 15:47'}}
-  ],
-  booked:[{who:'Aino Väisänen',when:'Mon 2 Nov, 09:00 · Video call · 1 hour',contact:'aino@example.fi'}],
-  pay:[{id:'p1',who:'The Hon. Inglebert Montgomery-Smythe',what:'Video call, 21 Oct',amt:350,ch:'Loch Broom Lifeboat Fund',ref:'DO-0047',stage:2,due:'Please donate by Fri 23 Oct (48 hours)'}],
-  receipts:[['8 Oct 2026','Loch Broom Lifeboat Fund','The Hon. Inglebert Montgomery-Smythe','DO-0042',500,'seaweed farming',true],['24 Sep 2026','Seafarers Support Network','Priya Raman','DO-0035',600,'port investment',false],['3 Sep 2026','Northern Woodland Trust','Aino Väisänen','DO-0029',450,'woodland carbon',true]],
-  named:false, rated:0, msg:''
-};
-try{ const L=JSON.parse(sessionStorage.getItem('dapper-lastreq')||'null'); if(L) S.requests.unshift({who:L.who,topic:L.topic,amt:L.amt,st:'wait',lab:'Waiting for reply',sent:'Sent just now',pledge:L.pledge}); }catch(e){}
-const TABS=[['req','Requests'],['book','Booked'],['pay','Donations to make'],['rec','Receipts'],['acc','Account']];
-const HASHTAB={'#requests':'req','#meetings':'book','#donations':'pay','#account':'acc','#questions':'req'}; // links from the account menu (2 Nov)
-let tab=HASHTAB[location.hash]||'req';
-addEventListener('hashchange',()=>{ tab=HASHTAB[location.hash]||tab; S.msg=''; draw(); scrollTo({top:0,behavior:'instant'}); });
-const $=id=>document.getElementById(id), gbp=n=>'£'+n.toLocaleString('en-GB');
-function trk(stage){ return DapperTracker.html(['Pledged','Expert sent it','You paid','Charity received'],stage); }
-function tabs(){
-  const n={req:S.requests.filter(r=>r.st==='wait').length,pay:S.pay.filter(p=>p.stage===2).length};
-  $('tabs').innerHTML=TABS.map(([k,l])=>'<button role="tab" id="tab-'+k+'" aria-selected="'+(k===tab)+'" data-k="'+k+'">'+l+(n[k]?' <span class="badge">'+n[k]+'</span>':'')+'</button>').join('');
-  $('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{tab=b.dataset.k;S.msg='';draw();});
-}
-function draw(){
-  tabs(); let h=S.msg?'<p class="ok-msg">'+S.msg+'</p>':'';
-  if(tab==='req'){
-    h+='<h2 class="sec" style="font-size:32px">Requests</h2>';
-    S.requests.forEach(r=>{h+='<div class="item"><div class="item-h"><div><b>'+r.who+'</b><span class="meta">'+r.topic+' · '+r.sent+'</span></div><span class="pill '+r.st+'">'+r.lab+'</span></div><dl class="dl"><dt>Pledged</dt><dd>'+gbp(r.amt)+'</dd>'+(r.why?'<dt>Reason</dt><dd>'+r.why+'</dd>':'')+'</dl>'+(r.pledge?DapperFirm.signedBlock(r.pledge):'')+(r.st==='no'?'<div class="acts"><a class="btn ghost sm" href="find.html">Find another expert</a></div>':'')+(r.st==='ok'?'<div class="acts"><button class="btn ghost sm" data-k2="book">See booking</button></div>':'')+'</div>';});
-  }
-  if(tab==='book'){
-    h+='<h2 class="sec" style="font-size:32px">Booked</h2>';
-    S.booked.forEach(b=>{h+='<div class="item"><div class="item-h"><div><b>'+b.who+'</b><span class="meta">'+b.when+'</span></div><span class="pill ok">Booked</span></div><dl class="dl"><dt>Contact</dt><dd>'+b.contact+'</dd></dl><div class="acts"><button class="btn sm" type="button" data-done="Opening the call">Join video call</button><button class="btn ghost sm" type="button" data-done="Added to calendar">Add to calendar</button></div></div>';});
-  }
-  if(tab==='pay'){
-    h+='<h2 class="sec" style="font-size:32px">Donations to make</h2><p class="lead" style="margin:0">Donate on the charity\'s own page, quote the reference, then upload your receipt. Dapperowl never touches the money.</p>';
-    S.pay.forEach(p=>{
-      h+='<div class="item"><div class="item-h"><div><b>'+p.who+'</b><span class="meta">'+p.what+'</span></div><span class="pill '+(p.stage===2?'wait':'ok')+'">'+(p.stage===2?p.due:'Paid')+'</span></div>'+trk(p.stage);
-      if(p.stage===2){
-        h+='<div class="pay"><div class="box" style="display:flex;flex-direction:column;gap:10px"><span class="eyebrow">Step 1 · Donate</span><span style="font-size:19px"><b>'+gbp(p.amt)+'</b> to <b>'+p.ch+'</b></span><span>Quote this reference:</span><span class="ref">'+p.ref+'</span><button class="btn sm" type="button" data-done="Opening the charity\'s page">Donate on the charity\'s page ↗</button></div>'+
-        '<div class="upload"><span class="eyebrow">Step 2 · Upload your receipt</span><label for="up'+p.id+'" class="lab" style="font-size:17px">Donation confirmation (PDF, image or email)</label><input type="file" id="up'+p.id+'"><button class="btn green sm" data-paid="'+p.id+'">I\'ve donated, send receipt</button></div></div>'+
-        '<details><summary class="lab" style="cursor:pointer">Something went wrong? Flag a problem</summary><div class="radios" style="display:flex;flex-direction:column;gap:10px;margin-top:12px"><label class="radio"><input type="radio" name="fl'+p.id+'">The expert didn\'t show up (nothing is owed)</label><label class="radio"><input type="radio" name="fl'+p.id+'">The session was cut short or started late (pay part, with a reason the expert sees)</label><button class="btn ghost sm" type="button" style="align-self:flex-start" data-done="Problem flagged. We\'ll be in touch within a working day">Flag problem</button></div></details>';
-      } else h+='<p style="margin:0;font-size:18px">Receipt sent to the expert. We\'ll let you know when '+p.ch+' confirms.</p>';
-      h+='</div>';
-    });
-    h+='<div class="item"><b style="font-family:var(--ui);font-size:20px">How was your conversation with Aino?</b><span class="meta">Private rating, seen only by Dapperowl.</span><div class="stars" id="stars">'+[1,2,3,4,5].map(n=>'<button type="button" aria-label="'+n+' stars" data-r="'+n+'" class="'+(n<=S.rated?'on':'')+'">★</button>').join('')+'</div></div>';
-  }
-  if(tab==='rec'){
-    const tot=S.receipts.reduce((a,r)=>a+r[4],0);
-    h+='<h2 class="sec" style="font-size:32px">Receipts</h2><p class="lead" style="margin:0">'+gbp(tot)+' donated to 3 charities through Dapperowl. Use these for your charity reporting.</p><div class="tw"><table><thead><tr><th>Date</th><th>Charity</th><th>Expert</th><th>Reference</th><th>Amount</th><th></th></tr></thead><tbody>'+
-      S.receipts.map((r,i)=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td><td>'+r[2]+'</td><td>'+r[3]+'</td><td class="num">'+gbp(r[4])+'</td><td><div class="acts" style="flex-wrap:nowrap"><button class="btn ghost sm" type="button" data-done="Downloaded">Receipt</button>'+(r[7]?'<span class="meta">Certificate once the charity confirms</span>':'<button class="btn sm" type="button" data-cert="'+i+'">Certificate</button>')+'</div></td></tr>').join('')+'</tbody></table></div><div class="acts"><button class="btn sm" type="button" id="csv">Export all (CSV)</button></div>'+
-      '<div class="yr"><span class="eyebrow">Optional · for LinkedIn or your annual report</span><b style="font-family:var(--ui);font-size:21px">Your 2026 certificate of impact</b><p style="margin:0;font-size:18px">One certificate showing every charity your donations reached this year. Each certificate is made once the charity confirms the donation, and names an expert only if they agree.</p><div class="acts"><button class="btn sm" type="button" data-cert="year">See your 2026 certificate</button></div></div>';
-  }
-  if(tab==='acc'){
-    h+='<h2 class="sec" style="font-size:32px">Account</h2><div style="display:flex;flex-direction:column;gap:8px"><span class="lab">Your badges, as experts see them</span>'+DapperFirm.badges(true)+'<p class="hint" style="margin:0">Every verified firm shows "Verified organisation". "Reliable donor" is added once your first donations have all been made on time.</p></div><dl class="dl"><dt>Organisation</dt><dd>Harbourline Capital</dd><dt>Type</dt><dd>Investor</dd><dt>Size</dt><dd>11–50 people</dd><dt>Website</dt><dd>harbourline.example.com (verified)</dd><dt>Team</dt><dd>James Okafor (you) · Mei Chen</dd></dl>'+
-      '<label class="switch"><input type="checkbox" id="named" '+(S.named?'checked':'')+'>Name Harbourline Capital on experts\' LinkedIn certificates</label><p class="hint" style="margin:0">Off by default: certificates say "a firm" unless you opt in.</p><div class="acts"><button class="btn ghost sm" type="button" data-done="Invite sent">Invite a colleague</button></div>';
-  }
-  $('panel').innerHTML=h;
-  $('panel').querySelectorAll('[data-k2]').forEach(b=>b.onclick=()=>{tab=b.dataset.k2;draw();});
-  $('panel').querySelectorAll('[data-paid]').forEach(b=>b.onclick=()=>{const p=S.pay.find(x=>x.id===b.dataset.paid);p.stage=3;S.receipts.unshift(['Today',p.ch,p.who,p.ref,p.amt,'',false,true]);S.msg='Thank you. Your receipt has gone to '+p.who.split(' ').slice(-1)[0]+', and we\'ve asked '+p.ch+' to confirm.';draw();});
-  const st=$('stars'); if(st) st.querySelectorAll('button').forEach(b=>b.onclick=()=>{S.rated=+b.dataset.r;draw();});
-  $('panel').querySelectorAll('[data-cert]').forEach(b=>b.onclick=()=>cert(b.dataset.cert));
-  const cv=$('csv'); if(cv) cv.onclick=()=>{const rows=[['Date','Charity','Expert','Reference','Amount (GBP)']].concat(S.receipts.map(r=>[r[0],r[1],r[2],r[3],r[4]]));const blob=new Blob([rows.map(r=>r.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(',')).join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='dapperowl-donations.csv';a.click();};
-  const nm=$('named'); if(nm) nm.onchange=()=>{S.named=nm.checked;};
-}
-function cert(k){
-  const logo=DAPPER_LOGO('#fff','#14254F'); let inner, post;
-  if(k==='year'){
-    const rs=S.receipts.filter(r=>!r[7]), tot=rs.reduce((a,r)=>a+r[4],0), chs=[...new Set(rs.map(r=>r[1]))];
-    inner='<span class="k">Certificate of impact · 2026</span><span class="chn" style="font-size:6cqw">'+chs.length+' charities supported</span><span class="list">'+chs.join('<br>')+'</span><span class="rule"></span><span class="amt">'+gbp(tot)+'</span><span class="to">received from <b>Harbourline Capital</b><br>in return for expert conversations</span>';
-    post='This year, '+chs.join(', ').replace(/, ([^,]*)$/,' and $1')+' received '+gbp(tot)+' through our conversations with experts on Dapperowl. Thank you to every expert who gave their time, and to the charities for the work they do.';
-  } else {
-    const r=S.receipts[+k], ex=r[6]?r[2]:'an industry expert';
-    inner='<span class="k">Certificate of impact</span><span class="chn">'+r[1]+'</span><span class="to">received</span><span class="amt">'+gbp(r[4])+'</span><span class="rule"></span><span class="to">from <b>Harbourline Capital</b>, given in return for a conversation on '+r[5]+' with <b>'+ex+'</b></span>';
-    post=r[1]+' received '+gbp(r[4])+' after our conversation on '+r[5]+' with '+ex+'. Instead of being paid, the expert asked us to donate to a cause they care about. Thank you to '+r[1]+' for the work they do.';
-  }
-  $('cdc').innerHTML='<div class="cq"><div class="cert c1"><div class="frame"></div><div class="in">'+logo.replace('class="logo"','class="logo"')+inner+'</div><span class="date">'+(k==='year'?'2026':S.receipts[+k][0].replace(/^\d+ /,''))+'</span></div></div>';
-  $('cdp').textContent='Suggested post: “'+post+'”';
-  $('cdlg').showModal();
-}
-$('cdx').onclick=()=>$('cdlg').close();
-$('cdlg').addEventListener('click',e=>{if(e.target===$('cdlg'))$('cdlg').close();});
-draw();
-</script>
+<script src="firm-dashboard.js"></script>
 </body></html>

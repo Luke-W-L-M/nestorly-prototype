@@ -13,7 +13,7 @@
 <meta name="twitter:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
 <meta name="twitter:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
 <meta name="twitter:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
-<title>Email designs · Dapperowl</title>
+<title>Emails · Dapperowl</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>
@@ -29,14 +29,30 @@ main{max-width:860px;margin:0 auto;padding-block:56px 90px;display:flex;flex-dir
 .mb p{margin:0;font-size:19px;max-width:60ch}
 .mf{border-top:2px solid var(--soft);padding:14px 26px;font-size:15px;color:var(--muted)}
 .who{font-family:var(--ui);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;background:var(--ink);color:var(--white);border-radius:999px;padding:4px 12px;align-self:flex-start}
+.inbox{display:flex;flex-direction:column;gap:22px}
+.protonote{display:inline-block;vertical-align:middle;font-family:var(--ui);font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--navy);border:2px dashed #C9C2B3;border-radius:10px;padding:4px 10px;margin-left:8px}
+.sentlist{display:flex;flex-direction:column;gap:30px}
+.seg{display:inline-flex;flex-wrap:wrap;border:3px solid var(--ink);border-radius:12px;overflow:hidden;align-self:flex-start}
+.seg button{all:unset;cursor:pointer;font-family:var(--ui);font-weight:700;font-size:16px;padding:10px 16px;color:var(--navy);background:#fff}
+.seg button+button{border-left:3px solid var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--navy);color:#F5F0E6}
+.seg button:focus-visible{outline:3px solid var(--cobalt);outline-offset:-5px}
+.empty{color:var(--muted);font-size:18px;border:3px dashed var(--ink);border-radius:16px;padding:20px;margin:0}
+.more{all:unset;cursor:pointer;font-family:var(--ui);font-weight:700;color:var(--navy);text-decoration:underline;text-underline-offset:4px;align-self:flex-start}
 </style>
 </head><body>
 <header id="site-head"></header>
 <main class="gut">
   <div style="display:flex;flex-direction:column;gap:14px">
-    <h1 class="page">Email designs</h1>
-    <p class="lead">The emails Dapperowl sends at each step. One clear button each, large text, plain wording.</p>
+    <h1 class="page">Emails</h1>
+    <p class="lead">Every alert in the prototype also creates the email we would send, newest first. Below them, the email designs for each step.</p>
   </div>
+  <section class="inbox" aria-labelledby="inbox-h">
+    <h2 class="sec" id="inbox-h" style="font-size:34px">Sent emails <span class="protonote">Prototype: nothing is really sent</span></h2>
+    <div class="seg" role="group" aria-label="Show emails to" id="filt"></div>
+    <div id="sent" class="sentlist"></div>
+  </section>
+  <h2 class="sec" style="font-size:34px">Email designs</h2>
   <div id="list"></div>
 </main>
 <footer id="site-foot"></footer>
@@ -53,5 +69,21 @@ const M=[
 ];
 const logo=window.DAPPER_LOGO('#F5F0E6','#14254F');
 document.getElementById('list').outerHTML=M.map(m=>'<div class="mail"><span class="who">'+m[0]+'</span><div class="env"><span>From: <b>Dapperowl</b> &lt;hello@dapperowl.co.uk&gt;</span><span>Subject: <b>'+m[1]+'</b></span></div><div class="msg"><div class="mh">'+logo+'</div><div class="mb"><h2>'+m[2]+'</h2><p>'+m[3]+'</p><a class="btn" style="align-self:flex-start" href="'+m[5]+'">'+m[4]+'</a></div><div class="mf">Dapperowl CIC · 100% of every donation goes to charity · <a class="link" href="legal.html#privacy">Privacy</a></div></div></div>').join('');
+// Sent emails (2 Nov): one per alert, from the shared store, newest first
+(function(){
+  const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const me=DS.me(); let who=me?'me':'all', limit=10;
+  const F=[['all','Everyone'],['expert','To experts'],['firm','To firms']].concat(me?[['me','Only mine']]:[]);
+  function draw(){
+    document.getElementById('filt').innerHTML=F.map(([k,l])=>'<button type="button" data-k="'+k+'" aria-pressed="'+(who===k)+'">'+l+'</button>').join('');
+    document.querySelectorAll('#filt button').forEach(b=>b.onclick=()=>{ who=b.dataset.k; limit=10; draw(); });
+    const list=DS.get().emails.filter(m=>who==='all'||(who==='me'?m.to===me.email:m.role===who));
+    document.getElementById('sent').innerHTML=list.length?list.slice(0,limit).map(m=>'<div class="mail"><span class="who">To '+(m.role==='expert'?'the expert':'the firm')+'</span><div class="env"><span>From: <b>Dapperowl</b> &lt;hello@dapperowl.co.uk&gt;</span><span>To: <b>'+esc(m.toName)+'</b> &lt;'+esc(m.to)+'&gt;</span><span>Subject: <b>'+esc(m.subject)+'</b></span><span>'+esc(DS.when(m.at))+'</span></div>'+
+      '<div class="msg"><div class="mh">'+logo+'</div><div class="mb"><h2>'+esc(m.heading)+'</h2><p>Hello '+esc(m.toName.split(' ')[0])+',</p><p>'+esc(m.body)+'</p><a class="btn" style="align-self:flex-start" href="'+esc(m.link)+'">'+esc(m.button)+' →</a></div><div class="mf">You\'re getting this because you have a Dapperowl account. Choose which emails you get in your settings.</div></div></div>').join('')+
+      (list.length>limit?'<button type="button" class="more" id="more">Show older emails ('+(list.length-limit)+' more)</button>':''):'<p class="empty">No emails yet.</p>';
+    const mo=document.getElementById('more'); if(mo) mo.onclick=()=>{ limit+=10; draw(); };
+  }
+  draw(); addEventListener('dapper-change',draw);
+})();
 </script>
 </body></html>

@@ -44,26 +44,50 @@ No contracts, no selling yourself: just your expertise, put to work for a cause 
 
 ## Try it
 
-Every page is clickable. Good routes to follow:
+The prototype works like the real site: everything you do is saved in your browser and shows up everywhere it should. Nothing leaves your browser, and no emails or payments are real.
 
-- **As a firm:** [Find an expert](https://luke-w-l-m.github.io/dapperowl-prototype/find.html) → search "seaweed" → *Request a conversation* → sign in as a firm → send the request → *My bookings* → donate, upload a receipt and open a certificate.
-- **As an expert:** [Sign in](https://luke-w-l-m.github.io/dapperowl-prototype/signin.html) → *I'm an expert* → *Continue with Google* → review requests, accept or decline, and see *My impact*.
-- **Joining:** [Join as an expert](https://luke-w-l-m.github.io/dapperowl-prototype/join.html) → *Start your profile* → walk through the eight sign-up steps.
+**Sample sign-ins** (use *Sign in* → type the email → *Email me a sign-in link* → *Open the link*, or *Continue with Google / LinkedIn* and pick an account):
+
+| Who | Email | Role |
+|---|---|---|
+| Inglebert Montgomery-Smythe | `inglebert@example.co.uk` | Expert, with past meetings, donations and certificates |
+| James Okafor, Harbourline Capital | `james.okafor@harbourline.example.com` | Firm (investor, Reliable donor) |
+| Sarah Lindqvist, Northgate Foods | `sarah.lindqvist@northgatefoods.example.com` | Firm (company) |
+| Tom Reyes, Fenwick Events | `tom.reyes@fenwickevents.example.com` | Firm (event organiser) |
+
+The account decides where you land: experts go to the expert dashboard, firms to the firm dashboard.
+
+**The full journey** (about ten minutes):
+
+1. **Join as an expert** → *Start your profile* → *Continue* through the eight steps (sample answers are filled in) → *Publish my profile* → *You're live!* → *Go to my dashboard*. Then sign out from the account menu.
+2. **Find an expert** → *Create a firm account* → five steps → *Simulate verification* → *Find an expert*.
+3. Search "harbour" → open the new expert → *Save* → *Request a conversation* → *Prototype only: fill in sample answers* → *Send request*.
+4. Sign out, sign in as the expert. The bell shows the new request → *Accept…* → pick a time, tick the declarations → *Confirm and accept*. Send a message on the request.
+5. *Join video call* → *Prototype: let them join* → *Leave* → *Mark as done* → *Send to [charity]*.
+6. Sign in as the firm → *Donations & receipts* → *Donate to [charity]* (a pretend charity page) → *Donate* → back to Dapperowl → *Use a sample receipt* → *Submit receipt*. About 5 seconds later the charity confirms and both sides get a certificate of impact.
+7. Open **Emails** in the footer to see every email the journey would have sent.
+
+**Also worth trying:** open questions (firms post them, experts raise a hand), suggesting a different meeting time from either side, *Add to calendar* (downloads a .ics file), the receipts CSV export, pausing a profile, and *See my profile as firms do*.
+
+**Start again:** *Reset prototype* in the footer clears everything you've created and puts the sample data back.
 
 ## Pages
 
 | Page | File | Purpose |
 |---|---|---|
-| Homepage | [`index.html`](index.html) | What Dapperowl is, the donation tracker, certificates and an example profile |
-| Find an expert | [`find.html`](find.html) | Search and filter experts by industry, job or keyword |
-| Join as an expert | [`join.html`](join.html) | Who it's for, how it works, an example profile and FAQs |
-| Create your profile | [`create-profile.html`](create-profile.html) | Eight-step sign-up, with CV upload and a drafted career timeline |
-| Sign in | [`signin.html`](signin.html) | Emailed sign-in link, Google or LinkedIn, for experts and firms |
-| Request a conversation | [`request.html`](request.html) | Goals, questions, format, three times, pledged donation and agreement |
-| Expert dashboard | [`expert-dashboard.html`](expert-dashboard.html) | Requests, upcoming meetings, donations, impact and profile |
-| Firm dashboard | [`firm-dashboard.html`](firm-dashboard.html) | Requests, bookings, donations to make, receipts and certificates |
+| Homepage | [`index.html`](index.html) | What Dapperowl is, how it works, the donation tracker and certificates |
+| Join as an expert | [`join.html`](join.html) | Who it's for, how firms find you, what you'll need, an example and FAQs |
+| Create your profile | [`create-profile.html`](create-profile.html) | Eight-step expert sign-up, then *You're live!* with ready-made sharing posts |
+| Find an expert | [`find.html`](find.html) | Search by industry, job or keyword; full profiles and saving for signed-in firms |
+| Create a firm account | [`firm-signup.html`](firm-signup.html) | Five steps: details, organisation, agree, verify, done |
+| Sign in | [`signin.html`](signin.html) | One sign-in for experts and firms: emailed link, Google or LinkedIn |
+| Request a conversation | [`request.html`](request.html) | Goals, questions, format, three times, the donation and a signed pledge |
+| Expert dashboard | [`expert-dashboard.html`](expert-dashboard.html) | To do, requests, meetings, open questions, donations and impact, profile and settings |
+| Firm dashboard | [`firm-dashboard.html`](firm-dashboard.html) | To do, requests, meetings, open questions, saved experts, donations and receipts, organisation |
+| Video call | [`call.html`](call.html) | The Dapperowl call room: names, topic, timer, mic and camera, attendance |
+| Charity donation page | [`charity.html`](charity.html) | A pretend charity website where the firm donates (no payment is taken) |
+| Emails | [`emails.html`](emails.html) | Every email the prototype would have sent, and the email designs |
 | Small print | [`legal.html`](legal.html) | Terms, privacy, code of conduct and cookies |
-| Email designs | [`emails.html`](emails.html) | The emails experts and firms receive |
 
 ## Design
 
@@ -73,11 +97,11 @@ Every page is clickable. Good routes to follow:
 
 ## Built with
 
-Plain HTML, CSS and JavaScript with no build step, hosted on [GitHub Pages](https://pages.github.com/). Shared header, footer and donation tracker live in [`site.js`](site.js); design tokens and components live in [`styles.css`](styles.css).
+Plain HTML, CSS and JavaScript with no build step, hosted on [GitHub Pages](https://pages.github.com/). The shared data (sample experts, firms, requests, messages, alerts and emails) lives in [`store.js`](store.js), saved in the browser's local storage. Shared header, footer, bell, account menu and donation tracker live in [`site.js`](site.js); the dashboards are [`expert-dashboard.js`](expert-dashboard.js) and [`firm-dashboard.js`](firm-dashboard.js); design tokens and components live in [`styles.css`](styles.css).
 
 ## Status
 
-This is a **clickable prototype with invented sample data**. The people, firms and charities shown are fictional, and no sign-ins, payments or emails are real. The full site (accounts, database and email sending) is planned next. *Dapperowl* is a working name.
+This is a **working click-through prototype with invented sample data**. Everything is saved only in your own browser. The people, firms and charities shown are fictional, and no sign-ins, payments, video calls or emails are real. The full site (accounts, database and email sending) is planned next. *Dapperowl* is a working name.
 
 ---
 

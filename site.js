@@ -69,6 +69,7 @@
       document.querySelectorAll('#tb-alist a').forEach(x=>x.addEventListener('click',()=>{ DS.update(s=>{ const al=s.alerts.find(y=>y.id===x.dataset.a); if(al) al.read=true; }); close(); }));
     }
     window.DapperAlerts={draw:drawAlerts};
+    addEventListener('dapper-change',drawAlerts);
     document.getElementById('tb-readall').onclick=()=>{ DS.update(s=>s.alerts.forEach(a=>{ if(a.to===me.id) a.read=true; })); drawAlerts(); };
     drawAlerts();
   }
@@ -83,7 +84,7 @@
       '<p>Dapperowl is a community interest company. We never touch the money: 100% of every donation goes straight to the expert\'s chosen charity.</p>'+
       '<p>Questions? <span style="color:#fff;font-weight:700">hello@dapperowl.co.uk</span></p></div>'+
       '<div><h4>Pages</h4><ul><li><a href="find.html">Find an expert</a></li><li><a href="join.html">Join as an expert</a></li><li><a href="signin.html">Sign in</a></li></ul></div>'+
-      '<div><h4>Small print</h4><ul><li><a href="legal.html#terms">Terms</a></li><li><a href="legal.html#privacy">Privacy</a></li><li><a href="legal.html#conduct">Code of conduct</a></li><li><a href="legal.html#cookies">Cookies</a></li><li><a href="emails.html">Email designs</a></li><li><button type="button" class="foot-reset" id="foot-reset">Reset prototype</button></li></ul></div>'+
+      '<div><h4>Small print</h4><ul><li><a href="legal.html#terms">Terms</a></li><li><a href="legal.html#privacy">Privacy</a></li><li><a href="legal.html#conduct">Code of conduct</a></li><li><a href="legal.html#cookies">Cookies</a></li><li><a href="emails.html">Emails</a></li><li><button type="button" class="foot-reset" id="foot-reset">Reset prototype</button></li></ul></div>'+
       '<div class="base"><span>\u00a9 2026 Dapperowl CIC</span></div></div>'+
       '<dialog class="enldlg" id="reset-dlg" aria-labelledby="reset-h"><div class="gatecard"><h2 id="reset-h">Reset the prototype?</h2><p>This clears everything created in this browser (profiles, firm accounts, requests, messages) and puts the sample data back. You\'ll be signed out.</p><div class="acts"><button type="button" class="btn" id="reset-yes">Reset</button><button type="button" class="btn ghost" id="reset-no">Cancel</button></div></div></dialog>';
     const dlg=document.getElementById('reset-dlg');

@@ -31,6 +31,8 @@ const EX=[
 ];
 const EMAILS=['inglebert@example.co.uk','alejandro.ruiz@example.mx','aino.vaisanen@example.fi','isla@kelpwell.example.com','priya.raman@example.co.uk','tom.achterberg@example.co.uk'];
 const FMTS=['Phone or video call','Written advice','Site visit','Talk or presentation','Mentoring'];
+const EMAIL={request:['A firm would like your knowledge','Read the request'],reply:['An update on your request','Open the request'],message:['You have a new message','Read and reply'],
+  meeting:['About your meeting','See the meeting'],donation:['An update on a donation','See the donation'],hand:['An expert raised their hand','See who'],question:['A new question in your field','See the question'],other:['News from Dapperowl','Open Dapperowl']};
 function seed(){
   const now=Date.now(), at=ms=>new Date(now+ms).toISOString();
   // meeting slots on the hour: slot(2,11) is 11:00 the day after tomorrow
@@ -80,7 +82,8 @@ function seed(){
     {id:'a5',to:'u-f2',kind:'hand',text:'Isla Morrow raised her hand on "Which seaweeds suit UK ready meals?"',link:'firm-dashboard.html#questions',at:at(-2*D),read:false},
     {id:'a6',to:'u-f2',kind:'donation',text:'Inglebert sent your £250 donation to Loch Broom Lifeboat Fund',link:'firm-dashboard.html#donations',at:at(-7*D),read:true}
   ];
-  return {v:1,seq:100,session:null,experts,firms,users,requests,questions,saved:{f1:['e1','e5']},alerts,emails:[]};
+  const emails=alerts.map((a,i)=>{ const u=users.find(x=>x.id===a.to), M=EMAIL[a.kind]||EMAIL.other; return {id:'m'+(i+1),to:u.email,toName:u.name,role:u.role,kind:a.kind,subject:a.text,heading:M[0],body:a.text+'.',button:M[1],link:a.link,at:a.at}; });
+  return {v:1,seq:100,session:null,experts,firms,users,requests,questions,saved:{f1:['e1','e5']},alerts,emails};
 }
 let mem=null;
 function load(){
@@ -111,7 +114,14 @@ const DS={
       s.firms.push({id:fid,name:o.org,type:o.type,size:o.size,site:o.site,reliable:false,namedOnCerts:false,team:[{name:o.name,title:o.title,email:o.email}],created:new Date().toISOString()});
       const u={id:'u-'+fid,role:'firm',email:o.email,name:o.name,title:o.title,ref:fid}; s.users.push(u); return u; }); },
   // alerts for the bell (the email previews are added in stage 5)
-  alert(to,kind,text,link){ DS.update(s=>{ s.alerts.unshift({id:'a'+(++s.seq),to,kind,text,link,at:new Date().toISOString(),read:false}); }); },
+  // every alert also creates an email preview (shown on emails.html), unless the expert has turned that kind of email off
+  alert(to,kind,text,link){ DS.update(s=>{ const at=new Date().toISOString();
+    s.alerts.unshift({id:'a'+(++s.seq),to,kind,text,link,at,read:false});
+    const u=s.users.find(x=>x.id===to); if(!u) return;
+    const ex=u.role==='expert'?s.experts.find(x=>x.id===u.ref):null, pref={request:'requests',reply:'requests',message:'messages',question:'questions'}[kind];
+    if(ex&&ex.notify&&pref&&ex.notify[pref]===false) return;
+    const M=EMAIL[kind]||EMAIL.other;
+    s.emails.unshift({id:'m'+(++s.seq),to:u.email,toName:u.name,role:u.role,kind,subject:text,heading:M[0],body:text+'.',button:M[1],link,at}); }); },
   // alert every user on a firm account, or the expert
   alertFirm(firmId,kind,text,link){ load().users.filter(u=>u.role==='firm'&&u.ref===firmId).forEach(u=>DS.alert(u.id,kind,text,link)); },
   alertExpert(expertId,kind,text,link){ load().users.filter(u=>u.role==='expert'&&u.ref===expertId).forEach(u=>DS.alert(u.id,kind,text,link)); },
@@ -129,9 +139,16 @@ const DS={
     load().requests.forEach(r=>{ const d=r.donation; if(d&&d.stage===3&&d.confirmAt&&now>=d.confirmAt){
       DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id).donation; x.stage=4; x.received=new Date().toISOString(); delete x.confirmAt; });
       const f=DS.firm(r.firmId)||{name:'The firm'};
-      DS.alertExpert(r.expertId,'donation',r.pledge.charity+' confirmed '+f.name+'\'s £'+Number(r.amount).toLocaleString('en-GB')+' donation. Your certificate is ready','expert-dashboard.html#donations');
+      DS.alertExpert(r.expertId,'donation',r.pledge.charity+' confirmed the £'+Number(r.amount).toLocaleString('en-GB')+' donation from '+f.name+'. Your certificate is ready','expert-dashboard.html#donations');
       DS.alertFirm(r.firmId,'donation',r.pledge.charity+' confirmed your £'+Number(r.amount).toLocaleString('en-GB')+' donation. Your certificate is ready','firm-dashboard.html#donations');
       changed=true; } });
+    // meeting reminders: once, when a booked meeting is less than 24 hours away
+    load().requests.forEach(r=>{ if(r.state==='booked'&&r.meeting&&!r.meeting.reminded){ const t=new Date(r.meeting.at).getTime(); if(t-now<24*3600000&&t>now){
+      DS.update(s=>{ s.requests.find(y=>y.id===r.id).meeting.reminded=true; });
+      const f=DS.firm(r.firmId)||{name:'the firm'}, x=DS.expert(r.expertId)||{n:'the expert'};
+      DS.alertExpert(r.expertId,'meeting','Reminder: your call with '+f.name+' is '+DS.when(r.meeting.at),'expert-dashboard.html#request-'+r.id);
+      DS.alertFirm(r.firmId,'meeting','Reminder: your call with '+x.n+' is '+DS.when(r.meeting.at),'firm-dashboard.html#request-'+r.id);
+      changed=true; } } });
     if(changed) dispatchEvent(new Event('dapper-change'));
     return changed; },
   myAlerts(){ const u=DS.me(); return u?load().alerts.filter(a=>a.to===u.id):[]; }

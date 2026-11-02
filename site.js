@@ -96,6 +96,7 @@
     'signin.html':['#14254F','#F5F0E6','#F5F0E6'],
     'request.html':['#2251FF','#F5F0E6','#F5F0E6'],
     'create-profile.html':['#F6C344','#14254F','#F5F0E6'],
+    'firm-signup.html':['#FF7A1A','#14254F','#F5F0E6'],
     'expert-dashboard.html':['#14254F','#F5F0E6','#F6C344'],
     'firm-dashboard.html':['#7A1F2B','#F5F0E6','#F6C344'],
     'legal.html':['#14254F','#F5F0E6','#F5F0E6'],

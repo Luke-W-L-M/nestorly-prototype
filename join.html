@@ -29,8 +29,21 @@
 .az-lab b{background:var(--sun);color:var(--navy);border:2px solid var(--ink);border-radius:8px;padding:2px 10px;margin-left:6px;box-shadow:3px 3px 0 var(--ink)}
 .az-win{width:100vw;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent);mask-image:linear-gradient(90deg,transparent,#000 10%,#000 90%,transparent)}
 .az-row{display:flex;gap:12px;width:max-content;padding-block:4px}
-.az-row span{font-family:var(--ui);font-weight:600;font-size:17px;background:var(--white);color:var(--navy);border:2px solid var(--ink);border-radius:999px;padding:7px 16px;white-space:nowrap}
-.az-row span i{font-style:normal;font-family:var(--head);color:var(--cobalt);margin-right:6px}
+.az-row span{font-family:var(--ui);font-weight:700;font-size:19px;background:var(--white);color:var(--navy);border:2px solid var(--ink);border-radius:999px;padding:7px 16px;white-space:nowrap}
+.az-row span i{font-style:normal;font-family:var(--head);color:inherit;margin-right:6px}
+/* chips in the illustration palette, in rotation; navy or cream text, whichever reads best on the fill (19px bold, so emerald + navy at 4.3:1 passes as large text) */
+.az-row span:nth-child(6n+1){background:#F7C21A;color:#14254F}
+.az-row span:nth-child(6n+2){background:#1F9D55;color:#14254F}
+.az-row span:nth-child(6n+3){background:#E09A3A;color:#14254F}
+.az-row span:nth-child(6n+4){background:#9B1236;color:#F5F0E6}
+.az-row span:nth-child(6n+5){background:#2251FF;color:#F5F0E6}
+.az-row span:nth-child(6n){background:#F5F0E6;color:#14254F}
+.az-row span{border-color:#141414}
+/* headline (2 Nov): two lines, cream then sun yellow */
+.hero h1.jhead .l1,.hero h1.jhead .l2{display:block}
+.hero h1.jhead .l1{color:#F5F0E6}
+.hero h1.jhead .l2{color:#F7C21A}
+@media (max-width:600px){.hero h1.jhead{font-size:min(7.8vw,40px);max-width:calc(100vw - 32px)}} /* each line fits a 375px phone */
 .az-row.a{animation:azl 80s linear infinite}
 .az-row.b{animation:azr 90s linear infinite}
 @keyframes azl{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -105,7 +118,7 @@ html{scroll-snap-type:y mandatory}
 .jsec > .inner{width:100%;max-width:1180px;margin-inline:auto;display:flex;flex-direction:column;gap:30px}
 .jsec .hd{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(34px,3.6vw,52px);line-height:1.15;text-transform:uppercase;color:var(--navy)}
 .navy{background:var(--navy);color:var(--paper)}
-.hero.snap .inner{padding-block:40px}
+.hero.snap .inner{padding-block:40px;width:100%;box-sizing:border-box} /* full width keeps the full-width chip rows from widening the hero on phones */
 /* See an example: frames sized to fit one screen */
 #example .hd{text-align:center}
 #example .exgrid{align-items:start}
@@ -214,7 +227,7 @@ html{scroll-snap-type:y mandatory}
 </head><body>
 <header id="site-head"></header>
 <section class="snap hero gut" id="top" aria-label="Join as an expert"><div class="inner">
-  <h1 class="page" data-seq="h">Put what you know to work for good</h1>
+  <h1 class="page jhead" data-seq="h"><span class="l1">Let firms find you.</span> <span class="l2">Let charities thank you.</span></h1>
   <a class="btn" href="create-profile.html" data-seq="v">Start your profile →</a>
   <div class="az" data-seq="v" aria-label="Experts in every industry, from A to Z">
     <div class="az-win"><div class="az-row a" id="azA"></div></div>

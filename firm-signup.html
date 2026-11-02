@@ -17,67 +17,266 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>
-main{max-width:680px;margin:0 auto;padding-block:56px 90px;display:flex;flex-direction:column;gap:26px}
-.card{display:flex;flex-direction:column;gap:20px}
-.f .err{color:#A3202F;font-weight:700;font-size:16px}
-.f input[aria-invalid="true"],.f select[aria-invalid="true"]{border-color:#A3202F;box-shadow:0 0 0 2px #A3202F}
-.sent{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
-.sent svg{width:72px;height:72px}
-@media (max-width:600px){.row{grid-template-columns:1fr}}
+/* Firm sign-up (2 Nov): modelled on Create your profile, shorter. Tangerine header band, then progress bar, step list on the left and one form card on the right. Two snap points: header and form area. */
+:root{--paper:#F5F0E6;--ink:#141414;--navy:#14254F;--green:#1F9D55;--white:#fff;--muted:#4A5675;--soft:#E9E2D3;--tang:#FF7A1A;--tang2:#E86A0C;--topbar:86px}
+[hidden]{display:none!important}
+.phead + .pwave{display:none} /* straight edges */
+.phead{padding-block:72px 64px}
+.phead h1.lbl{color:var(--navy)}
+.saved{font-family:var(--ui);font-weight:700;font-size:18px;display:flex;gap:8px;align-items:center;color:var(--navy)}
+.saved svg{width:22px;height:22px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,label.tick:focus-within{outline:3px solid var(--navy);outline-offset:3px}
+
+main.formarea{max-width:1180px;margin:0 auto;box-sizing:border-box;min-height:calc(100svh - var(--topbar));padding-block:20px 28px;display:flex;flex-direction:column;gap:24px}
+.bar{position:relative;height:22px;border:3px solid var(--ink);border-radius:20px;background:var(--white);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--green);transition:width .6s ease}
+.layout{display:grid;grid-template-columns:280px minmax(0,1fr);gap:40px;align-items:start}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;position:sticky;top:calc(var(--topbar) + 20px)}
+.steps button{all:unset;box-sizing:border-box;width:100%;display:flex;gap:14px;align-items:center;padding:8px 10px;border-radius:12px;font-family:var(--ui);font-weight:600;font-size:18px;color:var(--muted)}
+.steps button:not([disabled]){cursor:pointer}
+.steps button:not([disabled]):hover{background:var(--soft)}
+.steps .n{flex:none;width:40px;height:40px;border-radius:50%;border:3px solid var(--ink);background:var(--white);display:grid;place-items:center;font-size:17px;color:var(--ink)}
+.steps .done .n{background:var(--green);color:var(--white)}
+.steps .cur{color:var(--navy);background:var(--white);box-shadow:inset 0 0 0 3px var(--ink)}
+.steps .cur .n{background:var(--tang);color:var(--navy)}
+
+.card{background:var(--white);border:3px solid var(--ink);border-radius:24px;box-shadow:7px 7px 0 var(--ink);padding:36px 44px 0;display:flex;flex-direction:column;gap:22px;min-width:0;max-height:calc(100svh - var(--topbar) - 116px);overflow-y:auto;overscroll-behavior:contain;box-sizing:border-box}
+.card h2{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(30px,3vw,42px);line-height:1.05;text-transform:uppercase}
+[data-step]{display:flex;flex-direction:column;gap:20px}
+[data-step] > h2:focus{outline:none}
+[data-step] > h2:focus-visible{outline:3px solid var(--navy);outline-offset:4px}
+.card .lead{margin:-10px 0 0;color:var(--muted)}
+.f{display:flex;flex-direction:column;gap:8px;min-width:0}
+.f label{font-family:var(--ui);font-weight:700;font-size:18px}
+.f small{color:var(--muted);font-size:16px}
+.f .err,.terr{color:#A3202F;font-weight:700;font-size:16px}
+input[type=text],input[type=email],select{font:inherit;font-size:20px;color:var(--navy);background:var(--paper);border:3px solid var(--ink);border-radius:12px;padding:14px 16px;width:100%;box-sizing:border-box}
+[aria-invalid="true"]{border-color:#A3202F!important;box-shadow:0 0 0 2px #A3202F}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.btn{font-family:var(--ui);font-weight:700;font-size:19px;letter-spacing:.03em;text-transform:uppercase;padding:18px 34px;border-radius:12px;border:3px solid var(--ink);cursor:pointer;box-shadow:4px 4px 0 var(--ink);background:var(--tang);color:var(--navy);text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn:hover{background:var(--tang2)}
+.btn.ghost{background:var(--white);color:var(--navy)}
+.btn.ghost:hover{background:var(--soft)}
+.btn.sm{font-size:16px;padding:10px 18px;box-shadow:3px 3px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.nav{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:2px solid var(--navy);padding-top:26px;position:sticky;bottom:0;z-index:2;margin-top:auto;background:var(--white);padding-bottom:28px}
+.terms{margin:0;padding:0;list-style:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 28px;counter-reset:t}
+.terms li{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;font-size:18px;line-height:1.45;counter-increment:t}
+.terms li::before{content:counter(t);width:32px;height:32px;border-radius:50%;background:var(--navy);color:var(--white);display:grid;place-items:center;font-family:var(--ui);font-weight:700;font-size:16px;margin-top:1px}
+.pledge{background:var(--paper);border-left:6px solid var(--tang);border-radius:0 12px 12px 0;padding:16px 20px;font-size:18px}
+.pledge p{margin:0 0 6px}.pledge p:last-child{margin:0}
+.tick{display:flex;gap:14px;align-items:flex-start;font-size:19px;font-weight:700;cursor:pointer;border:3px solid var(--ink);border-radius:14px;padding:16px 18px}
+.tick input{width:26px;height:26px;accent-color:var(--navy);flex:none;margin-top:1px}
+.inbox{display:flex;gap:22px;align-items:flex-start}
+.inbox svg{width:80px;height:80px;flex:none}
+.inbox p{margin:0}
+.inbox > div{min-width:0}
+#sentto{overflow-wrap:anywhere}
+.acts{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.status{font-family:var(--ui);font-weight:700;font-size:16px;color:var(--navy)}
+.sim{align-self:flex-start;font-family:var(--ui);font-weight:700;font-size:16px;color:var(--navy);border:2px dashed var(--muted);border-radius:10px;padding:10px 14px;background:var(--paper);cursor:pointer}
+.sim span{display:block;font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.done-msg{display:flex;flex-direction:column;align-items:center;text-align:center;gap:18px;padding-block:24px}
+.done-msg svg.big{width:90px;height:90px}
+.done-msg p{margin:0;max-width:52ch}
+.done-msg .fbadges{justify-content:center}
+.done-msg .fbadge{font-size:18px;padding:6px 16px 6px 8px}
+.done-msg .fbadge svg{width:24px;height:24px}
+
+@media (max-width:900px){
+  .gut{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .phead{padding-block:48px 40px}
+  .layout{grid-template-columns:1fr;gap:20px}
+  .steps{position:static;flex-direction:row;flex-wrap:wrap}
+  .steps li{flex:0 0 auto}
+  .steps .t{display:none}
+  .steps .cur .t{display:inline}
+  .steps{gap:4px}
+  .steps button{padding:6px}
+}
+@media (max-width:480px){
+  .steps .cur .t{display:none} /* the card heading already names the step; keeps all five on one row */
+  .card{padding:24px}
+  .row,.terms{grid-template-columns:1fr}
+  .inbox{flex-direction:column}
+}
+
+.card:has(#navrow[hidden]){padding-bottom:28px}
+/* two snap points: the tangerine header band, then the form area */
+html{scroll-snap-type:y mandatory}
+.phead,main.formarea{scroll-snap-align:start;scroll-margin-top:var(--topbar)}
+#site-foot{scroll-snap-align:end}
+@media (max-width:900px),(max-height:700px){
+  html{scroll-snap-type:y proximity}
+  .card{max-height:none;overflow:visible}
+  .nav{position:static;padding-bottom:24px}
+}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
 </style>
 </head><body>
 <header id="site-head"></header>
-<main class="gut">
-  <h1 class="page">Create a firm account</h1>
-  <p class="lead" style="margin:0">Free for any organisation. Use your work email on your company's own domain: it's how experts know who they're meeting.</p>
-  <form class="card" id="form" novalidate>
-    <div id="step1" style="display:flex;flex-direction:column;gap:20px">
-      <div class="f"><label for="em">Work email</label><input type="email" id="em" value="sarah.lindqvist@northfieldfoods.example.com" autocomplete="email" aria-describedby="em-h em-e"><small id="em-h">Free email addresses (Gmail, Outlook, Hotmail, Yahoo, iCloud) can't be used.</small><span class="err" id="em-e" hidden></span></div>
-      <div class="f"><label for="org">Company name</label><input type="text" id="org" value="Northfield Foods" autocomplete="organization" aria-describedby="org-e"><span class="err" id="org-e" hidden></span></div>
-      <div class="f"><label for="site">Company website</label><input type="text" id="site" value="northfieldfoods.example.com" inputmode="url" aria-describedby="site-h site-e"><small id="site-h">Its address must match your email, e.g. you@<b>yourcompany.com</b> and <b>yourcompany.com</b>.</small><span class="err" id="site-e" hidden></span></div>
-      <div class="row">
-        <div class="f"><label for="otype">Organisation type</label><select id="otype" aria-describedby="otype-e"><option value="">Choose one</option><option>Investor</option><option selected>Company</option><option>Event organiser</option><option>NGO or charity</option><option>Public body</option><option>Other</option></select><span class="err" id="otype-e" hidden></span></div>
-        <div class="f"><label for="size">Size</label><select id="size" aria-describedby="size-e"><option value="">Choose one</option><option>1–10</option><option>11–50</option><option>51–250</option><option selected>251–1,000</option><option>1,000+</option></select><span class="err" id="size-e" hidden></span></div>
+
+<main class="gut formarea" id="formarea">
+  <div class="intro">
+    <h1>Create a firm account</h1>
+    <span class="saved"><svg viewBox="0 0 22 22" aria-hidden="true"><circle cx="11" cy="11" r="10" fill="#14254F"/><path d="M6.5 11.5l3 3 6-6.5" fill="none" stroke="#FF7A1A" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Free · about 2 minutes</span>
+  </div>
+  <div class="bar" role="progressbar" aria-label="Sign-up progress" aria-valuemin="1" aria-valuemax="5" id="bar"><i id="barfill"></i></div>
+
+  <div class="layout">
+    <ol class="steps" id="steps"></ol>
+
+    <form class="card" id="form" novalidate>
+
+      <div data-step="1">
+        <h2 tabindex="-1">Your details</h2>
+        <p class="lead">Experts see who they're meeting, so please use your own name and work email.</p>
+        <div class="f"><label for="nm">Full name</label><input type="text" id="nm" value="Sarah Lindqvist" autocomplete="name" aria-describedby="nm-e"><span class="err" id="nm-e" hidden></span></div>
+        <div class="f"><label for="jt">Job title</label><input type="text" id="jt" value="Head of Strategy" autocomplete="organization-title" aria-describedby="jt-e"><span class="err" id="jt-e" hidden></span></div>
+        <div class="f"><label for="em">Work email</label><input type="email" id="em" value="sarah.lindqvist@northfieldfoods.example.com" autocomplete="email" aria-describedby="em-h em-e"><small id="em-h">Personal addresses (Gmail, Outlook, Hotmail, Yahoo, iCloud and similar) can't be used.</small><span class="err" id="em-e" hidden></span></div>
       </div>
-      <div class="note"><p>Every firm is verified before it can see full profiles or send requests. With each request you'll sign a short pledge naming the expert's charity and the amount.</p></div>
-      <button type="submit" class="btn">Create my firm account</button>
-      <p style="margin:0;font-size:18px">Already have an account? <a class="link" href="signin.html#firm">Sign in</a></p>
-    </div>
-    <div class="sent" id="step2" hidden>
-      <svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36" fill="#1F9D55" stroke="#141414" stroke-width="4"/><path d="M22 28h36v26H22z" fill="#fff" stroke="#141414" stroke-width="3" stroke-linejoin="round"/><path d="M22 29l18 14 18-14" fill="none" stroke="#141414" stroke-width="3" stroke-linejoin="round"/></svg>
-      <h2 class="sec" style="font-size:34px;margin:0" tabindex="-1" id="sent-h">Check your email to verify</h2>
-      <p style="margin:0">We've sent a link to <b id="sentto"></b>. Open it to verify <b id="sentorg"></b>, then you can see full profiles and send requests.</p>
-      <a class="btn" id="open" href="find.html">Open the verification link →</a>
-      <button type="button" class="btn ghost sm" id="again">Use a different email</button>
-    </div>
-  </form>
+
+      <div data-step="2" hidden>
+        <h2 tabindex="-1">Your organisation</h2>
+        <p class="lead">This is what experts see in "About the firm" on every request.</p>
+        <div class="f"><label for="org">Organisation name</label><input type="text" id="org" value="Northfield Foods" autocomplete="organization" aria-describedby="org-e"><span class="err" id="org-e" hidden></span></div>
+        <div class="f"><label for="site">Website</label><input type="text" id="site" value="northfieldfoods.example.com" inputmode="url" aria-describedby="site-h site-e"><small id="site-h">It must match your email: you@<b>yourcompany.com</b> and <b>yourcompany.com</b>.</small><span class="err" id="site-e" hidden></span></div>
+        <div class="row">
+          <div class="f"><label for="otype">Organisation type</label><select id="otype" aria-describedby="otype-e"><option value="">Choose one</option><option>Investor</option><option selected>Company</option><option>Event organiser</option><option>NGO or charity</option><option>Public body</option><option>Other</option></select><span class="err" id="otype-e" hidden></span></div>
+          <div class="f"><label for="size">Size</label><select id="size" aria-describedby="size-e"><option value="">Choose one</option><option>1–10</option><option>11–50</option><option>51–250</option><option selected>251–1,000</option><option>1,000+</option></select><span class="err" id="size-e" hidden></span></div>
+        </div>
+      </div>
+
+      <div data-step="3" hidden>
+        <h2 tabindex="-1">Agree</h2>
+        <ol class="terms">
+          <li>No asking for inside information, or anything the expert isn't free to share.</li>
+          <li>The expert can decline any question or end the conversation.</li>
+          <li>Donate the agreed amount to their charity within 48 hours of Send, or flag a problem.</li>
+          <li>Use the expert's contact details only for that conversation.</li>
+          <li>No recording unless the expert agrees.</li>
+          <li>It's a personal view, not professional advice: our decisions are our own.</li>
+        </ol>
+        <div class="pledge"><p><b>Plus a signed pledge with every request.</b> A named person states the charity and the amount, and the expert sees it before saying yes. You confirm these points again on each request. Firms that don't donate get reminders, then lose their account.</p></div>
+        <label class="tick"><input type="checkbox" id="agree" aria-describedby="agree-e"><span>I agree on behalf of <span id="agorg">Northfield Foods</span></span></label>
+        <span class="terr" id="agree-e" hidden></span>
+      </div>
+
+      <div data-step="4" hidden>
+        <h2 tabindex="-1">Verify</h2>
+        <div class="inbox">
+          <svg viewBox="0 0 80 80" aria-hidden="true"><circle cx="40" cy="40" r="36" fill="#FF7A1A" stroke="#141414" stroke-width="4"/><path d="M20 27h40v28H20z" fill="#fff" stroke="#141414" stroke-width="3" stroke-linejoin="round"/><path d="M20 28l20 15 20-15" fill="none" stroke="#141414" stroke-width="3" stroke-linejoin="round"/></svg>
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <p style="font-size:22px"><b>Check your inbox.</b> We've sent a link to <b id="sentto"></b>.</p>
+            <p>Open it to verify <b class="orgname"></b>. The link works for 24 hours. If it hasn't arrived, check your spam folder.</p>
+          </div>
+        </div>
+        <div class="acts">
+          <button type="button" class="btn ghost sm" id="resend">Resend</button>
+          <button type="button" class="btn ghost sm" id="chg">Change email</button>
+          <span class="status" id="rstat" role="status"></span>
+        </div>
+        <button type="button" class="sim" id="sim"><span>Prototype only</span>Simulate verification →</button>
+      </div>
+
+      <div data-step="5" hidden>
+        <div class="done-msg">
+          <svg class="big" viewBox="0 0 90 90" aria-hidden="true"><circle cx="45" cy="45" r="41" fill="#1F9D55" stroke="#141414" stroke-width="4"/><path d="M26 46l13 13 26-28" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h2 tabindex="-1">Your account is ready</h2>
+          <div id="badge"></div>
+          <p><b class="orgname"></b> is verified. You can now see full profiles and send requests. Experts see this badge on every request you send.</p>
+          <a class="btn" id="onward" href="find.html">Find an expert →</a>
+        </div>
+      </div>
+
+      <div class="nav" id="navrow">
+        <button type="button" class="btn ghost" id="back">← Back</button>
+        <button type="submit" class="btn" id="next">Continue →</button>
+      </div>
+    </form>
+  </div>
 </main>
+
 <footer id="site-foot"></footer>
 <script src="site.js"></script>
 <script>
-// Prototype only: the checks below are simulated in the browser. The live site verifies the email link and website on the server.
-const FREE=['gmail.com','googlemail.com','outlook.com','hotmail.com','hotmail.co.uk','live.com','live.co.uk','msn.com','yahoo.com','yahoo.co.uk','ymail.com','icloud.com','me.com','mac.com','aol.com','proton.me','protonmail.com','gmx.com','mail.com'];
+// Prototype only: the checks below are simulated in the browser. The live site checks the email link and the website on the server.
+const titles=['Your details','Your organisation','Agree','Verify','Done'];
+const FREE=['gmail','googlemail','outlook','hotmail','live','yahoo','icloud','aol','proton','protonmail'];
 const $=id=>document.getElementById(id);
+const form=$('form'), steps=$('steps');
+let cur=1, reached=1;
 const host=v=>String(v).trim().toLowerCase().replace(/^[a-z]+:\/\//,'').split(/[\/?#]/)[0].replace(/^www\./,'');
-function say(id,msg){ const el=$(id), inp=$(id.replace('-e','')); el.textContent=msg||''; el.hidden=!msg; inp.setAttribute('aria-invalid',msg?'true':'false'); return !msg; }
-$('form').addEventListener('submit',e=>{
-  e.preventDefault();
-  const em=$('em').value.trim().toLowerCase(), dom=em.includes('@')?em.split('@').pop():'', site=host($('site').value);
-  let ok=true;
-  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) ok=say('em-e','Please enter your work email address.')&&ok;
-  else if(FREE.includes(dom)) ok=say('em-e','Please use your work email.')&&ok;
-  else say('em-e','');
-  ok=say('org-e',$('org').value.trim()?'':'Please enter your company name.')&&ok;
-  if(!site||!site.includes('.')) ok=say('site-e','Please enter your company website.')&&ok;
-  else if(dom&&!FREE.includes(dom)&&!(dom===site||dom.endsWith('.'+site))) ok=say('site-e','Your email is on '+dom+', but the website is '+site+'. They need to match, so experts know you work there.')&&ok;
-  else say('site-e','');
-  ok=say('otype-e',$('otype').value?'':'Please choose your organisation type.')&&ok;
-  ok=say('size-e',$('size').value?'':'Please choose your organisation size.')&&ok;
-  if(!ok){ const first=document.querySelector('[aria-invalid="true"]'); if(first) first.focus(); return; }
-  $('sentto').textContent=em; $('sentorg').textContent=$('org').value.trim();
-  $('step1').hidden=true; $('step2').hidden=false; $('sent-h').focus();
-});
-$('open').addEventListener('click',()=>DapperFirm.signIn());
-$('again').onclick=()=>{$('step2').hidden=true;$('step1').hidden=false;$('em').focus();};
+const dom=()=>{ const e=$('em').value.trim().toLowerCase(); return e.includes('@')?e.split('@').pop():''; };
+const isFree=d=>FREE.includes(d.split('.')[0]);
+function say(id,msg){ const el=$(id), inp=$(id.replace(/-e$/,'')); el.textContent=msg||''; el.hidden=!msg; if(inp) inp.setAttribute('aria-invalid',msg?'true':'false'); return !msg; }
+const checks={
+  1(){ let ok=true;
+    ok=say('nm-e',$('nm').value.trim()?'':'Please enter your full name.')&&ok;
+    ok=say('jt-e',$('jt').value.trim()?'':'Please enter your job title.')&&ok;
+    const em=$('em').value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) ok=say('em-e','Please enter your work email address.')&&ok;
+    else if(isFree(dom())) ok=say('em-e','Please use your work email.')&&ok;
+    else say('em-e','');
+    return ok; },
+  2(){ let ok=true; const site=host($('site').value), d=dom();
+    ok=say('org-e',$('org').value.trim()?'':'Please enter your organisation name.')&&ok;
+    if(!site||!site.includes('.')) ok=say('site-e','Please enter your organisation\'s website.')&&ok;
+    else if(!(d===site||d.endsWith('.'+site))) ok=say('site-e','Your email is on '+d+', but the website is '+site+'. They need to match, so experts know you work there.')&&ok;
+    else say('site-e','');
+    ok=say('otype-e',$('otype').value?'':'Please choose your organisation type.')&&ok;
+    ok=say('size-e',$('size').value?'':'Please choose your organisation size.')&&ok;
+    return ok; },
+  3(){ const ok=say('agree-e',$('agree').checked?'':'Please tick to agree on behalf of '+($('org').value.trim()||'your organisation')+'.'); if(!ok){ $('agree').focus(); $('agree-e').scrollIntoView({block:'nearest'}); } return ok; }
+};
+titles.forEach((t,i)=>{ const li=document.createElement('li'); li.innerHTML='<button type="button"><span class="n">'+(i+1)+'</span><span class="t"></span></button>'; li.querySelector('.t').textContent=t; li.querySelector('button').onclick=()=>{ if(i+1<=reached&&cur<5&&i+1<5) show(i+1,true); }; steps.appendChild(li); });
+// back to the expert they were viewing, if they came from a profile on Find an expert
+let from=null; try{ if(/[?&]from=expert/.test(location.search)) from=JSON.parse(sessionStorage.getItem('dapper-signup-expert')||'null'); }catch(e){}
+function fill(){
+  const org=$('org').value.trim()||'your organisation';
+  $('agorg').textContent=org; document.querySelectorAll('.orgname').forEach(b=>b.textContent=org);
+  $('sentto').textContent=$('em').value.trim();
+}
+function show(n,user){
+  cur=n; reached=Math.max(reached,n); fill();
+  form.querySelectorAll('[data-step]').forEach(s=>s.hidden=+s.dataset.step!==n);
+  steps.querySelectorAll('button').forEach((b,i)=>{ const k=i+1, done=k<n||n===5;
+    b.classList.toggle('cur',k===n); b.classList.toggle('done',done); b.querySelector('.n').textContent=done?'✓':k;
+    b.disabled=n===5||k>reached||k===4&&n!==4; b.setAttribute('aria-current',k===n?'step':'false'); });
+  $('barfill').style.width=(n===5?100:((n-1)/4*100+4))+'%';
+  $('bar').setAttribute('aria-valuenow',n);
+  $('back').style.visibility=n===1?'hidden':'visible';
+  $('next').hidden=n>=4;
+  $('navrow').hidden=n===5;
+  $('next').textContent=n===3?'Agree and continue →':'Continue →';
+  if(n===4) $('rstat').textContent='';
+  if(n===5){ DapperFirm.signIn(); $('badge').innerHTML=DapperFirm.badges(false);
+    if(from&&from.n){ $('onward').textContent='Back to '+from.n+' →'; $('onward').href='find.html#expert-'+from.i; } }
+  if(!user) return;
+  // swap in place: the page keeps its position; only the card's own scroll goes back to the top
+  form.scrollTop=0;
+  const h=form.querySelector('[data-step="'+n+'"] h2'); if(h) h.focus({preventScroll:true});
+  const top=form.getBoundingClientRect().top, bar=$('site-head').offsetHeight;
+  if(top<bar) window.scrollBy({top:top-bar-16,behavior:'instant'});
+}
+$('back').onclick=()=>show(Math.max(1,cur-1),true);
+form.addEventListener('submit',e=>{ e.preventDefault(); if(cur>=4) return;
+  if(checks[cur]&&!checks[cur]()){ const f=form.querySelector('[data-step="'+cur+'"] [aria-invalid="true"]'); if(f){ f.focus(); const m=f.parentElement.querySelector('.err:not([hidden])'); if(m) m.scrollIntoView({block:'nearest'}); } return; }
+  show(cur+1,true); });
+$('resend').onclick=()=>{ $('rstat').textContent='Sent again to '+$('em').value.trim()+'.'; };
+$('chg').onclick=()=>{ show(1,true); $('em').focus({preventScroll:true}); $('em').select(); };
+$('sim').onclick=()=>show(5,true);
+show(1);
+(function(){ // top bar height drives the snap offsets and the form area's height
+  const head=$('site-head'); if(!head) return;
+  const set=()=>document.documentElement.style.setProperty('--topbar',head.offsetHeight+'px');
+  set(); if('ResizeObserver' in window) new ResizeObserver(set).observe(head); addEventListener('resize',set);
+})();
+// with #form, opens straight at the form
+if(location.hash==='#form'){
+  const go=()=>window.scrollTo({top:$('formarea').getBoundingClientRect().top+scrollY-$('site-head').offsetHeight,behavior:'instant'});
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  requestAnimationFrame(go); addEventListener('load',go);
+}
 </script>
 </body></html>

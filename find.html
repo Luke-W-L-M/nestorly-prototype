@@ -30,7 +30,6 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .logo{display:block;height:56px;width:auto}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid var(--cobalt);outline-offset:3px}
 
-main{max-width:1280px;margin:0 auto;padding-block:44px 80px;display:flex;flex-direction:column;gap:28px}
 h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,62px);line-height:1;text-transform:uppercase}
 .search{display:flex;gap:14px;flex-wrap:wrap}
 .search input{flex:1 1 380px;min-width:0;font:inherit;font-size:21px;color:var(--navy);background:var(--white);border:3px solid var(--ink);border-radius:14px;padding:18px 20px 18px 58px;box-shadow:5px 5px 0 var(--ink);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26'%3E%3Ccircle cx='11' cy='11' r='8' fill='none' stroke='%23141414' stroke-width='3.4'/%3E%3Cpath d='M17 17l6 6' stroke='%23141414' stroke-width='3.6' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:20px center}
@@ -129,22 +128,104 @@ h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,6
 .cat.out .list{position:static;max-height:none;overflow:visible;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));padding:4px}
 .cat.out .prof{display:none}
 .ec .go{margin-top:12px;align-self:flex-start}
-.phead .firmlead{max-width:60ch;font-size:21px;line-height:1.6;opacity:1;margin-top:40px!important;text-wrap:pretty}
+/* ===== Find an expert (2 Nov): the Join page system in tangerine. Navy header with search, apricot results, navy closing band; snap scrolling ===== */
+:root{--topbar:86px}
+html{scroll-snap-type:y mandatory}
+#site-foot{scroll-snap-align:end}
+@media (max-width:900px),(max-height:700px){html{scroll-snap-type:y proximity}}
+.snap{box-sizing:border-box;min-height:calc(100svh - var(--topbar));scroll-snap-align:start;scroll-margin-top:var(--topbar)}
+.apr{background:#F4B183}
+.navy{background:var(--navy);color:var(--paper)}
+.hero + .pwave{display:none} /* straight edges */
+.fhero{background:var(--navy);color:var(--paper);display:flex;flex-direction:column;justify-content:center}
+.fhero .inner{width:100%;max-width:1180px;margin-inline:auto;padding-block:36px;display:flex;flex-direction:column;align-items:center;gap:24px}
+.fhero h1.lbl{font-size:clamp(40px,4.4vw,64px);line-height:1.1;color:var(--paper)}
+.fhero .firmlead{margin:0;max-width:82ch;font-size:20px;line-height:1.6;color:var(--paper);text-wrap:pretty}
+.fhero .search{width:100%;max-width:980px}
+.fhero .chips{justify-content:center;gap:10px}
+/* industry chips: the illustration palette in rotation, black outline, navy or cream text (19px bold, so emerald + navy at 4.3:1 passes as large text) */
+.fhero .chip{font-weight:700;font-size:19px;border:2px solid var(--ink);padding:7px 16px;transition:transform .2s ease,box-shadow .2s ease}
+.fhero .chip:nth-child(6n+1){background:#F7C21A;color:#14254F}
+.fhero .chip:nth-child(6n+2){background:#1F9D55;color:#14254F}
+.fhero .chip:nth-child(6n+3){background:#E09A3A;color:#14254F}
+.fhero .chip:nth-child(6n+4){background:#9B1236;color:#F5F0E6}
+.fhero .chip:nth-child(6n+5){background:#2251FF;color:#F5F0E6}
+.fhero .chip:nth-child(6n){background:#F5F0E6;color:#14254F}
+.fhero .chip:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.fhero .chip[aria-pressed="true"]{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink);outline:3px solid var(--paper);outline-offset:2px}
+.fhero .chip[aria-pressed="true"]::before{content:"✓ "}
+.fhero .chip:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+.fhero #sform .btn:focus-visible{outline-color:var(--paper)}
+/* results on apricot; the list and the profile scroll inside, so the page stays at this snap point */
+.fres{padding-block:28px;display:flex;flex-direction:column}
+.fres > .inner{width:100%;max-width:1280px;margin-inline:auto;flex:1;display:flex;flex-direction:column;gap:16px}
+.fres .count{color:var(--navy);font-size:18px}
+.rbar{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.totop{all:unset;cursor:pointer;font-family:var(--ui);font-weight:700;font-size:17px;color:var(--navy);text-decoration:underline;text-underline-offset:4px}
+.totop:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+.fres .cat{height:calc(100svh - var(--topbar) - 110px);min-height:460px}
+.fres .list{position:static;max-height:100%;overflow-y:auto;padding:4px 14px 14px 4px;overscroll-behavior:contain}
+.fres .prof{max-height:100%;overflow-y:auto;box-sizing:border-box;overscroll-behavior:contain}
+.fres .list,.fres .prof{scrollbar-width:thin;scrollbar-color:#14254F transparent}
+.fres .ec{box-shadow:5px 5px 0 var(--ink)}
+.fres .ec[aria-current="true"]{background:#FFF6EC;box-shadow:inset 0 0 0 3px #FF7A1A,5px 5px 0 var(--ink)}
+.fres .ec .chr{border-top-color:#F4B183}
+.fres .empty{background:var(--white);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink)}
+.cat.out .list{max-height:100%}
+.cat.out .ec[aria-current="true"]{background:var(--white);box-shadow:5px 5px 0 var(--ink)} /* signed out: no selected card */
+.fres .loader{flex:1;justify-content:center}
+.fres .fly::after{background:#FF7A1A}
+.empty0{margin:auto;max-width:620px;background:var(--white);border:3px solid var(--ink);border-radius:22px;box-shadow:7px 7px 0 var(--ink);padding:40px 36px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.empty0 svg{width:64px;height:64px}
+.empty0 h2{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(28px,3vw,38px);line-height:1.15;text-transform:uppercase;text-wrap:balance}
+.empty0 p{margin:0;font-size:19px}
+.empty0 .btn{background:#FF7A1A;color:#14254F}
+.empty0 .btn:hover{background:#E86A0C}
+.empty0 .btn:focus-visible{outline:3px solid var(--navy);outline-offset:3px}
+/* closing band: the one cobalt button on the page, since it leads to Join */
+.fclose{min-height:0;padding-block:88px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:22px}
+.fclose h2.sec,.fclose h2.sec > span.l{color:var(--paper)!important}
+.fclose p{margin:0;font-size:20px;max-width:46ch}
+.fclose .btn{background:#2251FF;color:#fff}
+.fclose .btn:focus-visible{outline:3px solid var(--paper);outline-offset:3px}
+@media (max-width:600px){
+  .fhero .inner{gap:20px;padding-block:28px}
+  .fhero .firmlead{font-size:18px;text-align:left}
+  .fhero .search{flex-wrap:nowrap;gap:10px}
+  .fhero .search input{flex:1 1 auto;font-size:18px;padding:14px 12px 14px 46px;background-position:14px center;background-size:22px}
+  .fhero .search .btn{padding:14px 16px;font-size:16px}
+  .fhero .chips{gap:8px}
+  .fhero .chip{padding:6px 13px}
+}
+@media (max-width:960px){
+  .fres .cat{height:auto;min-height:0}
+  .fres .list,.fres .prof{max-height:none;overflow:visible}
+  .empty0{padding:28px 22px}
+}
 </style>
 </head><body>
 
 <header id="site-head"></header>
 
-<main class="gut">
-  <h1>Find an expert</h1>
-  <p class="lead firmlead">Dapperowl gives your organisation direct access to people from any industry who know their field inside out. Search for the expertise you need using the filters below, find an expert who suits your needs, and send a request with your goals and questions. Meet in person or online. Instead of paying the expert, you donate to the charity they have chosen, so every conversation builds your knowledge and shows your organisation backing good causes. All of it reaches the charity, and you get the receipt for your reporting.</p>
+<section class="snap hero fhero gut" id="top" aria-labelledby="find-h"><div class="inner">
+  <h1 class="page" id="find-h">Find an expert</h1>
+  <p class="firmlead">Dapperowl gives your organisation direct access to people from any industry who know their field inside out. Search for the expertise you need using the filters below, find an expert who suits your needs, and send a request with your goals and questions. Meet in person or online. Instead of paying the expert, you donate to the charity they have chosen, so every conversation builds your knowledge and shows your organisation backing good causes. All of it reaches the charity, and you get the receipt for your reporting.</p>
   <form class="search" id="sform" role="search">
     <label for="q" class="sr" style="position:absolute;left:-9999px">Search experts</label>
     <input type="search" id="q" placeholder="Search by industry, job, speciality or any keyword">
     <button class="btn" type="submit">Search</button>
   </form>
   <div class="chips" id="chips" aria-label="Quick industry filters"></div>
-  <p class="count" id="count" aria-live="polite"></p>
+</div></section>
+
+<main class="snap apr gut fres" id="results" aria-label="Search results"><div class="inner">
+  <div class="empty0" id="empty0">
+    <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="27" cy="27" r="19" fill="#FFFFFF" stroke="#141414" stroke-width="5"/><path d="M41 41l15 15" stroke="#141414" stroke-width="7" stroke-linecap="round"/></svg>
+    <h2>Your experts will appear here</h2>
+    <p>Type a job, an industry or any keyword in the search bar, or pick an industry. Only experts who match are shown.</p>
+    <button type="button" class="btn" data-totop>Start searching ↑</button>
+  </div>
+  <div class="rbar" id="rbar" hidden><p class="count" id="count" aria-live="polite"></p><button type="button" class="link totop" data-totop>Change search ↑</button></div>
   <div class="cat" id="cat">
     <div class="list" id="list" aria-label="Experts"></div>
     <article class="prof" id="prof" aria-live="polite"></article>
@@ -153,22 +234,24 @@ h1{margin:0;font-family:var(--head);font-weight:400;font-size:clamp(38px,4.4vw,6
     <div class="shuffle" aria-hidden="true"><span class="hand l"></span><span class="hand r"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span><span class="fly"></span></div>
     <p>Finding your specialist</p>
   </div>
-  <dialog class="enldlg" id="gate" aria-labelledby="gate-h">
+</div></main>
+
+<section class="snap navy fclose gut" id="share" aria-labelledby="share-h">
+  <h2 class="sec" id="share-h">Have knowledge to share?</h2>
+  <p>Join as an expert and every conversation becomes a donation to the charity you choose.</p>
+  <a class="btn" href="join.html">Join as an expert →</a>
+</section>
+
+<dialog class="enldlg" id="gate" aria-labelledby="gate-h">
     <div class="enldlg-in">
       <button type="button" class="enldlg-x" id="gatex" aria-label="Close"><span aria-hidden="true">×</span></button>
       <div class="gatecard">
         <h2 id="gate-h">Create a free firm account to see full profiles and send requests</h2>
         <p>It takes a couple of minutes with your work email. Searching and preview cards stay open to everyone.</p>
-        <div class="acts"><a class="btn" href="firm-signup.html">Create a firm account</a><a class="btn ghost" href="signin.html#firm">Sign in</a></div>
+        <div class="acts"><a class="btn" href="firm-signup.html?from=expert">Create a firm account</a><a class="btn ghost" href="signin.html#firm">Sign in</a></div>
       </div>
     </div>
   </dialog>
-  <section class="bleed" style="--bb:#14254F;color:var(--paper);text-align:center;display:flex;flex-direction:column;align-items:center;gap:22px">
-    <h2 class="sec">Have knowledge to share?</h2>
-    <p style="margin:0;font-size:20px;max-width:46ch">Join as an expert and every conversation becomes a donation to the charity you choose.</p>
-    <a class="btn" href="join.html">Join as an expert →</a>
-  </section>
-</main>
 
 <footer id="site-foot"></footer>
 <script src="site.js"></script>
@@ -231,21 +314,37 @@ const OUT=!DapperFirm.signedIn();
 $('cat').classList.toggle('out',OUT);
 let gateFrom=null;
 const G=$('gate');
-function gate(from){ gateFrom=from; if(!G.showModal){ location.href='firm-signup.html'; return; } document.documentElement.style.overflow='hidden'; G.showModal(); $('gatex').focus(); }
+function gate(from){ gateFrom=from; try{ sessionStorage.setItem('dapper-signup-expert',JSON.stringify({i:sel,n:E[sel].n})); }catch(e){} if(!G.showModal){ location.href='firm-signup.html?from=expert'; return; } document.documentElement.style.overflow='hidden'; G.showModal(); $('gatex').focus(); }
 function ungate(){ if(!G.open) return; G.close(); document.documentElement.style.overflow=''; if(gateFrom) gateFrom.focus(); }
 $('gatex').onclick=ungate;
 G.addEventListener('cancel',e=>{e.preventDefault();ungate();});
 G.addEventListener('click',e=>{ if(e.target===G) ungate(); });
 let t=null;
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const bar=()=>$('site-head').offsetHeight;
+(function(){ const set=()=>document.documentElement.style.setProperty('--topbar',bar()+'px'); set(); if('ResizeObserver' in window) new ResizeObserver(set).observe($('site-head')); addEventListener('resize',set); })();
+function toResults(now){ const y=$('results').getBoundingClientRect().top+scrollY-bar(); if(Math.abs(scrollY-y)>4) window.scrollTo({top:y,behavior:(now||reduce)?'instant':'smooth'}); }
+function state(k){ $('empty0').hidden=k!=='empty'; $('loader').hidden=k!=='load'; $('cat').hidden=k!=='cat'; $('rbar').hidden=k!=='cat'; }
 function run(){
-  if(!$('q').value.trim() && !ind){ clearTimeout(t); $('loader').hidden=true; $('cat').hidden=true; $('count').textContent='Type what you need, or pick an industry, to see matching experts.'; return; }
+  clearTimeout(t);
+  if(!$('q').value.trim() && !ind){ state('empty'); return; }
   const q=$('q').value.trim();
   shown=E.map((_,i)=>i).filter(i=>match(E[i],q));
   if(shown.length && !shown.includes(sel)) sel=shown[0];
-  $('cat').hidden=true; $('count').textContent=''; $('loader').hidden=false;
-  clearTimeout(t); t=setTimeout(()=>{ $('loader').hidden=true; $('cat').hidden=false; render(); }, 1800);
+  state('load'); toResults();
+  t=setTimeout(()=>{ state('cat'); render(); $('list').scrollTop=0; $('prof').scrollTop=0; }, 1800);
 }
 $('sform').addEventListener('submit',e=>{e.preventDefault();run();});
-$('cat').hidden=true;
+document.querySelectorAll('[data-totop]').forEach(b=>b.onclick=()=>{ window.scrollTo({top:0,behavior:reduce?'instant':'smooth'}); $('q').focus({preventScroll:true}); });
+state('empty');
+// back from the firm sign-up (#expert-N): open that expert's full profile straight away
+const back=/^#expert-(\d+)$/.exec(location.hash);
+if(back && E[+back[1]] && !OUT){
+  sel=+back[1]; shown=E.map((_,i)=>i); state('cat'); render();
+  $('count').textContent='Showing all '+E.length+' experts';
+  const c=$('e'+sel); if(c) $('list').scrollTop=c.getBoundingClientRect().top-$('list').getBoundingClientRect().top-4;
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  requestAnimationFrame(()=>toResults(true)); addEventListener('load',()=>toResults(true));
+}
 </script>
 </body></html>

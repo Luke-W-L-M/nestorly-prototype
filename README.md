@@ -1,12 +1,12 @@
 <div align="center">
 
-<img src="og-image.png" alt="Dapperowl: Specialise for charity" width="720">
+<img src="og-image.png" alt="Nestorly: Specialise for charity" width="720">
 
-# Dapperowl
+# Nestorly
 
 **Specialise for charity.** Experts share what they know with organisations that need it. Instead of paying the expert, the organisation donates, in full, to a charity the expert has chosen.
 
-### [▶ Open the live prototype: luke-w-l-m.github.io/dapperowl-prototype](https://luke-w-l-m.github.io/dapperowl-prototype)
+### [▶ Open the live prototype: luke-w-l-m.github.io/nestorly-prototype](https://luke-w-l-m.github.io/nestorly-prototype)
 
 </div>
 
@@ -14,11 +14,11 @@
 
 ## What it is
 
-Dapperowl is a planned community interest company (CIC): a marketplace that connects people who know their field inside out with firms, investors and organisations looking for that knowledge.
+Nestorly is a planned community interest company (CIC): a marketplace that connects people who know their field inside out with firms, investors and organisations looking for that knowledge.
 
 - **Experts** (mostly 40+, still working, retired or specialists in any field) create a profile and choose one UK charity they care about.
 - **Firms** search by industry, job or keyword, and send a request with their goals and questions.
-- **The donation** goes straight from the firm to the charity's own donation page. **100% reaches the charity. Dapperowl never touches the money.**
+- **The donation** goes straight from the firm to the charity's own donation page. **100% reaches the charity. Nestorly never touches the money.**
 
 No contracts, no selling yourself: just your expertise, put to work for a cause you care about.
 
@@ -64,7 +64,7 @@ The account decides where you land: experts go to the expert dashboard, firms to
 3. Search "harbour" → open the new expert → *Save* → *Request a conversation* → *Prototype only: fill in sample answers* → *Send request*.
 4. Sign out, sign in as the expert. The bell shows the new request → *Accept…* → pick a time, tick the declarations → *Confirm and accept*. Send a message on the request.
 5. *Join video call* → *Prototype: let them join* → *Leave* → *Mark as done* → *Send to [charity]*.
-6. Sign in as the firm → *Donations & receipts* → *Donate to [charity]* (a pretend charity page) → *Donate* → back to Dapperowl → *Use a sample receipt* → *Submit receipt*. About 5 seconds later the charity confirms and both sides get a certificate of impact.
+6. Sign in as the firm → *Donations & receipts* → *Donate to [charity]* (a pretend charity page) → *Donate* → back to Nestorly → *Use a sample receipt* → *Submit receipt*. About 5 seconds later the charity confirms and both sides get a certificate of impact.
 7. Open **Emails** in the footer to see every email the journey would have sent.
 
 **Also worth trying:** open questions (firms post them, experts raise a hand), suggesting a different meeting time from either side, *Add to calendar* (downloads a .ics file), the receipts CSV export, pausing a profile, and *See my profile as firms do*.
@@ -75,7 +75,7 @@ The account decides where you land: experts go to the expert dashboard, firms to
 
 | Page | File | Purpose |
 |---|---|---|
-| Homepage | [`index.html`](index.html) | What Dapperowl is, how it works, the donation tracker and certificates |
+| Homepage | [`index.html`](index.html) | What Nestorly is, how it works, the donation tracker and certificates |
 | Join as an expert | [`join.html`](join.html) | Who it's for, how firms find you, what you'll need, an example and FAQs |
 | Create your profile | [`create-profile.html`](create-profile.html) | Eight-step expert sign-up, then *You're live!* with ready-made sharing posts |
 | Find an expert | [`find.html`](find.html) | Search by industry, job or keyword; full profiles and saving for signed-in firms |
@@ -84,7 +84,7 @@ The account decides where you land: experts go to the expert dashboard, firms to
 | Request a conversation | [`request.html`](request.html) | Goals, questions, format, three times, the donation and a signed pledge |
 | Expert dashboard | [`expert-dashboard.html`](expert-dashboard.html) | To do, requests, meetings, open questions, donations and impact, profile and settings |
 | Firm dashboard | [`firm-dashboard.html`](firm-dashboard.html) | To do, requests, meetings, open questions, saved experts, donations and receipts, organisation |
-| Video call | [`call.html`](call.html) | The Dapperowl call room: names, topic, timer, mic and camera, attendance |
+| Video call | [`call.html`](call.html) | The Nestorly call room: names, topic, timer, mic and camera, attendance |
 | Charity donation page | [`charity.html`](charity.html) | A pretend charity website where the firm donates (no payment is taken) |
 | Emails | [`emails.html`](emails.html) | Every email the prototype would have sent, and the email designs |
 | Small print | [`legal.html`](legal.html) | Terms, privacy, code of conduct and cookies |
@@ -101,10 +101,10 @@ Plain HTML, CSS and JavaScript with no build step, hosted on [GitHub Pages](http
 
 ## Status
 
-This is a **working click-through prototype with invented sample data**. Everything is saved only in your own browser. The people, firms and charities shown are fictional, and no sign-ins, payments, video calls or emails are real. The full site (accounts, database and email sending) is planned next. *Dapperowl* is a working name.
+This is a **working click-through prototype with invented sample data**. Everything is saved only in your own browser. The people, firms and charities shown are fictional, and no sign-ins, payments, video calls or emails are real. The full site (accounts, database and email sending) is planned next. *Nestorly* is a working name.
 
 ---
 
 <div align="center">
-<sub>© 2026 Dapperowl CIC (in formation) · Made by <a href="https://github.com/Luke-W-L-M">Luke Melville</a></sub>
+<sub>© 2026 Nestorly CIC (in formation) · Made by <a href="https://github.com/Luke-W-L-M">Luke Melville</a></sub>
 </div>

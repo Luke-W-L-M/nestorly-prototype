@@ -1,23 +1,23 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta property="og:title" content="Dapperowl: Specialise for charity">
+<meta property="og:title" content="Nestorly: Specialise for charity">
 <meta property="og:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
-<meta property="og:url" content="https://luke-w-l-m.github.io/dapperowl-prototype/call.html">
+<meta property="og:url" content="https://luke-w-l-m.github.io/nestorly-prototype/call.html">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta property="og:image" content="https://luke-w-l-m.github.io/nestorly-prototype/og-image.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dapperowl: Specialise for charity">
+<meta name="twitter:title" content="Nestorly: Specialise for charity">
 <meta name="twitter:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
-<meta name="twitter:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta name="twitter:image" content="https://luke-w-l-m.github.io/nestorly-prototype/og-image.png?v=2">
 <meta name="twitter:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
-<title>Video call · Dapperowl</title>
+<title>Video call · Nestorly</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>
-/* Dapperowl video call (2 Nov, prototype): both names, the topic, a running timer, mic and camera toggles, Leave. Records when each side joins and leaves. */
+/* Nestorly video call (2 Nov, prototype): both names, the topic, a running timer, mic and camera toggles, Leave. Records when each side joins and leaves. */
 .call{background:var(--navy);color:var(--paper);min-height:calc(100svh - 86px);display:flex;flex-direction:column;padding-block:28px 32px;box-sizing:border-box}
 .hero.call + .pwave{display:none}
 .call .inner{width:100%;max-width:1180px;margin-inline:auto;flex:1;display:flex;flex-direction:column;gap:20px}
@@ -86,7 +86,7 @@ function tile(who){ const m=DS.get().requests.find(y=>y.id===id).meeting, joined
     (!here&&!isMe?'<button type="button" class="letjoin" id="letjoin">Prototype: let them join</button>':'')+
     '<div class="tag"><b>'+esc(names[who])+(isMe?' (you)':'')+'</b><span>'+(here?(joined?'Joined '+esc(new Date(joined).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})):'Joined'):'Waiting to join…')+'</span></div></div>'; }
 function draw(){
-  $('room').innerHTML='<div class="callhead"><div><span class="eyebrow">Dapperowl call · '+esc(DS.when(r0.meeting.at))+'</span><h1 class="lbl">'+esc(r0.topic)+'</h1></div><span class="timer" role="timer" aria-label="Time in call"><i aria-hidden="true"></i><span id="t">00:00</span></span></div>'+
+  $('room').innerHTML='<div class="callhead"><div><span class="eyebrow">Nestorly call · '+esc(DS.when(r0.meeting.at))+'</span><h1 class="lbl">'+esc(r0.topic)+'</h1></div><span class="timer" role="timer" aria-label="Time in call"><i aria-hidden="true"></i><span id="t">00:00</span></span></div>'+
     '<div class="tiles">'+tile(side)+tile(other)+'</div>'+
     '<div class="controls"><span class="ctl-lab"><button type="button" class="ctl" id="mic" aria-pressed="'+mic+'" aria-label="Microphone">'+MIC+'</button>'+(mic?'Mic on':'Mic off')+'</span>'+
     '<span class="ctl-lab"><button type="button" class="ctl" id="cam" aria-pressed="'+cam+'" aria-label="Camera">'+CAM+'</button>'+(cam?'Camera on':'Camera off')+'</span>'+

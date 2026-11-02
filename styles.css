@@ -1,4 +1,4 @@
-/* Dapperowl prototype: shared tokens and components. Bold black-figure style: thick black outlines, hard shadows, cream paper, navy text, cobalt accent, green for donations. */
+/* Nestorly prototype: shared tokens and components. Bold black-figure style: thick black outlines, hard shadows, cream paper, navy text, cobalt accent, green for donations. */
 :root{
   --paper:#F5F0E6; --ink:#141414; --navy:#14254F; --cobalt:#2251FF; --green:#1F9D55; --white:#ffffff; --muted:#4A5675; --soft:#E9E2D3; --burgundy:#7A1F2B; --amber:#E0A21B; --sun:#F6C344;
   --head:'DM Serif Display', Georgia, serif; --body:'Source Sans 3', Arial, sans-serif; --ui:'Outfit', Arial, sans-serif;
@@ -26,7 +26,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,
 /* footer */
 .foot{background:var(--navy);color:var(--paper);padding-block:56px 40px;border-top:3px solid var(--ink)}
 .foot .inner{display:grid;grid-template-columns:minmax(0,1.3fr) repeat(2,minmax(0,1fr));gap:40px}
-.foot .mark{width:140px;height:auto}
+.foot .mark{height:88px;width:auto}
 .foot p{margin:14px 0 0;font-size:17px;max-width:42ch;color:#DCE3F5}
 .foot h4{margin:0 0 12px;font-family:var(--ui);font-size:14px;letter-spacing:.1em;text-transform:uppercase;color:#C9D3F2}
 .foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
@@ -260,7 +260,7 @@ main > .bleed:last-child::after{display:none}
 .owl-div{position:relative;height:0;z-index:4;pointer-events:none}
 .owl-div > span{position:absolute;left:50%;top:0;width:40%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:14px}
 .owl-div > span::before,.owl-div > span::after{content:"";flex:1;height:2px;background:var(--navy)}
-.owl-div svg{display:block;flex:none;height:28px;width:auto}
+.owl-div img{display:block;flex:none;height:40px;width:auto}
 
 /* Click-to-enlarge pop-up (30 Oct), same look as the homepage certificate; site.js wires up [data-enlarge] */
 [data-enlarge]{cursor:zoom-in}

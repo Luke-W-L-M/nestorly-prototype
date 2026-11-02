@@ -4,7 +4,7 @@
 <title>Donate · Charity donation page (prototype)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&display=swap">
 <style>
-/* A pretend charity donation page (2 Nov, prototype only). It deliberately looks like a different website: the firm donates on the charity's own page, never through Dapperowl. */
+/* A pretend charity donation page (2 Nov, prototype only). It deliberately looks like a different website: the firm donates on the charity's own page, never through Nestorly. */
 :root{--teal:#0E5E6F;--teal2:#0A4A58;--ink:#1D2329;--paper:#F7F7F4;color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--paper);color:var(--ink);font-family:'Source Sans 3',Arial,sans-serif;font-size:19px;line-height:1.5}
@@ -39,15 +39,15 @@ small{color:#5A6369;font-size:15px}
 (function(){
 const $=id=>document.getElementById(id), esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const r=DS.get().requests.find(x=>x.id===new URLSearchParams(location.search).get('r'));
-if(!r){ $('main').innerHTML='<div class="box"><h1>Donation link not found</h1><a class="btn" href="index.html">Back to Dapperowl</a></div>'; return; }
-const x=DS.expert(r.expertId)||{}, f=DS.firm(r.firmId)||{name:''}, ref='DPO-'+r.id.toUpperCase();
+if(!r){ $('main').innerHTML='<div class="box"><h1>Donation link not found</h1><a class="btn" href="index.html">Back to Nestorly</a></div>'; return; }
+const x=DS.expert(r.expertId)||{}, f=DS.firm(r.firmId)||{name:''}, ref='NE-'+r.id.toUpperCase();
 document.title='Donate to '+r.pledge.charity+' (prototype)';
 $('cname').textContent=r.pledge.charity; $('cdesc').textContent=x.ch===r.pledge.charity?(x.chd||''):'';
 $('main').innerHTML='<form class="box" id="form" novalidate><h1>Make a donation</h1>'+
-  '<div><label for="a">Amount</label><div class="amt"><span>£</span><input id="a" type="number" min="1" value="'+Number(r.amount)+'" inputmode="numeric"></div><small>Pre-filled from your Dapperowl pledge.</small></div>'+
+  '<div><label for="a">Amount</label><div class="amt"><span>£</span><input id="a" type="number" min="1" value="'+Number(r.amount)+'" inputmode="numeric"></div><small>Pre-filled from your Nestorly pledge.</small></div>'+
   '<div><label for="o">Organisation</label><input id="o" value="'+esc(f.name)+'" readonly></div>'+
   '<div><label for="n">Name</label><input id="n" value="'+esc(r.pledge.name)+'"></div>'+
-  '<div><label for="ref">Reference</label><input id="ref" value="'+esc(ref)+'" readonly><small>So the charity can match your gift to the Dapperowl conversation.</small></div>'+
+  '<div><label for="ref">Reference</label><input id="ref" value="'+esc(ref)+'" readonly><small>So the charity can match your gift to the Nestorly conversation.</small></div>'+
   '<p style="margin:0;font-size:16px;color:#5A6369">Payment details are skipped in this prototype.</p><span class="err" id="err" role="alert" hidden></span>'+
   '<button type="submit" id="go">Donate £'+Number(r.amount).toLocaleString('en-GB')+'</button></form>';
 $('a').oninput=()=>{ $('go').textContent='Donate £'+(Number($('a').value)||0).toLocaleString('en-GB'); };
@@ -56,7 +56,7 @@ $('form').addEventListener('submit',e=>{ e.preventDefault(); const amt=Number($(
   const when=new Date(), rec=['RECEIPT',r.pledge.charity,'','Donation received: £'+amt.toLocaleString('en-GB'),'From: '+f.name+' ('+$('n').value+')','Reference: '+ref,'Date: '+when.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}),'','Thank you for your support.','(Prototype receipt: no payment was taken.)'].join('\n');
   $('main').innerHTML='<div class="box" style="align-items:center;text-align:center"><svg class="ok" viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="30" fill="#0E5E6F"/><path d="M18 33l9 9 19-20" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>'+
     '<h1>Thank you, '+esc(f.name)+'</h1><p style="margin:0">Your donation of <b>£'+amt.toLocaleString('en-GB')+'</b> to '+esc(r.pledge.charity)+' has been received. We\'ve emailed your receipt.</p>'+
-    '<button type="button" class="btn alt" id="dl">Download receipt</button><a class="btn" href="firm-dashboard.html#donations">Back to Dapperowl to upload your receipt</a></div>';
+    '<button type="button" class="btn alt" id="dl">Download receipt</button><a class="btn" href="firm-dashboard.html#donations">Back to Nestorly to upload your receipt</a></div>';
   $('dl').onclick=()=>DS.download(rec,'text/plain','receipt-'+ref+'.txt');
 });
 })();

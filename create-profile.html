@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta property="og:title" content="Dapperowl: Specialise for charity">
+<meta property="og:title" content="Nestorly: Specialise for charity">
 <meta property="og:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
-<meta property="og:url" content="https://luke-w-l-m.github.io/dapperowl-prototype/create-profile.html">
+<meta property="og:url" content="https://luke-w-l-m.github.io/nestorly-prototype/create-profile.html">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta property="og:image" content="https://luke-w-l-m.github.io/nestorly-prototype/og-image.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dapperowl: Specialise for charity">
+<meta name="twitter:title" content="Nestorly: Specialise for charity">
 <meta name="twitter:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
-<meta name="twitter:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta name="twitter:image" content="https://luke-w-l-m.github.io/nestorly-prototype/og-image.png?v=2">
 <meta name="twitter:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
-<title>Create your profile · Dapperowl</title>
+<title>Create your profile · Nestorly</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>
@@ -262,7 +262,7 @@ main.formarea{box-sizing:border-box;min-height:calc(100svh - var(--topbar));padd
 
       <div data-step="6" hidden>
         <h2 tabindex="-1">Contact and availability</h2>
-        <p class="lead">Your contact details stay private. Firms send requests through Dapperowl, and details are only swapped once you accept.</p>
+        <p class="lead">Your contact details stay private. Firms send requests through Nestorly, and details are only swapped once you accept.</p>
         <div class="row">
           <div class="f"><label for="cemail">Email for requests</label><input type="email" id="cemail" value="margaret.ellison@example.co.uk"></div>
           <div class="f"><label for="phone">Phone <span class="opt">(optional, never shown)</span></label><input type="tel" id="phone" value="07700 900456"></div>
@@ -393,9 +393,9 @@ function publish(){
     const user={id:'u-'+id,role:'expert',email:d.email,name:d.n,ref:id}; st.users.push(user); return user; });
   DS.signIn(u.id);
   const what=d.spec.length?d.spec.slice(0,2).join(' or ').toLowerCase():(d.ind[0]||'my field').toLowerCase();
-  document.getElementById('li-post').value="I've joined Dapperowl. If your organisation needs "+what+", ask me, and the donation goes to "+d.ch+".";
+  document.getElementById('li-post').value="I've joined Nestorly. If your organisation needs "+what+", ask me, and the donation goes to "+d.ch+".";
   document.getElementById('li-open').href='https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent(document.getElementById('li-post').value);
-  document.getElementById('ch-note').value='Hello '+d.ch+' team,\n\nI\'ve joined Dapperowl, where organisations ask experts for their knowledge and, instead of paying the expert, donate to the expert\'s chosen charity. I\'ve chosen you, so every conversation I have becomes a donation to your work.\n\nIf you\'d like to share this with your supporters, firms can find me by searching "'+d.n+'" on Dapperowl.\n\nWith best wishes,\n'+d.n;
+  document.getElementById('ch-note').value='Hello '+d.ch+' team,\n\nI\'ve joined Nestorly, where organisations ask experts for their knowledge and, instead of paying the expert, donate to the expert\'s chosen charity. I\'ve chosen you, so every conversation I have becomes a donation to your work.\n\nIf you\'d like to share this with your supporters, firms can find me by searching "'+d.n+'" on Nestorly.\n\nWith best wishes,\n'+d.n;
   return u;
 }
 function copyText(ta,ok,flag){ ta.select(); const done=()=>{ document.getElementById(ok).textContent='Copied'; const me=DS.me(); if(me) DS.update(st=>{ const ex=st.experts.find(x=>x.id===me.ref); if(ex){ ex.shared=ex.shared||{}; ex.shared[flag]=true; } }); };

@@ -1,4 +1,4 @@
-// Dapperowl prototype data store (2 Nov). One shared store in localStorage, seeded on first load.
+// Nestorly prototype data store (2 Nov). One shared store in localStorage, seeded on first load.
 // Prototype only: the live site keeps this in Supabase. Every read and write is wrapped, so the pages still work when storage is blocked.
 (function(){
 const KEY='dapper-store-v1';
@@ -32,7 +32,7 @@ const EX=[
 const EMAILS=['inglebert@example.co.uk','alejandro.ruiz@example.mx','aino.vaisanen@example.fi','isla@kelpwell.example.com','priya.raman@example.co.uk','tom.achterberg@example.co.uk'];
 const FMTS=['Phone or video call','Written advice','Site visit','Talk or presentation','Mentoring'];
 const EMAIL={request:['A firm would like your knowledge','Read the request'],reply:['An update on your request','Open the request'],message:['You have a new message','Read and reply'],
-  meeting:['About your meeting','See the meeting'],donation:['An update on a donation','See the donation'],hand:['An expert raised their hand','See who'],question:['A new question in your field','See the question'],other:['News from Dapperowl','Open Dapperowl']};
+  meeting:['About your meeting','See the meeting'],donation:['An update on a donation','See the donation'],hand:['An expert raised their hand','See who'],question:['A new question in your field','See the question'],other:['News from Nestorly','Open Nestorly']};
 function seed(){
   const now=Date.now(), at=ms=>new Date(now+ms).toISOString();
   // meeting slots on the hour: slot(2,11) is 11:00 the day after tomorrow
@@ -131,8 +131,8 @@ const DS={
   // "Add to calendar": a .ics file for the meeting
   ics(o){ const f=d=>new Date(d).toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');
     const end=new Date(new Date(o.start).getTime()+(o.mins||60)*60000);
-    const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Dapperowl//Prototype//EN','BEGIN:VEVENT','UID:'+o.uid+'@dapperowl.co.uk','DTSTAMP:'+f(Date.now()),'DTSTART:'+f(o.start),'DTEND:'+f(end),'SUMMARY:'+o.title.replace(/[,;]/g,'\\$&'),'DESCRIPTION:'+(o.desc||'').replace(/\n/g,'\\n').replace(/[,;]/g,'\\$&'),'END:VEVENT','END:VCALENDAR'].join('\r\n');
-    DS.download(txt,'text/calendar','dapperowl-meeting.ics'); },
+    const txt=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Nestorly//Prototype//EN','BEGIN:VEVENT','UID:'+o.uid+'@nestorly.co.uk','DTSTAMP:'+f(Date.now()),'DTSTART:'+f(o.start),'DTEND:'+f(end),'SUMMARY:'+o.title.replace(/[,;]/g,'\\$&'),'DESCRIPTION:'+(o.desc||'').replace(/\n/g,'\\n').replace(/[,;]/g,'\\$&'),'END:VEVENT','END:VCALENDAR'].join('\r\n');
+    DS.download(txt,'text/calendar','nestorly-meeting.ics'); },
   download(text,type,name){ const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([text],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },500); },
   // the charity confirms a donation about 5 seconds after the firm uploads its receipt (prototype only)
   tick(){ const now=Date.now(); let changed=false;

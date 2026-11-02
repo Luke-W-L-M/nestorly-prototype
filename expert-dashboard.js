@@ -74,8 +74,8 @@ function todo(){
   return o+'</div>';
 }
 function shareText(kind){ const ex=EX(); const what=(ex.spec&&ex.spec.length?ex.spec.slice(0,2).join(' or '):(ex.ind[0]||'my field')).toLowerCase();
-  return kind==='linkedin'?"I've joined Dapperowl. If your organisation needs "+what+", ask me, and the donation goes to "+ex.ch+".":
-    'Hello '+ex.ch+' team,\n\nI\'ve joined Dapperowl, where organisations ask experts for their knowledge and, instead of paying the expert, donate to the expert\'s chosen charity. I\'ve chosen you, so every conversation I have becomes a donation to your work.\n\nIf you\'d like to share this with your supporters, firms can find me by searching "'+ex.n+'" on Dapperowl.\n\nWith best wishes,\n'+ex.n; }
+  return kind==='linkedin'?"I've joined Nestorly. If your organisation needs "+what+", ask me, and the donation goes to "+ex.ch+".":
+    'Hello '+ex.ch+' team,\n\nI\'ve joined Nestorly, where organisations ask experts for their knowledge and, instead of paying the expert, donate to the expert\'s chosen charity. I\'ve chosen you, so every conversation I have becomes a donation to your work.\n\nIf you\'d like to share this with your supporters, firms can find me by searching "'+ex.n+'" on Nestorly.\n\nWith best wishes,\n'+ex.n; }
 
 /* ---------- Requests ---------- */
 function requests(){
@@ -197,15 +197,15 @@ function donations(){
       '<div class="acts">'+(d.stage===1?'<button class="btn green" data-send="'+r.id+'">Send to '+esc(r.pledge.charity)+'</button>':'')+(d.stage>=3?'<button class="btn ghost sm" data-rcpt="'+r.id+'">View receipt</button>':'')+'</div></div>';
   });
   o+='<h3 class="lab" style="margin:8px 0 0">Your certificates of impact</h3>';
-  o+=got.length?'<div class="certs">'+got.map(r=>'<div>'+cert(ex,r)+'<div class="acts" style="margin-top:14px"><a class="btn sm" target="_blank" rel="noopener" href="https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent('Proud that my conversation with '+(F(r.firmId).namedOnCerts?F(r.firmId).name:'an organisation')+' became a '+gbp(r.amount)+' donation to '+r.pledge.charity+', through Dapperowl.')+'">Share on LinkedIn ↗</a><button class="btn ghost sm" data-dl="'+r.id+'">Download</button></div></div>').join('')+'</div>':'<p class="empty">Your first certificate appears when a charity confirms a donation.</p>';
+  o+=got.length?'<div class="certs">'+got.map(r=>'<div>'+cert(ex,r)+'<div class="acts" style="margin-top:14px"><a class="btn sm" target="_blank" rel="noopener" href="https://www.linkedin.com/feed/?shareActive=true&text='+encodeURIComponent('Proud that my conversation with '+(F(r.firmId).namedOnCerts?F(r.firmId).name:'an organisation')+' became a '+gbp(r.amount)+' donation to '+r.pledge.charity+', through Nestorly.')+'">Share on LinkedIn ↗</a><button class="btn ghost sm" data-dl="'+r.id+'">Download</button></div></div>').join('')+'</div>':'<p class="empty">Your first certificate appears when a charity confirms a donation.</p>';
   return o;
 }
 function cert(ex,r){
-  return '<div class="ccert"><div class="cq"><div class="c1"><div class="frame"></div><div class="in">'+DAPPER_LOGO('#fff','#14254F')+'<span class="k">Certificate of impact</span><div class="photo"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M6 60c0-15 11-23 24-23s24 8 24 23z" fill="#141414"/></svg></div><span class="nm">'+esc(ex.n)+'</span><span class="rule"></span><span class="amt">'+gbp(r.amount)+'</span><span class="to">donated to<b>'+esc(r.pledge.charity)+'</b></span></div><span class="date">'+esc(new Date(r.donation.received).toLocaleDateString('en-GB',{month:'long',year:'numeric'}))+'</span></div></div></div>';
+  return '<div class="ccert"><div class="cq"><div class="c1"><div class="frame"></div><div class="in">'+DAPPER_LOGO('navy')+'<span class="k">Certificate of impact</span><div class="photo"><svg viewBox="0 0 60 60" aria-hidden="true"><circle cx="30" cy="22" r="13" fill="#141414"/><path d="M6 60c0-15 11-23 24-23s24 8 24 23z" fill="#141414"/></svg></div><span class="nm">'+esc(ex.n)+'</span><span class="rule"></span><span class="amt">'+gbp(r.amount)+'</span><span class="to">donated to<b>'+esc(r.pledge.charity)+'</b></span></div><span class="date">'+esc(new Date(r.donation.received).toLocaleDateString('en-GB',{month:'long',year:'numeric'}))+'</span></div></div></div>';
 }
 function certSVG(ex,r){ const x=t=>esc(t);
   return '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000"><rect width="800" height="1000" fill="#fff"/><rect x="36" y="36" width="728" height="928" fill="none" stroke="#14254F" stroke-width="4"/><rect x="54" y="54" width="692" height="892" fill="none" stroke="#14254F" stroke-width="2"/>'+
-    '<text x="400" y="200" text-anchor="middle" font-family="Outfit,Arial" font-weight="700" font-size="40" fill="#1F9D55" letter-spacing="4">DAPPEROWL</text>'+
+    NESTORLY_LOGO_SVG(400,104,116)+
     '<text x="400" y="260" text-anchor="middle" font-family="Outfit,Arial" font-size="24" fill="#2251FF" letter-spacing="8">CERTIFICATE OF IMPACT</text>'+
     '<circle cx="400" cy="390" r="90" fill="#E9E4D8" stroke="#14254F" stroke-width="5"/>'+
     '<text x="400" y="560" text-anchor="middle" font-family="DM Serif Display,Georgia" font-size="44" fill="#14254F">'+x(ex.n)+'</text>'+
@@ -283,7 +283,7 @@ function wire(rt){
     DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='suggested'; x.suggested=when; x.suggestedBy='expert'; x.firmSeen=false; });
     DS.alertFirm(r.firmId,'reply',first+' suggested a new time for "'+r.topic+'": '+DS.when(when),'firm-dashboard.html#request-'+r.id);
     flash='Sent. We\'ll book it as soon as '+esc(F(r.firmId).name)+' agrees.'; draw(); });
-  on('[data-ics]',b=>{ const r=R(b.dataset.ics); DS.ics({uid:r.id,start:r.meeting.at,mins:/half a day/i.test(r.length)?240:60,title:'Dapperowl: '+r.topic+' with '+F(r.firmId).name,desc:'Your Dapperowl meeting. Join from your dashboard: expert-dashboard.html#request-'+r.id}); });
+  on('[data-ics]',b=>{ const r=R(b.dataset.ics); DS.ics({uid:r.id,start:r.meeting.at,mins:/half a day/i.test(r.length)?240:60,title:'Nestorly: '+r.topic+' with '+F(r.firmId).name,desc:'Your Nestorly meeting. Join from your dashboard: expert-dashboard.html#request-'+r.id}); });
   on('[data-markdone]',b=>{ const r=R(b.dataset.markdone);
     DS.update(s=>{ const x=s.requests.find(y=>y.id===r.id); x.state='done'; x.donation=x.donation||{stage:1}; });
     DS.alertFirm(r.firmId,'meeting',first+' marked "'+r.topic+'" as done','firm-dashboard.html#request-'+r.id);
@@ -315,7 +315,7 @@ function wire(rt){
   on('[data-rcpt]',b=>{ const r=R(b.dataset.rcpt), f=F(r.firmId), d=$('rcpt');
     $('rcpt-in').innerHTML='<h2 id="rcpt-h">Donation receipt</h2><dl class="dl" style="text-align:left"><dt>Charity</dt><dd>'+esc(r.pledge.charity)+'</dd><dt>Amount</dt><dd>'+gbp(r.amount)+'</dd><dt>From</dt><dd>'+esc(f.name)+'</dd><dt>Paid</dt><dd>'+esc(DS.day(r.donation.paid))+'</dd><dt>File</dt><dd>'+esc(r.donation.receipt||'receipt.pdf')+'</dd></dl><div class="acts"><button class="btn sm" id="rcpt-x">Close</button></div>';
     $('rcpt-x').onclick=()=>d.close(); if(d.showModal) d.showModal(); });
-  on('[data-dl]',b=>{ const r=R(b.dataset.dl); DS.download(certSVG(EX(),r),'image/svg+xml','dapperowl-certificate-'+r.id+'.svg'); });
+  on('[data-dl]',b=>{ const r=R(b.dataset.dl); DS.download(certSVG(EX(),r),'image/svg+xml','nestorly-certificate-'+r.id+'.svg'); });
   // profile
   on('[data-pause]',()=>{ DS.update(s=>{ const ex=s.experts.find(x=>x.id===me.ref); ex.status=ex.status==='paused'?'live':'paused'; }); flash=EX().status==='paused'?'Your profile is paused. Firms won\'t find you until you make it live again.':'Your profile is live again.'; draw(); });
   const pf=$('pform');

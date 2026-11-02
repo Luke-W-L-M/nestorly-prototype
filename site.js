@@ -1,14 +1,14 @@
-// Shared header and footer for every Dapperowl prototype page.
+// Shared header and footer for every Nestorly prototype page.
 (function(){
-  const LOGO = function(eye, word){ return '<svg class="logo" viewBox="18 14 274 108" role="img" aria-label="Dapperowl">'+
-    '<path d="M50 18 A28 28 0 0 1 78 46 L78 88 Q78 94 72 94 L36 94 Q22 94 22 80 L22 46 A28 28 0 0 1 50 18 Z" fill="#1F9D55"/>'+
-    '<path d="M-10 -5 L0 5 L10 -5" transform="translate(50 44)" fill="none" stroke="'+eye+'" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>'+
-    '<path d="M44 98 L57 98 L43 118 L30 118 Z M62 98 L75 98 L61 118 L48 118 Z" fill="#1F9D55"/>'+
-    '<path d="M82 58 L286 58 Q206 106 108 100 L82 96 Z" fill="#1F9D55"/>'+
-    '<path d="M156 56 L128 108 M202 56 L178 102 M246 56 L228 90" stroke="'+eye+'" stroke-width="4"/>'+
-    (word?'<text x="92" y="46.4" font-family="Outfit, sans-serif" font-weight="700" font-size="24" letter-spacing="2" fill="#1F9D55">DAPPEROWL</text>':'')+
-    '</svg>'; };
+  // Nestorly envelope-owl wordmark (2 Nov): navy on light backgrounds, cream on navy and dark ones
+  const LOGO = function(tone){ return '<img class="logo" src="images/nestorly-logo-'+(tone==='cream'?'cream':'navy')+'.svg" alt="Nestorly">'; };
   window.DAPPER_LOGO = LOGO;
+  // the same navy logo inlined, for downloaded certificate SVG files (x, y, height in the file's units)
+  let svgText='';
+  fetch('images/nestorly-logo-navy.svg').then(r=>r.text()).then(t=>{ svgText=t.replace(/<metadata>[\s\S]*?<\/metadata>/,'').replace(/<svg[^>]*>/,''); }).catch(()=>{});
+  window.NESTORLY_LOGO_SVG = function(cx,y,h){ const w=Math.round(h*681/628);
+    return svgText ? '<svg x="'+(cx-w/2)+'" y="'+y+'" width="'+w+'" height="'+h+'" viewBox="267 203 681 628" role="img" aria-label="Nestorly">'+svgText
+      : '<text x="'+cx+'" y="'+(y+h*.7)+'" text-anchor="middle" font-family="Outfit,Arial" font-weight="700" font-size="40" fill="#14254F" letter-spacing="4">NESTORLY</text>'; };
   const here = (location.pathname.split('/').pop() || 'index.html');
   const cls = f => here===f ? ' class="here"' : '';
   const DS = window.DS, me = DS ? DS.me() : null;
@@ -30,7 +30,7 @@
   if(head && !me){
     head.className='top gut';
     head.innerHTML = '<nav aria-label="Main left"><a href="join.html"'+cls('join.html')+'>Join as an expert</a><a href="find.html"'+cls('find.html')+'>Find an expert</a></nav>'+
-      '<a href="index.html" aria-label="Dapperowl home">'+LOGO('#FBEFC6','#1F9D55')+'</a>'+
+      '<a href="index.html" aria-label="Nestorly home">'+LOGO('navy')+'</a>'+
       '<nav class="r" aria-label="Main right">'+cta()+'<a href="signin.html"'+cls('signin.html')+'>Sign in</a></nav>';
   } else if(head){
     // signed in (2 Nov): role-aware links, the bell and the account menu
@@ -45,7 +45,7 @@
     const initials = me.name.split(/\s+/).filter(Boolean).map(w=>w[0]).slice(0,2).join('').toUpperCase();
     head.className='top gut tb-in';
     head.innerHTML = '<nav aria-label="Main left">'+left+'</nav>'+
-      '<a href="'+dash+'" aria-label="Dapperowl, your dashboard">'+LOGO('#FBEFC6','#1F9D55')+'</a>'+
+      '<a href="'+dash+'" aria-label="Nestorly, your dashboard">'+LOGO('navy')+'</a>'+
       '<nav class="r" aria-label="Your account">'+
         '<div class="tb-pop"><button type="button" class="tb-bell" id="tb-bell" aria-expanded="false" aria-controls="tb-alerts">'+BELL+'<span class="tb-count" id="tb-count" hidden></span><span class="sr">Alerts</span></button>'+
           '<div class="tb-menu tb-alerts" id="tb-alerts" hidden><div class="tb-mh"><b>Alerts</b><button type="button" id="tb-readall">Mark all read</button></div><ul id="tb-alist"></ul></div></div>'+
@@ -80,12 +80,12 @@
   if(foot){
     foot.className='foot gut';
     foot.innerHTML = '<div class="inner">'+
-      '<div>'+LOGO('#14254F','#F5F0E6').replace('class="logo"','class="mark"')+
-      '<p>Dapperowl is a community interest company. We never touch the money: 100% of every donation goes straight to the expert\'s chosen charity.</p>'+
-      '<p>Questions? <span style="color:#fff;font-weight:700">hello@dapperowl.co.uk</span></p></div>'+
+      '<div>'+LOGO('cream').replace('class="logo"','class="mark"')+
+      '<p>Nestorly is a community interest company. We never touch the money: 100% of every donation goes straight to the expert\'s chosen charity.</p>'+
+      '<p>Questions? <span style="color:#fff;font-weight:700">hello@nestorly.co.uk</span></p></div>'+
       '<div><h4>Pages</h4><ul><li><a href="find.html">Find an expert</a></li><li><a href="join.html">Join as an expert</a></li><li><a href="signin.html">Sign in</a></li></ul></div>'+
       '<div><h4>Small print</h4><ul><li><a href="legal.html#terms">Terms</a></li><li><a href="legal.html#privacy">Privacy</a></li><li><a href="legal.html#conduct">Code of conduct</a></li><li><a href="legal.html#cookies">Cookies</a></li><li><a href="emails.html">Emails</a></li><li><button type="button" class="foot-reset" id="foot-reset">Reset prototype</button></li></ul></div>'+
-      '<div class="base"><span>\u00a9 2026 Dapperowl CIC</span></div></div>'+
+      '<div class="base"><span>\u00a9 2026 Nestorly CIC</span></div></div>'+
       '<dialog class="enldlg" id="reset-dlg" aria-labelledby="reset-h"><div class="gatecard"><h2 id="reset-h">Reset the prototype?</h2><p>This clears everything created in this browser (profiles, firm accounts, requests, messages) and puts the sample data back. You\'ll be signed out.</p><div class="acts"><button type="button" class="btn" id="reset-yes">Reset</button><button type="button" class="btn ghost" id="reset-no">Cancel</button></div></div></dialog>';
     const dlg=document.getElementById('reset-dlg');
     document.getElementById('foot-reset').onclick=()=>{ if(dlg.showModal) dlg.showModal(); else if(confirm('Reset the prototype?')) doReset(); };
@@ -208,11 +208,9 @@
   });
 })();
 
-// Owl dividers (30 Oct): fills each empty .owl-div with a navy line broken by the emerald owl (body and feet).
+// Owl dividers (30 Oct; logo 2 Nov): fills each empty .owl-div with a navy line broken by the small Nestorly logo.
 (function(){
-  const OWL='<svg viewBox="20 16 60 104" aria-hidden="true"><path d="M50 18 A28 28 0 0 1 78 46 L78 88 Q78 94 72 94 L36 94 Q22 94 22 80 L22 46 A28 28 0 0 1 50 18 Z" fill="#1F9D55"/>'+
-    '<path d="M-10 -5 L0 5 L10 -5" transform="translate(50 44)" fill="none" stroke="#F4B183" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>'+
-    '<path d="M44 98 L57 98 L43 118 L30 118 Z M62 98 L75 98 L61 118 L48 118 Z" fill="#1F9D55"/></svg>';
+  const OWL='<img src="images/nestorly-logo-navy.svg" alt="">';
   document.querySelectorAll('.owl-div').forEach(d=>{ d.setAttribute('aria-hidden','true'); d.innerHTML='<span>'+OWL+'</span>'; });
 })();
 

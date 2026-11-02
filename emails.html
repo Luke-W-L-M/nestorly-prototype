@@ -1,19 +1,19 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta property="og:title" content="Dapperowl: Specialise for charity">
+<meta property="og:title" content="Nestorly: Specialise for charity">
 <meta property="og:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
-<meta property="og:url" content="https://luke-w-l-m.github.io/dapperowl-prototype/emails.html">
+<meta property="og:url" content="https://luke-w-l-m.github.io/nestorly-prototype/emails.html">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta property="og:image" content="https://luke-w-l-m.github.io/nestorly-prototype/og-image.png?v=2">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="627">
 <meta property="og:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Dapperowl: Specialise for charity">
+<meta name="twitter:title" content="Nestorly: Specialise for charity">
 <meta name="twitter:description" content="Experts share their knowledge; firms donate 100% to the expert’s chosen charity.">
-<meta name="twitter:image" content="https://luke-w-l-m.github.io/dapperowl-prototype/og-image.png?v=2">
+<meta name="twitter:image" content="https://luke-w-l-m.github.io/nestorly-prototype/og-image.png?v=2">
 <meta name="twitter:image:alt" content="Specialise for charity: three people talking over coffee at a round table">
-<title>Emails · Dapperowl</title>
+<title>Emails · Nestorly</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
 <link rel="stylesheet" href="styles.css">
 <style>
@@ -23,7 +23,7 @@ main{max-width:860px;margin:0 auto;padding-block:56px 90px;display:flex;flex-dir
 .env b{color:var(--navy)}
 .msg{background:var(--white);border:3px solid var(--ink);border-radius:18px;box-shadow:5px 5px 0 var(--ink);overflow:hidden}
 .mh{background:var(--paper);border-bottom:3px solid var(--ink);padding:16px 26px}
-.mh svg{height:40px;width:auto;display:block}
+.mh .logo{height:48px;width:auto;display:block}
 .mb{padding:28px;display:flex;flex-direction:column;gap:14px}
 .mb h2{margin:0;font-family:var(--head);font-weight:400;font-size:30px;line-height:1.1;text-transform:uppercase}
 .mb p{margin:0;font-size:19px;max-width:60ch}
@@ -62,13 +62,13 @@ main{max-width:860px;margin:0 auto;padding-block:56px 90px;display:flex;flex-dir
 const M=[
  ['To the expert','New request from Harbourline Capital','A firm would like your knowledge','James Okafor of Harbourline Capital would like a 1-hour video call about scaling seaweed farming in the Scottish Highlands. They\'ve pledged <b>£350</b> to Loch Broom Lifeboat Fund.','See the request','expert-dashboard.html'],
  ['To the firm','Inglebert accepted your request','You\'re booked in','The Hon. Inglebert Montgomery-Smythe accepted. Your video call is on <b>Wed 4 Nov at 10:00</b>. A calendar invite and video link are attached, and you can now see each other\'s contact details.','See your booking','firm-dashboard.html'],
- ['To the firm','Please donate £350 to Loch Broom Lifeboat Fund','Time to donate','Inglebert has pressed Send. Please donate <b>£350</b> on the charity\'s page within 48 hours, quoting reference <b>DO-0047</b>, then upload your receipt.','Donate and upload receipt','firm-dashboard.html'],
+ ['To the firm','Please donate £350 to Loch Broom Lifeboat Fund','Time to donate','Inglebert has pressed Send. Please donate <b>£350</b> on the charity\'s page within 48 hours, quoting reference <b>NE-0047</b>, then upload your receipt.','Donate and upload receipt','firm-dashboard.html'],
  ['To the expert','Harbourline Capital has donated','Your donation is on its way','Harbourline Capital has donated <b>£350</b> and uploaded its receipt. We\'ve asked Loch Broom Lifeboat Fund to confirm.','See the receipt','expert-dashboard.html'],
  ['To the expert, from the charity','Thank you from Loch Broom Lifeboat Fund','Thank you, Inglebert','Your knowledge raised <b>£350</b> for our crew. That keeps our inshore boat fuelled for six weeks. Your LinkedIn certificate is ready to share.','Share your certificate','expert-dashboard.html'],
- ['To the expert','Your profile is live','You\'re live on Dapperowl','We\'ve checked your identity and LinkedIn. Firms can now find you and send requests. We\'ll email you each time one arrives.','View your profile','find.html']
+ ['To the expert','Your profile is live','You\'re live on Nestorly','We\'ve checked your identity and LinkedIn. Firms can now find you and send requests. We\'ll email you each time one arrives.','View your profile','find.html']
 ];
-const logo=window.DAPPER_LOGO('#F5F0E6','#14254F');
-document.getElementById('list').outerHTML=M.map(m=>'<div class="mail"><span class="who">'+m[0]+'</span><div class="env"><span>From: <b>Dapperowl</b> &lt;hello@dapperowl.co.uk&gt;</span><span>Subject: <b>'+m[1]+'</b></span></div><div class="msg"><div class="mh">'+logo+'</div><div class="mb"><h2>'+m[2]+'</h2><p>'+m[3]+'</p><a class="btn" style="align-self:flex-start" href="'+m[5]+'">'+m[4]+'</a></div><div class="mf">Dapperowl CIC · 100% of every donation goes to charity · <a class="link" href="legal.html#privacy">Privacy</a></div></div></div>').join('');
+const logo=window.DAPPER_LOGO('navy');
+document.getElementById('list').outerHTML=M.map(m=>'<div class="mail"><span class="who">'+m[0]+'</span><div class="env"><span>From: <b>Nestorly</b> &lt;hello@nestorly.co.uk&gt;</span><span>Subject: <b>'+m[1]+'</b></span></div><div class="msg"><div class="mh">'+logo+'</div><div class="mb"><h2>'+m[2]+'</h2><p>'+m[3]+'</p><a class="btn" style="align-self:flex-start" href="'+m[5]+'">'+m[4]+'</a></div><div class="mf">Nestorly CIC · 100% of every donation goes to charity · <a class="link" href="legal.html#privacy">Privacy</a></div></div></div>').join('');
 // Sent emails (2 Nov): one per alert, from the shared store, newest first
 (function(){
   const esc=t=>String(t==null?'':t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -78,8 +78,8 @@ document.getElementById('list').outerHTML=M.map(m=>'<div class="mail"><span clas
     document.getElementById('filt').innerHTML=F.map(([k,l])=>'<button type="button" data-k="'+k+'" aria-pressed="'+(who===k)+'">'+l+'</button>').join('');
     document.querySelectorAll('#filt button').forEach(b=>b.onclick=()=>{ who=b.dataset.k; limit=10; draw(); });
     const list=DS.get().emails.filter(m=>who==='all'||(who==='me'?m.to===me.email:m.role===who));
-    document.getElementById('sent').innerHTML=list.length?list.slice(0,limit).map(m=>'<div class="mail"><span class="who">To '+(m.role==='expert'?'the expert':'the firm')+'</span><div class="env"><span>From: <b>Dapperowl</b> &lt;hello@dapperowl.co.uk&gt;</span><span>To: <b>'+esc(m.toName)+'</b> &lt;'+esc(m.to)+'&gt;</span><span>Subject: <b>'+esc(m.subject)+'</b></span><span>'+esc(DS.when(m.at))+'</span></div>'+
-      '<div class="msg"><div class="mh">'+logo+'</div><div class="mb"><h2>'+esc(m.heading)+'</h2><p>Hello '+esc(m.toName.split(' ')[0])+',</p><p>'+esc(m.body)+'</p><a class="btn" style="align-self:flex-start" href="'+esc(m.link)+'">'+esc(m.button)+' →</a></div><div class="mf">You\'re getting this because you have a Dapperowl account. Choose which emails you get in your settings.</div></div></div>').join('')+
+    document.getElementById('sent').innerHTML=list.length?list.slice(0,limit).map(m=>'<div class="mail"><span class="who">To '+(m.role==='expert'?'the expert':'the firm')+'</span><div class="env"><span>From: <b>Nestorly</b> &lt;hello@nestorly.co.uk&gt;</span><span>To: <b>'+esc(m.toName)+'</b> &lt;'+esc(m.to)+'&gt;</span><span>Subject: <b>'+esc(m.subject)+'</b></span><span>'+esc(DS.when(m.at))+'</span></div>'+
+      '<div class="msg"><div class="mh">'+logo+'</div><div class="mb"><h2>'+esc(m.heading)+'</h2><p>Hello '+esc(m.toName.split(' ')[0])+',</p><p>'+esc(m.body)+'</p><a class="btn" style="align-self:flex-start" href="'+esc(m.link)+'">'+esc(m.button)+' →</a></div><div class="mf">You\'re getting this because you have a Nestorly account. Choose which emails you get in your settings.</div></div></div>').join('')+
       (list.length>limit?'<button type="button" class="more" id="more">Show older emails ('+(list.length-limit)+' more)</button>':''):'<p class="empty">No emails yet.</p>';
     const mo=document.getElementById('more'); if(mo) mo.onclick=()=>{ limit+=10; draw(); };
   }

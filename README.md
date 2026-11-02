@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="og-image.png" alt="Nestorly: Your knowledge. Their cause." width="720">
+<img src="og-image.png" alt="Nestorly: Your knowledge, their cause" width="720">
 
 # Nestorly
 
